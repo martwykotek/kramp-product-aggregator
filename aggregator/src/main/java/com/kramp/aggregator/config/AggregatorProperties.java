@@ -93,7 +93,15 @@ public record AggregatorProperties(
 
     /** The clock drives the open-state wait, so tests can advance it instead of sleeping. */
     public CircuitBreakerConfig toCircuitBreakerConfig(Clock clock) {
-      throw new UnsupportedOperationException("not implemented");
+      return CircuitBreakerConfig.custom()
+          .slidingWindowType(CircuitBreakerConfig.SlidingWindowType.COUNT_BASED)
+          .slidingWindowSize(slidingWindowSize)
+          .minimumNumberOfCalls(minimumNumberOfCalls)
+          .failureRateThreshold(failureRateThreshold)
+          .waitDurationInOpenState(waitInOpenState)
+          .permittedNumberOfCallsInHalfOpenState(permittedCallsInHalfOpenState)
+          .clock(clock)
+          .build();
     }
   }
 
