@@ -21,7 +21,7 @@ Owns: REQ-MOCK-UPSTREAM-*
 | customer | 60 ms | 99% |
 
 - Latency: log-normal, σ = ln(3)/2.326 so p99 ≈ 3 × median.
-- Failure mix: 50% fast 503 (~5 ms), 30% 500 after normal latency, 20% hang 2–5 s then 503. Each mock reports errors in its own JSON shape.
+- Failure mix: 50% fast 503 (~5 ms), 30% 500 after normal latency, 20% hang 2–5 s then 503. Catalog, pricing and availability report errors in their own JSON shapes; customer answers with a plain-text reason phrase (404 `Not Found`).
 - Warehouses (real locations): Varsseveld NL (central), Strullendorf DE, Poitiers FR, Biggleswade GB, Modła Królewska PL. Out of stock everywhere → restock date 10 working days out.
 - Product data is copied from kramp.com; prices, stock, customers and discounts are fictitious.
 
