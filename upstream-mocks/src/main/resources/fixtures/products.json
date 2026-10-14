@@ -1,0 +1,990 @@
+[
+  {
+    "id": "W6103",
+    "brand": "MANN-FILTER",
+    "ean": "4011558738402",
+    "salesUnit": "EA",
+    "images": [
+      "https://images.kramp.com/images/60/08/w6103.jpg"
+    ],
+    "notSoldIn": [],
+    "specs": [
+      {
+        "key": "mountingThread",
+        "value": "M20 x 1.50 mm (metric)"
+      },
+      {
+        "key": "filterFineness",
+        "value": "21 µm"
+      },
+      {
+        "key": "bypassOpeningPressure",
+        "value": "1 bar"
+      },
+      {
+        "key": "length",
+        "value": "86 mm"
+      },
+      {
+        "key": "outsideDiameter",
+        "value": "68 mm"
+      },
+      {
+        "key": "sealingOdId",
+        "value": "62 / 54 mm"
+      }
+    ],
+    "content": {
+      "en": {
+        "name": "Oil filter Mann and Hummel",
+        "category": "Spin on filters",
+        "description": "MANN-FILTER W 610/3 spin-on lube oil filter with M20x1.5 thread, 21 µm cellulose media, bypass valve and anti-drain-back valve.",
+        "url": "https://www.kramp.com/shop-gb/en/p/oil-filter-mann-and-hummel--W6103"
+      },
+      "nl": {
+        "name": "Oliefilter M&H",
+        "category": "Opschroef filters",
+        "description": "MANN-FILTER W 610/3 opschroefbaar smeeroliefilter met M20x1,5 schroefdraad, 21 µm cellulose filtermedium, bypassventiel en terugloopventiel.",
+        "url": "https://www.kramp.com/shop-nl/nl/p/oliefilter-m-h--W6103"
+      },
+      "de": {
+        "name": "Ölfilter M+H",
+        "category": "Wechselfilter",
+        "description": "MANN-FILTER W 610/3 Anschraub-Schmierölfilter mit M20x1,5 Gewinde, 21 µm Zellulose-Filtermedium, Umgehungsventil und Rücklaufsperrventil.",
+        "url": "https://www.kramp.com/shop-de/de/p/%C3%B6lfilter-m-h--W6103"
+      },
+      "fr": {
+        "name": "Cartouche filtr d'huile lubrif",
+        "category": "Filtres à visser",
+        "description": "Filtre à huile vissé MANN-FILTER W 610/3, filetage M20x1,5, média cellulose 21 µm, clapet de dérivation et clapet anti-retour.",
+        "url": "https://www.kramp.com/shop-fr/fr/p/cartouche-filtr-d-huile-lubrif--W6103"
+      },
+      "pl": {
+        "name": "Filtr oleju Mann & Hummel",
+        "category": "Filtry wymienne",
+        "description": "Wkręcany filtr oleju MANN-FILTER W 610/3 z gwintem M20x1,5, wkładem celulozowym 21 µm, zaworem obejściowym i zaworem zwrotnym.",
+        "url": "https://www.kramp.com/shop-pl/pl/p/filtr-oleju-mann-hummel--W6103"
+      }
+    }
+  },
+  {
+    "id": "SH62142",
+    "brand": "HiFi Filter",
+    "ean": "3661200074276",
+    "salesUnit": "EA",
+    "images": [
+      "https://images.kramp.com/images/2c/74/sh62142.jpg"
+    ],
+    "notSoldIn": [],
+    "specs": [
+      {
+        "key": "mountingThread",
+        "value": "3/4 inch, 16 TPI, UNF"
+      },
+      {
+        "key": "filterFineness",
+        "value": "21 µm"
+      },
+      {
+        "key": "maxWorkingPressure",
+        "value": "1.1 bar"
+      },
+      {
+        "key": "length",
+        "value": "123 mm"
+      },
+      {
+        "key": "outsideDiameter",
+        "value": "74 mm"
+      },
+      {
+        "key": "filtrationMaterial",
+        "value": "cellulose (impregnated)"
+      }
+    ],
+    "content": {
+      "en": {
+        "name": "Hydraulic filter Hifi",
+        "category": "Spin on filters",
+        "description": "HiFi Filter spin-on hydraulic filter, 3/4\"-16 UNF mounting thread, impregnated-cellulose 21 µm media with bypass.",
+        "url": "https://www.kramp.com/shop-gb/en/p/hydraulic-filter-hifi--SH62142"
+      },
+      "nl": {
+        "name": "Hydrauliekfilter Hifi",
+        "category": "Opschroef filters",
+        "description": "HiFi Filter opschroefbaar hydrauliekfilter, 3/4\"-16 UNF montagedraad, filtermedium van geïmpregneerde cellulose 21 µm met bypass.",
+        "url": "https://www.kramp.com/shop-nl/nl/p/hydrauliekfilter-hifi--SH62142"
+      },
+      "de": {
+        "name": "Hydraulikfilter Hifi",
+        "category": "Wechselfilter",
+        "description": "HiFi Filter Anschraub-Hydraulikfilter, Anschlussgewinde 3/4\"-16 UNF, 21 µm Filtermedium aus imprägnierter Zellulose mit Bypass.",
+        "url": "https://www.kramp.com/shop-de/de/p/hydraulikfilter-hifi--SH62142"
+      },
+      "fr": {
+        "name": "Filtre hydraulique Hifi",
+        "category": "Filtres à visser",
+        "description": "Filtre hydraulique vissé HiFi Filter, filetage de montage 3/4\"-16 UNF, média en cellulose imprégnée 21 µm avec by-pass.",
+        "url": "https://www.kramp.com/shop-fr/fr/p/filtre-hydraulique-hifi--SH62142"
+      },
+      "pl": {
+        "name": "Filtr hydrauliczny Hifi",
+        "category": "Filtry wymienne",
+        "description": "Wkręcany filtr hydrauliczny HiFi Filter, gwint montażowy 3/4\"-16 UNF, wkład z impregnowanej celulozy 21 µm z obejściem.",
+        "url": "https://www.kramp.com/shop-pl/pl/p/filtr-hydrauliczny-hifi--SH62142"
+      }
+    }
+  },
+  {
+    "id": "P551329",
+    "brand": "Donaldson",
+    "ean": "0742330080757",
+    "salesUnit": "EA",
+    "images": [
+      "https://images.kramp.com/images/02/23/p551329.jpg"
+    ],
+    "notSoldIn": [],
+    "specs": [
+      {
+        "key": "mountingThread",
+        "value": "13/16 inch, 18 TPI, UN"
+      },
+      {
+        "key": "length",
+        "value": "153 mm"
+      },
+      {
+        "key": "outsideDiameter",
+        "value": "93 mm"
+      },
+      {
+        "key": "oeEquivalents",
+        "value": "J 925274 / 121003001280"
+      }
+    ],
+    "content": {
+      "en": {
+        "name": "Water/fuel separator Donaldson",
+        "category": "MX270 Magnum",
+        "description": "Donaldson spin-on fuel filter / water separator with 13/16\"-18 UN thread; Kramp lists it under Case IH MX270 Magnum fitment.",
+        "url": "https://www.kramp.com/shop-gb/en/p/water-fuel-separator-donaldson--P551329"
+      },
+      "nl": {
+        "name": "Waterafscheider brandstof Donaldson",
+        "category": "MX 270 Magnum",
+        "description": "Donaldson opschroefbaar brandstoffilter / waterafscheider met 13/16\"-18 UN schroefdraad; Kramp vermeldt het onder Case IH MX270 Magnum.",
+        "url": "https://www.kramp.com/shop-nl/nl/p/waterafscheider-brandstof-donaldson--P551329"
+      },
+      "de": {
+        "name": "Wasserabscheider Kraftstoff Donaldson",
+        "category": "MX 270 Magnum",
+        "description": "Donaldson Anschraub-Kraftstofffilter / Wasserabscheider mit 13/16\"-18 UN Gewinde; Kramp führt ihn passend für Case IH MX270 Magnum.",
+        "url": "https://www.kramp.com/shop-de/de/p/wasserabscheider-kraftstoff-donaldson--P551329"
+      },
+      "fr": {
+        "name": "Filtre à carburant séparateur d'eau",
+        "category": "MX 270 Magnum",
+        "description": "Filtre à carburant vissé / séparateur d'eau Donaldson, filetage 13/16\"-18 UN ; Kramp le référence comme adaptable sur Case IH MX270 Magnum.",
+        "url": "https://www.kramp.com/shop-fr/fr/p/filtre-%C3%A0-carburant-s%C3%A9parateur-d-eau--P551329"
+      },
+      "pl": {
+        "name": "Filtr paliwa Donaldson P551329",
+        "category": "MX 270 Magnum",
+        "description": "Wkręcany filtr paliwa / separator wody Donaldson z gwintem 13/16\"-18 UN; Kramp podaje go jako pasujący do Case IH MX270 Magnum.",
+        "url": "https://www.kramp.com/shop-pl/pl/p/filtr-paliwa-donaldson-p551329--P551329"
+      }
+    }
+  },
+  {
+    "id": "FFH121GASF",
+    "brand": "Faster",
+    "ean": null,
+    "salesUnit": "EA",
+    "images": [
+      "https://images.kramp.com/images/2c/d7/ffh0638gasf.jpg"
+    ],
+    "notSoldIn": [],
+    "specs": [
+      {
+        "key": "bodySize",
+        "value": "3/4 inch (BG 6)"
+      },
+      {
+        "key": "connection2Thread",
+        "value": "1 inch BSPP, female"
+      },
+      {
+        "key": "workingPressure",
+        "value": "350 bar"
+      },
+      {
+        "key": "burstPressure",
+        "value": "1400 bar"
+      },
+      {
+        "key": "flowRateAt2Bar",
+        "value": "160 l/min"
+      },
+      {
+        "key": "weight",
+        "value": "880.6 g"
+      }
+    ],
+    "content": {
+      "en": {
+        "name": "Quick release coupling female 3/4-1\" BS",
+        "category": "Flat face couplings",
+        "description": "Faster FFH series flat-face female quick-release coupling (ISO 16028 interchange), 3/4\" body with 1\" BSPP female thread; leak-free coupling, one-handed operation.",
+        "url": "https://www.kramp.com/shop-gb/en/p/quick-release-coupling-female-3-4-1-bs--FFH121GASF"
+      },
+      "nl": {
+        "name": "Snelkoppeling female 3/4-1\" BSP",
+        "category": "Vlakke snelkoppelingen",
+        "description": "Faster FFH-serie vlakke snelkoppeling female (uitwisselbaar volgens ISO 16028), 3/4\" body met 1\" BSPP binnendraad; lekvrij koppelen, met één hand te bedienen.",
+        "url": "https://www.kramp.com/shop-nl/nl/p/snelkoppeling-female-3-4-1-bsp--FFH121GASF"
+      },
+      "de": {
+        "name": "Schnellkupplungsbu. 3/4-1\" BS",
+        "category": "Schnellverschlusskupplungen, flachdichtend",
+        "description": "Faster flachdichtende Schnellkupplungsmuffe der Serie FFH (austauschbar nach ISO 16028), Baugröße 3/4\" mit 1\" BSPP Innengewinde; leckagefreies Kuppeln, einhändige Bedienung.",
+        "url": "https://www.kramp.com/shop-de/de/p/schnellkupplungsbu.-3-4-1-bs--FFH121GASF"
+      },
+      "fr": {
+        "name": "Coupleur face plate 3/4-1\"FBSP",
+        "category": "Raccords à face plane",
+        "description": "Coupleur femelle à face plane Faster série FFH (interchangeable ISO 16028), corps 3/4\" avec filetage femelle 1\" BSPP ; raccordement sans fuite, manipulation à une main.",
+        "url": "https://www.kramp.com/shop-fr/fr/p/coupleur-face-plate-3-4-1-fbsp--FFH121GASF"
+      },
+      "pl": {
+        "name": "Szybkozłącze płaskie FFH gniazdo 3/4\" gwint wewnętrzny 1\" BSP",
+        "category": "Złącza płaskie",
+        "description": "Płaskie szybkozłącze hydrauliczne Faster serii FFH, gniazdo (wymienność wg ISO 16028), korpus 3/4\" z gwintem wewnętrznym 1\" BSPP; łączenie bez wycieków, obsługa jedną ręką.",
+        "url": "https://www.kramp.com/shop-pl/pl/p/szybkoz%C5%82%C4%85cze-p%C5%82askie-ffh-gniazdo-3-4-gwint-wewn%C4%99trzny-1-bsp--FFH121GASF"
+      }
+    }
+  },
+  {
+    "id": "10G1",
+    "brand": "Gates",
+    "ean": null,
+    "salesUnit": "MTR",
+    "images": [
+      "https://images.kramp.com/images/9f/9c/20g1.jpg"
+    ],
+    "notSoldIn": [],
+    "specs": [
+      {
+        "key": "insideDiameter",
+        "value": "15.9 mm"
+      },
+      {
+        "key": "maxWorkingPressure",
+        "value": "130 bar"
+      },
+      {
+        "key": "burstPressure",
+        "value": "520 bar"
+      },
+      {
+        "key": "workingTemperature",
+        "value": "-40 to +100 °C"
+      },
+      {
+        "key": "reinforcement",
+        "value": "braid"
+      },
+      {
+        "key": "unit",
+        "value": "metre (MTR)"
+      }
+    ],
+    "content": {
+      "en": {
+        "name": "Hydraulic hose 10G1",
+        "category": "EN/SAE standard",
+        "description": "Gates G1 single-wire-braid hydraulic hose for medium-pressure lines; meets SAE 100R1 Type S, ISO 1436 1SN R1 and EN 853 1SN. Sold per metre.",
+        "url": "https://www.kramp.com/shop-gb/en/p/hydraulic-hose-10g1--10G1"
+      },
+      "nl": {
+        "name": "Hydrauliekslang 10G1",
+        "category": "EN/SAE standaard",
+        "description": "Gates G1 hydrauliekslang met enkele staaldraadvlechting voor middendrukleidingen; voldoet aan SAE 100R1 Type S, ISO 1436 1SN R1 en EN 853 1SN. Verkocht per meter.",
+        "url": "https://www.kramp.com/shop-nl/nl/p/hydrauliekslang-10g1--10G1"
+      },
+      "de": {
+        "name": "Hydraulikschlauch 10G1",
+        "category": "EN/SAE Norm",
+        "description": "Gates G1 Hydraulikschlauch mit einer Stahldrahtgeflechtlage für Mitteldruckleitungen; erfüllt SAE 100R1 Typ S, ISO 1436 1SN R1 und EN 853 1SN. Verkauf pro Meter.",
+        "url": "https://www.kramp.com/shop-de/de/p/hydraulikschlauch-10g1--10G1"
+      },
+      "fr": {
+        "name": "Tuyau hydraulique 10G1",
+        "category": "EN / SAE norme",
+        "description": "Tuyau hydraulique Gates G1 à une tresse métallique pour circuits moyenne pression ; conforme SAE 100R1 Type S, ISO 1436 1SN R1 et EN 853 1SN. Vendu au mètre.",
+        "url": "https://www.kramp.com/shop-fr/fr/p/tuyau-hydraulique-10g1--10G1"
+      },
+      "pl": {
+        "name": "Wąż hydrauliczny 10G1",
+        "category": "EN/SAE Norm",
+        "description": "Wąż hydrauliczny Gates G1 z jednym oplotem stalowym do przewodów średniociśnieniowych; spełnia SAE 100R1 Type S, ISO 1436 1SN R1 i EN 853 1SN. Sprzedawany na metry.",
+        "url": "https://www.kramp.com/shop-pl/pl/p/w%C4%85%C5%BC-hydrauliczny-10g1--10G1"
+      }
+    }
+  },
+  {
+    "id": "W2100860",
+    "brand": "Walterscheid",
+    "ean": null,
+    "salesUnit": "EA",
+    "images": [
+      "https://images.kramp.com/images/03/08/w2100560.jpg"
+    ],
+    "notSoldIn": [],
+    "specs": [
+      {
+        "key": "length",
+        "value": "860 mm"
+      },
+      {
+        "key": "connectionTractorMachineSide",
+        "value": "1 3/8\" - 6 spline"
+      },
+      {
+        "key": "powerAt540Rpm",
+        "value": "12 kW"
+      },
+      {
+        "key": "powerAt1000Rpm",
+        "value": "18 kW"
+      },
+      {
+        "key": "maxStaticTorque",
+        "value": "1150 N·m"
+      },
+      {
+        "key": "crossJoint",
+        "value": "22 x 55 mm"
+      }
+    ],
+    "content": {
+      "en": {
+        "name": "PTO shaft W2100 L: 860mm, Walterscheid",
+        "category": "Vibrax 400/ 600/ 800",
+        "description": "Complete Walterscheid W2100 PTO drive shaft, 860 mm, 1-3/8\" 6-spline on both ends with collar-lock quick-disconnect yokes; EN 12965 / CE.",
+        "url": "https://www.kramp.com/shop-gb/en/p/pto-shaft-w2100-l-860mm-walterscheid--W2100860"
+      },
+      "nl": {
+        "name": "Aftakas W2100 L: 860mm, Walterscheid",
+        "category": "Vibrax 400/ 600/ 800",
+        "description": "Complete Walterscheid W2100 aftakas, 860 mm, 1-3/8\" 6-spline aan beide zijden met snelsluitvorken met schuifkraag; EN 12965 / CE.",
+        "url": "https://www.kramp.com/shop-nl/nl/p/aftakas-w2100-l-860mm-walterscheid--W2100860"
+      },
+      "de": {
+        "name": "Walterscheid, Gelenkwelle, W2100, Länge 860mm, 1.3/8-6, mit Schnellverschlussgabel",
+        "category": "Vibrax 400/ 600/ 800",
+        "description": "Komplette Walterscheid Gelenkwelle W2100, 860 mm, beidseitig 1-3/8\" 6-Zahn-Profil mit Schnellverschlussgabeln mit Schiebehülse; EN 12965 / CE.",
+        "url": "https://www.kramp.com/shop-de/de/p/walterscheid-gelenkwelle-w2100-l%C3%A4nge-860mm-1.3-8-6-mit-schnellverschlussgabel--W2100860"
+      },
+      "fr": {
+        "name": "Transmission W2100 L: 860mm, Walterscheid",
+        "category": "Vibrax 400/ 600/ 800",
+        "description": "Transmission à cardans complète Walterscheid W2100, 860 mm, 1-3/8\" 6 cannelures aux deux extrémités, mâchoires à verrouillage rapide par bague coulissante ; EN 12965 / CE.",
+        "url": "https://www.kramp.com/shop-fr/fr/p/transmission-w2100-l-860mm-walterscheid--W2100860"
+      },
+      "pl": {
+        "name": "Wał przegubowy W2100 L=860 mm Walterscheid",
+        "category": "Vibrax 400/ 600/ 800",
+        "description": "Kompletny wał przegubowy Walterscheid W2100, 860 mm, 1-3/8\" 6 wielowypustów z obu stron, widły z szybkozłączem z pierścieniem przesuwnym; EN 12965 / CE.",
+        "url": "https://www.kramp.com/shop-pl/pl/p/wa%C5%82-przegubowy-w2100-l-860-mm-walterscheid--W2100860"
+      }
+    }
+  },
+  {
+    "id": "180012130",
+    "brand": "Comer",
+    "ean": null,
+    "salesUnit": "EA",
+    "images": [
+      "https://images.kramp.com/images/81/6f/180012130.jpg"
+    ],
+    "notSoldIn": [],
+    "specs": [
+      {
+        "key": "capDiameter",
+        "value": "23.8 mm"
+      },
+      {
+        "key": "length",
+        "value": "61.3 mm"
+      },
+      {
+        "key": "size",
+        "value": "T20 / V20"
+      }
+    ],
+    "content": {
+      "en": {
+        "name": "Cross journal diameter  23.8x61.3mm T20 / V20 Comer",
+        "category": "Cross journals standard",
+        "description": "Comer cross journal (universal-joint cross) for T20 / V20 series PTO shafts.",
+        "url": "https://www.kramp.com/shop-gb/en/p/cross-journal-diameter-23.8x61.3mm-t20-v20-comer--180012130"
+      },
+      "nl": {
+        "name": "Kruisstuk T20",
+        "category": "Kruisstukken standaard",
+        "description": "Comer kruisstuk (kruis voor kruiskoppeling) voor aftakassen uit de T20 / V20-serie.",
+        "url": "https://www.kramp.com/shop-nl/nl/p/kruisstuk-t20--180012130"
+      },
+      "de": {
+        "name": "Kreuzgelenk Ø 23.8x61.3mm, T20/V20 Comer",
+        "category": "Kreuzgarnituren Standard",
+        "description": "Comer Kreuzgarnitur (Kreuzgelenk) für Gelenkwellen der Serie T20 / V20.",
+        "url": "https://www.kramp.com/shop-de/de/p/kreuzgelenk-%C3%B8-23.8x61.3mm-t20-v20-comer--180012130"
+      },
+      "fr": {
+        "name": "Croisillon Ø 23,8x61,3 mm, série T20/V20, Comer",
+        "category": "Croisillons standard",
+        "description": "Croisillon Comer (croisillon de cardan) pour transmissions série T20 / V20.",
+        "url": "https://www.kramp.com/shop-fr/fr/p/croisillon-%C3%B8-23-8x61-3-mm-s%C3%A9rie-t20-v20-comer--180012130"
+      },
+      "pl": {
+        "name": "Krzyżak wału, Ø 23.8x61.3 mm, T20/V20 Comer",
+        "category": "Zestawy krzyżowe standard",
+        "description": "Krzyżak Comer (krzyżak przegubu Cardana) do wałów przegubowych serii T20 / V20.",
+        "url": "https://www.kramp.com/shop-pl/pl/p/krzy%C5%BCak-wa%C5%82u-%C3%B8-23.8x61.3-mm-t20-v20-comer--180012130"
+      }
+    }
+  },
+  {
+    "id": "62052RSC3SKF",
+    "brand": "SKF",
+    "ean": "7316571820651",
+    "salesUnit": "EA",
+    "images": [
+      "https://images.kramp.com/images/ce/29/bearing_62052rs.jpg"
+    ],
+    "notSoldIn": [],
+    "specs": [
+      {
+        "key": "insideDiameter",
+        "value": "25 mm"
+      },
+      {
+        "key": "outsideDiameter",
+        "value": "52 mm"
+      },
+      {
+        "key": "width",
+        "value": "15 mm"
+      },
+      {
+        "key": "basicDynamicRadialLoad",
+        "value": "15900 N"
+      },
+      {
+        "key": "basicStaticRadialLoad",
+        "value": "10200 N"
+      },
+      {
+        "key": "referenceSpeed",
+        "value": "8500 r/min"
+      }
+    ],
+    "content": {
+      "en": {
+        "name": "Deep groove ball bearing 25x52x15mm SKF",
+        "category": "Groove Ball Bearings",
+        "description": "SKF single-row deep groove ball bearing 6205-2RS C3 (25x52x15 mm), sealed on both sides.",
+        "url": "https://www.kramp.com/shop-gb/en/p/deep-groove-ball-bearing-25x52x15mm-skf--62052RSC3SKF"
+      },
+      "nl": {
+        "name": "Diepgroefkogellager 25x52x15mm SKF",
+        "category": "Groefkogellagers",
+        "description": "SKF eenrijig diepgroefkogellager 6205-2RS C3 (25x52x15 mm), aan beide zijden afgedicht.",
+        "url": "https://www.kramp.com/shop-nl/nl/p/diepgroefkogellager-25x52x15mm-skf--62052RSC3SKF"
+      },
+      "de": {
+        "name": "Rillenkugellager 25x52x15 mm SKF",
+        "category": "Rillenkugellager",
+        "description": "SKF einreihiges Rillenkugellager 6205-2RS C3 (25x52x15 mm), beidseitig abgedichtet.",
+        "url": "https://www.kramp.com/shop-de/de/p/rillenkugellager-25x52x15-mm-skf--62052RSC3SKF"
+      },
+      "fr": {
+        "name": "Roulement à billes à gorge profonde 25x52x15mm SKF",
+        "category": "Roulements à gorges profondes",
+        "description": "Roulement à billes à gorge profonde à une rangée SKF 6205-2RS C3 (25x52x15 mm), étanche des deux côtés.",
+        "url": "https://www.kramp.com/shop-fr/fr/p/roulement-%C3%A0-billes-%C3%A0-gorge-profonde-25x52x15mm-skf--62052RSC3SKF"
+      },
+      "pl": {
+        "name": "Łożysko kulkowe zwykłe 25x52x15 mm SKF",
+        "category": "Łożyska kulkowe",
+        "description": "Jednorzędowe łożysko kulkowe zwykłe SKF 6205-2RS C3 (25x52x15 mm), uszczelnione obustronnie.",
+        "url": "https://www.kramp.com/shop-pl/pl/p/%C5%82o%C5%BCysko-kulkowe-zwyk%C5%82e-25x52x15-mm-skf--62052RSC3SKF"
+      }
+    }
+  },
+  {
+    "id": "VB17800KR",
+    "brand": "Kramp",
+    "ean": "8719493468731",
+    "salesUnit": "EA",
+    "images": [
+      "https://images.kramp.com/images/90/e6/vb17800kr.jpg"
+    ],
+    "notSoldIn": [],
+    "specs": [
+      {
+        "key": "profile",
+        "value": "B/17"
+      },
+      {
+        "key": "widthXHeight",
+        "value": "17 x 11 mm"
+      },
+      {
+        "key": "insideLength",
+        "value": "800 mm"
+      },
+      {
+        "key": "pitchLength",
+        "value": "840 mm"
+      },
+      {
+        "key": "outsideLength",
+        "value": "869 mm"
+      },
+      {
+        "key": "workingTemperature",
+        "value": "-40 to +70 °C"
+      }
+    ],
+    "content": {
+      "en": {
+        "name": "V-belt 17x800 Li",
+        "category": "Standard V-belts (A, B, C, D, E, Z, AX, BX, CX, ZX, 5, 6, 8, AVX10, AVX13)",
+        "description": "Kramp classical V-belt, profile B/17, 800 mm inside length, to DIN 2215 / ISO 4184; electrically conductive and oil resistant.",
+        "url": "https://www.kramp.com/shop-gb/en/p/v-belt-17x800-li--VB17800KR"
+      },
+      "nl": {
+        "name": "V-riem 17x800 Li",
+        "category": "Standaard V-snaren (A, B, C, D, E, Z, AX, BX, CX, ZX, 5, 6, 8, AVX10, AVX13)",
+        "description": "Kramp klassieke V-snaar, profiel B/17, binnenlengte 800 mm, volgens DIN 2215 / ISO 4184; elektrisch geleidend en oliebestendig.",
+        "url": "https://www.kramp.com/shop-nl/nl/p/v-riem-17x800-li--VB17800KR"
+      },
+      "de": {
+        "name": "Keilriemen 17x800 Li",
+        "category": "Standard-Keilriemen (A, B, C, D, E, Z, AX, BX, CX, ZX, 5, 6, 8, AVX10, AVX13)",
+        "description": "Kramp klassischer Keilriemen, Profil B/17, Innenlänge 800 mm, nach DIN 2215 / ISO 4184; elektrisch leitfähig und ölbeständig.",
+        "url": "https://www.kramp.com/shop-de/de/p/keilriemen-17x800-li--VB17800KR"
+      },
+      "fr": {
+        "name": "Courroie trapézoïdale 17x800 B32",
+        "category": "Courroies trapézoïdales standard (A, B, C, D, E, Z, AX, BX, CX, ZX, 5, 6, 8, AVX10, AVX13)",
+        "description": "Courroie trapézoïdale classique Kramp, profil B/17, longueur intérieure 800 mm, selon DIN 2215 / ISO 4184 ; conductrice et résistante à l'huile.",
+        "url": "https://www.kramp.com/shop-fr/fr/p/courroie-trap%C3%A9zo%C3%AFdale-17x800-b32--VB17800KR"
+      },
+      "pl": {
+        "name": "Pas klinowy 17x800 Li",
+        "category": "Pasy klinowe Standard (A, B, C, D, E, Z, AX, BX, CX, ZX, 5, 6, 8, AVX10, AVX13)",
+        "description": "Klasyczny pas klinowy Kramp, profil B/17, długość wewnętrzna 800 mm, wg DIN 2215 / ISO 4184; przewodzący elektrycznie i olejoodporny.",
+        "url": "https://www.kramp.com/shop-pl/pl/p/pas-klinowy-17x800-li--VB17800KR"
+      }
+    }
+  },
+  {
+    "id": "LA10830",
+    "brand": "Kramp",
+    "ean": "8719493189742",
+    "salesUnit": "EA",
+    "images": [
+      "https://images.kramp.com/images/bf/55/la10830.jpg"
+    ],
+    "notSoldIn": [],
+    "specs": [
+      {
+        "key": "power",
+        "value": "60 W"
+      },
+      {
+        "key": "luminousFlux",
+        "value": "6600 lm"
+      },
+      {
+        "key": "voltage",
+        "value": "12/24 V (range 9-36 V)"
+      },
+      {
+        "key": "colourTemperature",
+        "value": "5000 K"
+      },
+      {
+        "key": "dimensions",
+        "value": "92 x 109 x 51.1 mm"
+      },
+      {
+        "key": "insulationClassIp",
+        "value": "68 / 69K"
+      }
+    ],
+    "content": {
+      "en": {
+        "name": "Work light LED, 60W, 6600lm, square, 12/24V, white, 92x109.5x51.1mm Deutsch plug, Wide flood, 12LED's",
+        "category": "Work lights",
+        "description": "Kramp Black Series square LED work light, 60 W / 6600 lm wide flood, 12/24 V (9-36 V), aluminium housing with Deutsch 2-pin plug; min. 30,000 h lifetime.",
+        "url": "https://www.kramp.com/shop-gb/en/p/work-light-led-60w-6600lm-square-12-24v-white-92x109.5x51.1mm-deutsch-plug-wide-flood-12led-s--LA10830"
+      },
+      "nl": {
+        "name": "Werklamp led, 60W, 6.600 lm, vierkant, 12/24V, wit, 92x109,5x51,1 mm Deutsch stekker, ultrabreedstraler, 12 leds",
+        "category": "Werklampen",
+        "description": "Kramp Black Series vierkante led-werklamp, 60 W / 6600 lm breedstraler, 12/24 V (9-36 V), aluminium behuizing met 2-polige Deutsch-stekker; levensduur min. 30.000 uur.",
+        "url": "https://www.kramp.com/shop-nl/nl/p/werklamp-led-60w-6.600-lm-vierkant-12-24v-wit-92x109-5x51-1-mm-deutsch-stekker-ultrabreedstraler-12-leds--LA10830"
+      },
+      "de": {
+        "name": "Arbeitsscheinwerfer LED, 60W, 6600lm, quadratisch, 12/24V, weiß, 92x109.5x51.1mm Deutsch Stecker, Wide flood, 12LED's",
+        "category": "Arbeitsscheinwerfer",
+        "description": "Kramp Black Series quadratischer LED-Arbeitsscheinwerfer, 60 W / 6600 lm Breitstrahler, 12/24 V (9-36 V), Aluminiumgehäuse mit 2-poligem Deutsch-Stecker; Lebensdauer mind. 30.000 h.",
+        "url": "https://www.kramp.com/shop-de/de/p/arbeitsscheinwerfer-led-60w-6600lm-quadratisch-12-24v-wei%C3%9F-92x109.5x51.1mm-deutsch-stecker-wide-flood-12led-s--LA10830"
+      },
+      "fr": {
+        "name": "Lampe de travail LED, 60W, 6600lm, carrée, 12/24V, blanche, 92x109,5x51,1mm prise Deutsch, faisceau large, 12LED",
+        "category": "Feux de travail",
+        "description": "Phare de travail LED carré Kramp Black Series, 60 W / 6600 lm faisceau large, 12/24 V (9-36 V), boîtier aluminium avec prise Deutsch 2 broches ; durée de vie min. 30 000 h.",
+        "url": "https://www.kramp.com/shop-fr/fr/p/lampe-de-travail-led-60w-6600lm-carr%C3%A9e-12-24v-blanche-92x109-5x51-1mm-prise-deutsch-faisceau-large-12led--LA10830"
+      },
+      "pl": {
+        "name": "Lampa robocza LED, kwadratowa 60W 6600lm 12/24V, biała, 92x109.5x51.1 mm światło rozproszone z wtyczką Deutsch, 12 LED",
+        "category": "Lampy robocze",
+        "description": "Kwadratowa lampa robocza LED Kramp Black Series, 60 W / 6600 lm, światło rozproszone, 12/24 V (9-36 V), obudowa aluminiowa z 2-pinową wtyczką Deutsch; żywotność min. 30 000 h.",
+        "url": "https://www.kramp.com/shop-pl/pl/p/lampa-robocza-led-kwadratowa-60w-6600lm-12-24v-bia%C5%82a-92x109.5x51.1-mm-%C5%9Bwiat%C5%82o-rozproszone-z-wtyczk%C4%85-deutsch-12-led--LA10830"
+      }
+    }
+  },
+  {
+    "id": "G1564033",
+    "brand": "Grammer",
+    "ean": null,
+    "salesUnit": "EA",
+    "images": [
+      "https://images.kramp.com/images/0a/18/g1564033.jpg"
+    ],
+    "notSoldIn": [],
+    "specs": [
+      {
+        "key": "suspension",
+        "value": "mechanical, 8 cm stroke"
+      },
+      {
+        "key": "operatorWeight",
+        "value": "45-170 kg"
+      },
+      {
+        "key": "width",
+        "value": "470 mm"
+      },
+      {
+        "key": "depthHeight",
+        "value": "608 / 608 mm"
+      },
+      {
+        "key": "backrestAdjustment",
+        "value": "35°"
+      },
+      {
+        "key": "upholstery",
+        "value": "fabric, blue/grey"
+      }
+    ],
+    "content": {
+      "en": {
+        "name": "Seat Primo XM fabric",
+        "category": "Forklift seats",
+        "description": "Grammer Primo XM (MSG65/521) mechanically suspended seat with blue/grey fabric upholstery, seatbelt and contact switch.",
+        "url": "https://www.kramp.com/shop-gb/en/p/seat-primo-xm-fabric--G1564033"
+      },
+      "nl": {
+        "name": "Zitting Primo XM stof",
+        "category": "Heftruckzittingen",
+        "description": "Grammer Primo XM (MSG65/521) mechanisch geveerde stoel met blauw/grijze stoffen bekleding, veiligheidsgordel en contactschakelaar.",
+        "url": "https://www.kramp.com/shop-nl/nl/p/zitting-primo-xm-stof--G1564033"
+      },
+      "de": {
+        "name": "Sitz Primo XM Stoff",
+        "category": "Gabelstaplersitze",
+        "description": "Grammer Primo XM (MSG65/521) mechanisch gefederter Sitz mit blau/grauem Stoffbezug, Sicherheitsgurt und Sitzkontaktschalter.",
+        "url": "https://www.kramp.com/shop-de/de/p/sitz-primo-xm-stoff--G1564033"
+      },
+      "fr": {
+        "name": "Siège Primo Tissu XM",
+        "category": "Sièges de chariot élévateur",
+        "description": "Siège Grammer Primo XM (MSG65/521) à suspension mécanique, revêtement tissu bleu/gris, ceinture de sécurité et contacteur de présence.",
+        "url": "https://www.kramp.com/shop-fr/fr/p/si%C3%A8ge-primo-tissu-xm--G1564033"
+      },
+      "pl": {
+        "name": "Siedzenie Primo XM obszyte tkaniną",
+        "category": "Siedzenia do wózków widłowych",
+        "description": "Siedzenie Grammer Primo XM (MSG65/521) z zawieszeniem mechanicznym, tapicerką z tkaniny niebiesko-szarej, pasem bezpieczeństwa i wyłącznikiem obecności.",
+        "url": "https://www.kramp.com/shop-pl/pl/p/siedzenie-primo-xm-obszyte-tkanin%C4%85--G1564033"
+      }
+    }
+  },
+  {
+    "id": "TS19100KR",
+    "brand": "Kramp",
+    "ean": "8719493244960",
+    "salesUnit": "EA",
+    "images": [
+      "https://images.kramp.com/images/17/a1/ts19110gp.jpg"
+    ],
+    "notSoldIn": [
+      "nl-NL"
+    ],
+    "specs": [
+      {
+        "key": "suspension",
+        "value": "none"
+      },
+      {
+        "key": "width",
+        "value": "470 mm"
+      },
+      {
+        "key": "depth",
+        "value": "490 mm"
+      },
+      {
+        "key": "height",
+        "value": "405 mm"
+      },
+      {
+        "key": "mountingThread",
+        "value": "5/16 inch UNC"
+      },
+      {
+        "key": "upholstery",
+        "value": "black PVC"
+      }
+    ],
+    "content": {
+      "en": {
+        "name": "Seat top black PVC",
+        "category": "Forklift seats",
+        "description": "Kramp unsprung seat top in black PVC (no suspension, no seatbelt or contact switch).",
+        "url": "https://www.kramp.com/shop-gb/en/p/seat-top-black-pvc--TS19100KR"
+      },
+      "de": {
+        "name": "Sitzoberteil schwarz PVC",
+        "category": "Gabelstaplersitze",
+        "description": "Kramp ungefedertes Sitzoberteil aus schwarzem PVC (ohne Federung, ohne Sicherheitsgurt und Sitzkontaktschalter).",
+        "url": "https://www.kramp.com/shop-de/de/p/sitzoberteil-schwarz-pvc--TS19100KR"
+      },
+      "fr": {
+        "name": "Revêtement de siège noir PVC",
+        "category": "Sièges de chariot élévateur",
+        "description": "Revêtement de siège Kramp non suspendu en PVC noir (sans suspension, sans ceinture ni contacteur de présence).",
+        "url": "https://www.kramp.com/shop-fr/fr/p/rev%C3%AAtement-de-si%C3%A8ge-noir-pvc--TS19100KR"
+      },
+      "pl": {
+        "name": "Poduszka siedzenia, czarna PCW",
+        "category": "Siedzenia do wózków widłowych",
+        "description": "Nieamortyzowana poduszka siedzenia Kramp z czarnego PCW (bez zawieszenia, bez pasa bezpieczeństwa i wyłącznika obecności).",
+        "url": "https://www.kramp.com/shop-pl/pl/p/poduszka-siedzenia-czarna-pcw--TS19100KR"
+      }
+    }
+  },
+  {
+    "id": "RT0502",
+    "brand": "Kramp",
+    "ean": "8719493926217",
+    "salesUnit": "EA",
+    "images": [
+      "https://images.kramp.com/images/b6/02/rt0502z.jpg"
+    ],
+    "notSoldIn": [],
+    "specs": [
+      {
+        "key": "totalLength",
+        "value": "220 mm"
+      },
+      {
+        "key": "width",
+        "value": "91 mm"
+      },
+      {
+        "key": "wireDiameter",
+        "value": "6.5 mm"
+      },
+      {
+        "key": "innerCoilDiameter",
+        "value": "44 mm"
+      },
+      {
+        "key": "numberOfLegs",
+        "value": "2"
+      },
+      {
+        "key": "colour",
+        "value": "red"
+      }
+    ],
+    "content": {
+      "en": {
+        "name": "Rotary tine new Eureka 2",
+        "category": "Rotary tedder tines",
+        "description": "Kramp replacement double rotary tedder tine with coil, fits Eureka (new type, Turbulent II).",
+        "url": "https://www.kramp.com/shop-gb/en/p/rotary-tine-new-eureka-2--RT0502"
+      },
+      "nl": {
+        "name": "Tand nieuw model Eureka 2",
+        "category": "Roterende schuddertanden",
+        "description": "Kramp vervangende dubbele schuddertand met winding, passend voor Eureka (nieuw type, Turbulent II).",
+        "url": "https://www.kramp.com/shop-nl/nl/p/tand-nieuw-model-eureka-2--RT0502"
+      },
+      "de": {
+        "name": "Federzinken, Länge 220mm, breite 91mm, spulen-innendurchmesser 44mm, Kramp",
+        "category": "Kreiselheuerzinken",
+        "description": "Kramp Ersatz-Doppelfederzinken mit Windung für Kreiselheuer, passend für Eureka (neuer Typ, Turbulent II).",
+        "url": "https://www.kramp.com/shop-de/de/p/federzinken-l%C3%A4nge-220mm-breite-91mm-spulen-innendurchmesser-44mm-kramp--RT0502"
+      },
+      "fr": {
+        "name": "Dent de pirouette p/Eureka 2",
+        "category": "Dents pour faneuse",
+        "description": "Dent double de rechange Kramp avec spire pour faneuse rotative, adaptable sur Eureka (nouveau type, Turbulent II).",
+        "url": "https://www.kramp.com/shop-fr/fr/p/dent-de-pirouette-p-eureka-2--RT0502"
+      },
+      "pl": {
+        "name": "Palec zgrabiarki Eureka 2 nowy model",
+        "category": "Palce do przetrząsaczo-zgrabiarek karuzelowych",
+        "description": "Zamienny podwójny palec Kramp ze zwojem do przetrząsacza karuzelowego, pasuje do Eureka (nowy typ, Turbulent II).",
+        "url": "https://www.kramp.com/shop-pl/pl/p/palec-zgrabiarki-eureka-2-nowy-model--RT0502"
+      }
+    }
+  },
+  {
+    "id": "10112PB",
+    "brand": "Facom",
+    "ean": "3662424092381",
+    "salesUnit": "EA",
+    "images": [
+      "https://images.kramp.com/images/c5/1b/10112fac.jpg"
+    ],
+    "notSoldIn": [
+      "pl-PL"
+    ],
+    "specs": [
+      {
+        "key": "sizeRange",
+        "value": "0-41 mm"
+      },
+      {
+        "key": "totalLength",
+        "value": "300 mm (12 inch)"
+      },
+      {
+        "key": "headHeight",
+        "value": "10.1 mm"
+      },
+      {
+        "key": "weight",
+        "value": "800 g"
+      },
+      {
+        "key": "standards",
+        "value": "ISO 6787, DIN 3117"
+      }
+    ],
+    "content": {
+      "en": {
+        "name": "Adjustable spanner 12\", 0-41mm, Facom",
+        "category": "Adjustable Spanners",
+        "description": "Facom 101 series quick-adjusting chrome-plated adjustable spanner, 12\" / 300 mm, 0-41 mm jaw opening.",
+        "url": "https://www.kramp.com/shop-gb/en/p/adjustable-spanner-12-0-41mm-facom--10112PB"
+      },
+      "nl": {
+        "name": "Verstelbare moersleutel 12\", 0-41 mm, Facom",
+        "category": "Verstelbare moersleutels",
+        "description": "Facom 101-serie snelverstelbare verchroomde verstelbare moersleutel, 12\" / 300 mm, bekopening 0-41 mm.",
+        "url": "https://www.kramp.com/shop-nl/nl/p/verstelbare-moersleutel-12-0-41-mm-facom--10112PB"
+      },
+      "de": {
+        "name": "Einmaulschlüssel 41mm 12\", 0-41 mm , Facom",
+        "category": "Einmaulschlüssel",
+        "description": "Facom Rollgabelschlüssel der Serie 101 mit Schnellverstellung, verchromt, 12\" / 300 mm, Maulweite 0-41 mm.",
+        "url": "https://www.kramp.com/shop-de/de/p/einmaulschl%C3%BCssel-41mm-12-0-41-mm-facom--10112PB"
+      },
+      "fr": {
+        "name": "Clé à molette, 41 mm x12\", 0-41 mm, Facom",
+        "category": "Clés à ouverture variable",
+        "description": "Clé à molette chromée à réglage rapide Facom série 101, 12\" / 300 mm, ouverture 0-41 mm.",
+        "url": "https://www.kramp.com/shop-fr/fr/p/cl%C3%A9-%C3%A0-molette-41-mm-x12-0-41-mm-facom--10112PB"
+      }
+    }
+  },
+  {
+    "id": "80213500WEKR",
+    "brand": "Kramp",
+    "ean": "8719493155464",
+    "salesUnit": "EA",
+    "images": [
+      "https://images.kramp.com/images/6c/5e/80213500wekr.jpg"
+    ],
+    "notSoldIn": [],
+    "specs": [
+      {
+        "key": "content",
+        "value": "0.5 kg (cartridge)"
+      },
+      {
+        "key": "nlgiGrade",
+        "value": "2"
+      },
+      {
+        "key": "thickener",
+        "value": "lithium"
+      },
+      {
+        "key": "workingTemperature",
+        "value": "-20 to +130 °C"
+      },
+      {
+        "key": "dropPoint",
+        "value": "190 °C"
+      },
+      {
+        "key": "baseOilViscosityAt40C",
+        "value": "120 mm²/s"
+      }
+    ],
+    "content": {
+      "en": {
+        "name": "Multi-purpose EP grease 500g",
+        "category": "Multi purpose grease",
+        "description": "Kramp multi-purpose EP grease: lithium-thickened, mineral-oil based, with antioxidants, corrosion inhibitors and EP/AW additives; 500 g screw cartridge.",
+        "url": "https://www.kramp.com/shop-gb/en/p/multi-purpose-ep-grease-500g--80213500WEKR"
+      },
+      "nl": {
+        "name": "Universeel EP Vet, NLGI 2, Lithium, 500g, Schroefpatroon, Kramp",
+        "category": "Multi Purpose vet",
+        "description": "Kramp universeel EP-vet: lithiumverzeept, op basis van minerale olie, met antioxidanten, corrosieremmers en EP/AW-additieven; schroefpatroon van 500 g.",
+        "url": "https://www.kramp.com/shop-nl/nl/p/universeel-ep-vet-nlgi-2-lithium-500g-schroefpatroon-kramp--80213500WEKR"
+      },
+      "de": {
+        "name": "Mehrzweck-EP-Fett 500g",
+        "category": "Mehrzweckfett",
+        "description": "Kramp Mehrzweck-EP-Fett: lithiumverseift, auf Mineralölbasis, mit Antioxidantien, Korrosionsinhibitoren und EP/AW-Additiven; 500-g-Schraubkartusche.",
+        "url": "https://www.kramp.com/shop-de/de/p/mehrzweck-ep-fett-500g--80213500WEKR"
+      },
+      "fr": {
+        "name": "Graisse EP multi-usages 500g",
+        "category": "Graisse multi-usages",
+        "description": "Graisse EP multi-usages Kramp : savon de lithium, base huile minérale, avec antioxydants, inhibiteurs de corrosion et additifs EP/AW ; cartouche à visser de 500 g.",
+        "url": "https://www.kramp.com/shop-fr/fr/p/graisse-ep-multi-usages-500g--80213500WEKR"
+      },
+      "pl": {
+        "name": "Smar uniwersalny EP 500g wkład przykręcany",
+        "category": "Smar wielofunkcyjny",
+        "description": "Uniwersalny smar EP Kramp: zagęszczony litem, na bazie oleju mineralnego, z przeciwutleniaczami, inhibitorami korozji i dodatkami EP/AW; wkład przykręcany 500 g.",
+        "url": "https://www.kramp.com/shop-pl/pl/p/smar-uniwersalny-ep-500g-wk%C5%82ad-przykr%C4%99cany--80213500WEKR"
+      }
+    }
+  }
+]

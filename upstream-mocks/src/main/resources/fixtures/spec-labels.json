@@ -1,0 +1,429 @@
+{
+  "mountingThread": {
+    "en": "Mounting thread",
+    "nl": "Montagedraad",
+    "de": "Anschlussgewinde",
+    "fr": "Filetage de montage",
+    "pl": "Gwint montażowy"
+  },
+  "filterFineness": {
+    "en": "Filter fineness",
+    "nl": "Filterfijnheid",
+    "de": "Filterfeinheit",
+    "fr": "Finesse de filtration",
+    "pl": "Dokładność filtracji"
+  },
+  "bypassOpeningPressure": {
+    "en": "Bypass opening pressure",
+    "nl": "Openingsdruk bypass",
+    "de": "Öffnungsdruck Bypass",
+    "fr": "Pression d'ouverture du by-pass",
+    "pl": "Ciśnienie otwarcia obejścia"
+  },
+  "length": {
+    "en": "Length",
+    "nl": "Lengte",
+    "de": "Länge",
+    "fr": "Longueur",
+    "pl": "Długość"
+  },
+  "outsideDiameter": {
+    "en": "Outside diameter",
+    "nl": "Buitendiameter",
+    "de": "Außendurchmesser",
+    "fr": "Diamètre extérieur",
+    "pl": "Średnica zewnętrzna"
+  },
+  "sealingOdId": {
+    "en": "Sealing OD / ID",
+    "nl": "Afdichting buiten- / binnendiameter",
+    "de": "Dichtung Außen- / Innendurchmesser",
+    "fr": "Joint diamètre ext. / int.",
+    "pl": "Uszczelka średnica zewn. / wewn."
+  },
+  "maxWorkingPressure": {
+    "en": "Max working pressure",
+    "nl": "Max. werkdruk",
+    "de": "Max. Betriebsdruck",
+    "fr": "Pression de service max.",
+    "pl": "Maks. ciśnienie robocze"
+  },
+  "filtrationMaterial": {
+    "en": "Filtration material",
+    "nl": "Filtermateriaal",
+    "de": "Filtermaterial",
+    "fr": "Matériau filtrant",
+    "pl": "Materiał filtracyjny"
+  },
+  "oeEquivalents": {
+    "en": "OE equivalents",
+    "nl": "OE-equivalenten",
+    "de": "OE-Vergleichsnummern",
+    "fr": "Équivalences OE",
+    "pl": "Odpowiedniki OE"
+  },
+  "bodySize": {
+    "en": "Body size",
+    "nl": "Bouwgrootte",
+    "de": "Baugröße",
+    "fr": "Taille du corps",
+    "pl": "Rozmiar korpusu"
+  },
+  "connection2Thread": {
+    "en": "Connection 2 thread",
+    "nl": "Schroefdraad aansluiting 2",
+    "de": "Gewinde Anschluss 2",
+    "fr": "Filetage raccord 2",
+    "pl": "Gwint przyłącza 2"
+  },
+  "workingPressure": {
+    "en": "Working pressure",
+    "nl": "Werkdruk",
+    "de": "Betriebsdruck",
+    "fr": "Pression de service",
+    "pl": "Ciśnienie robocze"
+  },
+  "burstPressure": {
+    "en": "Burst pressure",
+    "nl": "Barstdruk",
+    "de": "Berstdruck",
+    "fr": "Pression d'éclatement",
+    "pl": "Ciśnienie rozrywające"
+  },
+  "flowRateAt2Bar": {
+    "en": "Flow rate at 2 bar",
+    "nl": "Debiet bij 2 bar",
+    "de": "Durchfluss bei 2 bar",
+    "fr": "Débit à 2 bar",
+    "pl": "Przepływ przy 2 bar"
+  },
+  "weight": {
+    "en": "Weight",
+    "nl": "Gewicht",
+    "de": "Gewicht",
+    "fr": "Poids",
+    "pl": "Waga"
+  },
+  "insideDiameter": {
+    "en": "Inside diameter",
+    "nl": "Binnendiameter",
+    "de": "Innendurchmesser",
+    "fr": "Diamètre intérieur",
+    "pl": "Średnica wewnętrzna"
+  },
+  "workingTemperature": {
+    "en": "Working temperature",
+    "nl": "Werktemperatuur",
+    "de": "Betriebstemperatur",
+    "fr": "Température de service",
+    "pl": "Temperatura pracy"
+  },
+  "reinforcement": {
+    "en": "Reinforcement",
+    "nl": "Versterking",
+    "de": "Verstärkung",
+    "fr": "Renforcement",
+    "pl": "Wzmocnienie"
+  },
+  "unit": {
+    "en": "Unit",
+    "nl": "Eenheid",
+    "de": "Einheit",
+    "fr": "Unité",
+    "pl": "Jednostka"
+  },
+  "connectionTractorMachineSide": {
+    "en": "Connection tractor / machine side",
+    "nl": "Aansluiting trekker- / machinezijde",
+    "de": "Anschluss Traktor- / Geräteseite",
+    "fr": "Raccordement côté tracteur / machine",
+    "pl": "Przyłącze od strony ciągnika / maszyny"
+  },
+  "powerAt540Rpm": {
+    "en": "Power @540 rpm",
+    "nl": "Vermogen bij 540 tpm",
+    "de": "Leistung bei 540 U/min",
+    "fr": "Puissance à 540 tr/min",
+    "pl": "Moc przy 540 obr./min"
+  },
+  "powerAt1000Rpm": {
+    "en": "Power @1000 rpm",
+    "nl": "Vermogen bij 1000 tpm",
+    "de": "Leistung bei 1000 U/min",
+    "fr": "Puissance à 1000 tr/min",
+    "pl": "Moc przy 1000 obr./min"
+  },
+  "maxStaticTorque": {
+    "en": "Max static torque",
+    "nl": "Max. statisch koppel",
+    "de": "Max. statisches Drehmoment",
+    "fr": "Couple statique max.",
+    "pl": "Maks. moment statyczny"
+  },
+  "crossJoint": {
+    "en": "Cross joint",
+    "nl": "Kruisstuk",
+    "de": "Kreuzgarnitur",
+    "fr": "Croisillon",
+    "pl": "Krzyżak"
+  },
+  "capDiameter": {
+    "en": "Cap diameter",
+    "nl": "Diameter lagerbus",
+    "de": "Durchmesser Lagerbüchse",
+    "fr": "Diamètre de la cuvette",
+    "pl": "Średnica tulei łożyska"
+  },
+  "size": {
+    "en": "Size",
+    "nl": "Maat",
+    "de": "Größe",
+    "fr": "Taille",
+    "pl": "Rozmiar"
+  },
+  "width": {
+    "en": "Width",
+    "nl": "Breedte",
+    "de": "Breite",
+    "fr": "Largeur",
+    "pl": "Szerokość"
+  },
+  "basicDynamicRadialLoad": {
+    "en": "Basic dynamic radial load",
+    "nl": "Dynamisch radiaal draaggetal",
+    "de": "Dynamische Tragzahl radial",
+    "fr": "Charge dynamique radiale de base",
+    "pl": "Nośność dynamiczna promieniowa"
+  },
+  "basicStaticRadialLoad": {
+    "en": "Basic static radial load",
+    "nl": "Statisch radiaal draaggetal",
+    "de": "Statische Tragzahl radial",
+    "fr": "Charge statique radiale de base",
+    "pl": "Nośność statyczna promieniowa"
+  },
+  "referenceSpeed": {
+    "en": "Reference speed",
+    "nl": "Referentietoerental",
+    "de": "Referenzdrehzahl",
+    "fr": "Vitesse de référence",
+    "pl": "Prędkość referencyjna"
+  },
+  "profile": {
+    "en": "Profile",
+    "nl": "Profiel",
+    "de": "Profil",
+    "fr": "Profil",
+    "pl": "Profil"
+  },
+  "widthXHeight": {
+    "en": "Width x height",
+    "nl": "Breedte x hoogte",
+    "de": "Breite x Höhe",
+    "fr": "Largeur x hauteur",
+    "pl": "Szerokość x wysokość"
+  },
+  "insideLength": {
+    "en": "Inside length",
+    "nl": "Binnenlengte",
+    "de": "Innenlänge",
+    "fr": "Longueur intérieure",
+    "pl": "Długość wewnętrzna"
+  },
+  "pitchLength": {
+    "en": "Pitch length",
+    "nl": "Werkzame lengte",
+    "de": "Wirklänge",
+    "fr": "Longueur primitive",
+    "pl": "Długość skuteczna"
+  },
+  "outsideLength": {
+    "en": "Outside length",
+    "nl": "Buitenlengte",
+    "de": "Außenlänge",
+    "fr": "Longueur extérieure",
+    "pl": "Długość zewnętrzna"
+  },
+  "power": {
+    "en": "Power",
+    "nl": "Vermogen",
+    "de": "Leistung",
+    "fr": "Puissance",
+    "pl": "Moc"
+  },
+  "luminousFlux": {
+    "en": "Luminous flux",
+    "nl": "Lichtstroom",
+    "de": "Lichtstrom",
+    "fr": "Flux lumineux",
+    "pl": "Strumień świetlny"
+  },
+  "voltage": {
+    "en": "Voltage",
+    "nl": "Spanning",
+    "de": "Spannung",
+    "fr": "Tension",
+    "pl": "Napięcie"
+  },
+  "colourTemperature": {
+    "en": "Colour temperature",
+    "nl": "Kleurtemperatuur",
+    "de": "Farbtemperatur",
+    "fr": "Température de couleur",
+    "pl": "Temperatura barwowa"
+  },
+  "dimensions": {
+    "en": "Dimensions",
+    "nl": "Afmetingen",
+    "de": "Abmessungen",
+    "fr": "Dimensions",
+    "pl": "Wymiary"
+  },
+  "insulationClassIp": {
+    "en": "Insulation class (IP)",
+    "nl": "Beschermingsklasse (IP)",
+    "de": "Schutzart (IP)",
+    "fr": "Indice de protection (IP)",
+    "pl": "Stopień ochrony (IP)"
+  },
+  "suspension": {
+    "en": "Suspension",
+    "nl": "Vering",
+    "de": "Federung",
+    "fr": "Suspension",
+    "pl": "Zawieszenie"
+  },
+  "operatorWeight": {
+    "en": "Operator weight",
+    "nl": "Gewicht bestuurder",
+    "de": "Fahrergewicht",
+    "fr": "Poids du conducteur",
+    "pl": "Waga operatora"
+  },
+  "depthHeight": {
+    "en": "Depth / height",
+    "nl": "Diepte / hoogte",
+    "de": "Tiefe / Höhe",
+    "fr": "Profondeur / hauteur",
+    "pl": "Głębokość / wysokość"
+  },
+  "backrestAdjustment": {
+    "en": "Backrest adjustment",
+    "nl": "Rugleuningverstelling",
+    "de": "Rückenlehnenverstellung",
+    "fr": "Réglage du dossier",
+    "pl": "Regulacja oparcia"
+  },
+  "upholstery": {
+    "en": "Upholstery",
+    "nl": "Bekleding",
+    "de": "Bezug",
+    "fr": "Revêtement",
+    "pl": "Tapicerka"
+  },
+  "depth": {
+    "en": "Depth",
+    "nl": "Diepte",
+    "de": "Tiefe",
+    "fr": "Profondeur",
+    "pl": "Głębokość"
+  },
+  "height": {
+    "en": "Height",
+    "nl": "Hoogte",
+    "de": "Höhe",
+    "fr": "Hauteur",
+    "pl": "Wysokość"
+  },
+  "totalLength": {
+    "en": "Total length",
+    "nl": "Totale lengte",
+    "de": "Gesamtlänge",
+    "fr": "Longueur totale",
+    "pl": "Długość całkowita"
+  },
+  "wireDiameter": {
+    "en": "Wire diameter",
+    "nl": "Draaddiameter",
+    "de": "Drahtdurchmesser",
+    "fr": "Diamètre du fil",
+    "pl": "Średnica drutu"
+  },
+  "innerCoilDiameter": {
+    "en": "Inner coil diameter",
+    "nl": "Binnendiameter winding",
+    "de": "Spulen-Innendurchmesser",
+    "fr": "Diamètre intérieur de la spire",
+    "pl": "Średnica wewnętrzna zwoju"
+  },
+  "numberOfLegs": {
+    "en": "Number of legs",
+    "nl": "Aantal benen",
+    "de": "Anzahl Schenkel",
+    "fr": "Nombre de branches",
+    "pl": "Liczba ramion"
+  },
+  "colour": {
+    "en": "Colour",
+    "nl": "Kleur",
+    "de": "Farbe",
+    "fr": "Couleur",
+    "pl": "Kolor"
+  },
+  "sizeRange": {
+    "en": "Size range",
+    "nl": "Bereik",
+    "de": "Spannweite",
+    "fr": "Plage d'ouverture",
+    "pl": "Zakres rozwarcia"
+  },
+  "headHeight": {
+    "en": "Head height",
+    "nl": "Kophoogte",
+    "de": "Kopfhöhe",
+    "fr": "Hauteur de tête",
+    "pl": "Wysokość główki"
+  },
+  "standards": {
+    "en": "Standards",
+    "nl": "Normen",
+    "de": "Normen",
+    "fr": "Normes",
+    "pl": "Normy"
+  },
+  "content": {
+    "en": "Content",
+    "nl": "Inhoud",
+    "de": "Inhalt",
+    "fr": "Contenu",
+    "pl": "Zawartość"
+  },
+  "nlgiGrade": {
+    "en": "NLGI grade",
+    "nl": "NLGI-klasse",
+    "de": "NLGI-Klasse",
+    "fr": "Grade NLGI",
+    "pl": "Klasa NLGI"
+  },
+  "thickener": {
+    "en": "Thickener",
+    "nl": "Verdikkingsmiddel",
+    "de": "Verdicker",
+    "fr": "Épaississant",
+    "pl": "Zagęszczacz"
+  },
+  "dropPoint": {
+    "en": "Drop point",
+    "nl": "Druppelpunt",
+    "de": "Tropfpunkt",
+    "fr": "Point de goutte",
+    "pl": "Temperatura kroplenia"
+  },
+  "baseOilViscosityAt40C": {
+    "en": "Base oil viscosity @40 °C",
+    "nl": "Viscositeit basisolie bij 40 °C",
+    "de": "Grundölviskosität bei 40 °C",
+    "fr": "Viscosité de l'huile de base à 40 °C",
+    "pl": "Lepkość oleju bazowego w 40 °C"
+  }
+}

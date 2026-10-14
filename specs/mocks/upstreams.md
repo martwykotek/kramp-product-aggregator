@@ -35,7 +35,7 @@ None in this leaf.
 | REQ-MOCK-UPSTREAM-002 | automated | AT-MOCK-02 · UpstreamBehaviorTest#shouldFailAtOneMinusReliabilityWhenHealthy | ✅ |
 | REQ-MOCK-UPSTREAM-003 | automated | AT-MOCK-03 · UpstreamBehaviorTest#shouldSplitFailuresByConfiguredMixWhenFailing | ✅ |
 | REQ-MOCK-UPSTREAM-004 | automated | AT-MOCK-04 · UpstreamBehaviorTest#shouldReproduceSequenceWhenSeedIsTheSame | ✅ |
-| REQ-MOCK-UPSTREAM-005 | automated | AT-MOCK-05 · CatalogFixturesTest#shouldContainExactlyTheResearchedKrampProductsWhenLoaded | ❌ no evidence — GAP |
+| REQ-MOCK-UPSTREAM-005 | automated | AT-MOCK-05 · CatalogFixturesTest#shouldContainExactlyTheResearchedKrampProductsWhenLoaded | ✅ |
 | REQ-MOCK-UPSTREAM-006 | automated | AT-MOCK-06 · DeliveryDateCalculatorTest#shouldPromiseNextWorkingDayWhenOrderedBeforeCutoff | ❌ no evidence — GAP |
 | REQ-MOCK-UPSTREAM-007 | automated | AT-MOCK-07 · AvailabilityLookupTest#shouldShipFromVarsseveldOneDayLaterWhenLocalWarehouseIsEmpty | ❌ no evidence — GAP |
 | REQ-MOCK-UPSTREAM-008 | automated | AT-MOCK-08 · PricingLookupTest#shouldQuoteMarketCurrencyWithCustomerDiscountWhenCustomerKnown | ❌ no evidence — GAP |

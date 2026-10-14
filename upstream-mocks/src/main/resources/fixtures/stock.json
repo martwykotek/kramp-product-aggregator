@@ -1,0 +1,17 @@
+[
+  { "productId": "W6103",        "warehouses": { "NL-VAR": 1240, "DE-STR": 310, "FR-POI": 180, "GB-BIG": 95,  "PL-MOD": 42 } },
+  { "productId": "SH62142",      "warehouses": { "NL-VAR": 220,  "DE-STR": 35,  "FR-POI": 18,  "GB-BIG": 12,  "PL-MOD": 9 } },
+  { "productId": "P551329",      "warehouses": { "NL-VAR": 410,  "DE-STR": 60,  "FR-POI": 44,  "GB-BIG": 21,  "PL-MOD": 15 } },
+  { "productId": "FFH121GASF",   "warehouses": { "NL-VAR": 160,  "DE-STR": 24,  "FR-POI": 30,  "GB-BIG": 8,   "PL-MOD": 6 } },
+  { "productId": "10G1",         "warehouses": { "NL-VAR": 4500, "DE-STR": 900, "FR-POI": 650, "GB-BIG": 300, "PL-MOD": 450 } },
+  { "productId": "W2100860",     "warehouses": { "NL-VAR": 0,    "DE-STR": 0,   "FR-POI": 0,   "GB-BIG": 0,   "PL-MOD": 0 } },
+  { "productId": "180012130",    "warehouses": { "NL-VAR": 380,  "DE-STR": 70,  "FR-POI": 52,  "GB-BIG": 26,  "PL-MOD": 33 } },
+  { "productId": "62052RSC3SKF", "warehouses": { "NL-VAR": 2600, "DE-STR": 540, "FR-POI": 320, "GB-BIG": 210, "PL-MOD": 180 } },
+  { "productId": "VB17800KR",    "warehouses": { "NL-VAR": 890,  "DE-STR": 120, "FR-POI": 75,  "GB-BIG": 40,  "PL-MOD": 64 } },
+  { "productId": "LA10830",      "warehouses": { "NL-VAR": 310,  "DE-STR": 45,  "FR-POI": 28,  "GB-BIG": 19,  "PL-MOD": 11 } },
+  { "productId": "G1564033",     "warehouses": { "NL-VAR": 6,    "DE-STR": 2,   "FR-POI": 1,   "GB-BIG": 1,   "PL-MOD": 0 } },
+  { "productId": "TS19100KR",    "warehouses": { "NL-VAR": 140,  "DE-STR": 22,  "FR-POI": 16,  "GB-BIG": 9,   "PL-MOD": 12 } },
+  { "productId": "RT0502",       "warehouses": { "NL-VAR": 1800, "DE-STR": 260, "FR-POI": 410, "GB-BIG": 90,  "PL-MOD": 230 } },
+  { "productId": "10112PB",      "warehouses": { "NL-VAR": 75,   "DE-STR": 14,  "FR-POI": 11,  "GB-BIG": 6,   "PL-MOD": 0 } },
+  { "productId": "80213500WEKR", "warehouses": { "NL-VAR": 3200, "DE-STR": 610, "FR-POI": 390, "GB-BIG": 170, "PL-MOD": 260 } }
+]
