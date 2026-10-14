@@ -34,7 +34,7 @@ None in this leaf.
 | ID | Resolved by | Proof | Status |
 |----|-------------|-------|--------|
 | REQ-AGG-MARKET-001 | automated | AT-MARKET-01 · MarketRegistryTest#shouldRejectWhenMarketNotConfigured, ProductRestApiIT#shouldReturn400WhenMarketUnsupported | ❌ no evidence — GAP |
-| REQ-AGG-MARKET-002 | automated | AT-MARKET-02 · MarketRegistryTest#shouldNormalizeWhenCodeHasOddCasingOrSeparator | ❌ no evidence — GAP |
+| REQ-AGG-MARKET-002 | automated | AT-MARKET-02 · MarketRegistryTest#shouldNormalizeWhenCodeHasOddCasingOrSeparator | ✅ |
 | REQ-AGG-MARKET-003 | automated | AT-MARKET-03 · CatalogSourceTest#shouldRequestMarketLanguageWhenFetching | ❌ no evidence — GAP |
 | REQ-AGG-MARKET-004 | automated | AT-MARKET-04 · ProductRestApiIT#shouldReportServedLanguageWhenCatalogFallsBack | ❌ no evidence — GAP |
 | REQ-AGG-MARKET-005 | automated | AT-MARKET-05 · PriceFormatterTest#shouldFormatForMarketLocaleWhenFormatting | ❌ no evidence — GAP |

@@ -1,0 +1,36 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: product-aggregator
+  threads:
+    virtual:
+      enabled: true
+  messages:
+    basename: messages
+    fallback-to-system-locale: false
+  mvc:
+    problemdetails:
+      enabled: true
+aggregator:
+  global-deadline: 500ms
+  circuit-breaker:
+    sliding-window-size: 20
+    minimum-number-of-calls: 10
+    failure-rate-threshold: 50
+    wait-in-open-state: 10s
+    permitted-calls-in-half-open-state: 3
+  sources:                     # order = order of meta.sources
+    catalog:      { base-url: "${UPSTREAM_BASE_URL:http://localhost:8081}", timeout: 250ms, typical-latency: 50ms }
+    pricing:      { base-url: "${UPSTREAM_BASE_URL:http://localhost:8081}", timeout: 300ms, typical-latency: 80ms }
+    availability: { base-url: "${UPSTREAM_BASE_URL:http://localhost:8081}", timeout: 350ms, typical-latency: 100ms }
+    customer:     { base-url: "${UPSTREAM_BASE_URL:http://localhost:8081}", timeout: 200ms, typical-latency: 60ms }
+  markets:
+    - { code: nl-NL, currency: EUR }
+    - { code: nl-BE, currency: EUR }
+    - { code: fr-BE, currency: EUR }
+    - { code: fr-FR, currency: EUR }
+    - { code: de-DE, currency: EUR }
+    - { code: de-AT, currency: EUR }
+    - { code: pl-PL, currency: PLN }
+    - { code: en-GB, currency: GBP }

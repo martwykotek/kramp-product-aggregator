@@ -19,6 +19,7 @@
 
   <modules>
     <module>upstream-mocks</module>
+    <module>aggregator</module>
     <module>quality-gates</module>
   </modules>
 

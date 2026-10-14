@@ -68,7 +68,7 @@ Owns: REQ-AGG-RES-*, RC-AGG-RES-*
 | REQ-AGG-RES-015 | automated | AT-RES-15 · ProductRestApiIT#shouldShortCircuitPricingWhenCircuitOpen | ❌ no evidence — GAP |
 | REQ-AGG-RES-016 | automated | AT-RES-16 · GuardedSourceTest#shouldResumeAfterOpenPeriodWhenTrialCallsSucceed, #shouldReopenWhenTrialCallsFail | ❌ no evidence — GAP |
 | REQ-AGG-RES-017 | automated | AT-RES-17 · GuardedSourceTest#shouldIgnoreNotFoundWhenCountingFailures | ❌ no evidence — GAP |
-| REQ-AGG-RES-018 | automated | AT-RES-18 · AggregatorPropertiesTest#shouldRefuseToStartWhenBudgetsInvalid | ❌ no evidence — GAP |
+| REQ-AGG-RES-018 | automated | AT-RES-18 · AggregatorPropertiesTest#shouldRefuseToStartWhenBudgetsInvalid | ✅ |
 | REQ-AGG-RES-019 | automated | AT-ROB-03 · CatalogSourceTest#shouldFailAsUnavailableWhenBodyIsEmpty, PricingSourceTest#shouldFailAsUnavailableWhenRequiredFieldMissing | ❌ no evidence — GAP |
 | RC-AGG-RES-001 | automated | AT-RES-RC1 · ProductRestApiIT#shouldKeepDiscountWhenCustomerFails | ❌ no evidence — GAP |
 | RC-AGG-RES-002 | automated | AT-ROB-06 · GuardedSourceTest#shouldNotCountCancellationWhenRequestAlreadyFailed; AT-RES-14b | ❌ no evidence — GAP |
