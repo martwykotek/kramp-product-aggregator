@@ -37,8 +37,8 @@ None in this leaf.
 | REQ-AGG-MARKET-002 | automated | AT-MARKET-02 · MarketRegistryTest#shouldNormalizeWhenCodeHasOddCasingOrSeparator | ✅ |
 | REQ-AGG-MARKET-003 | automated | AT-MARKET-03 · CatalogSourceTest#shouldRequestMarketLanguageWhenFetching | ✅ |
 | REQ-AGG-MARKET-004 | automated | AT-MARKET-04 · ProductRestApiIT#shouldReportServedLanguageWhenCatalogFallsBack | ❌ no evidence — GAP |
-| REQ-AGG-MARKET-005 | automated | AT-MARKET-05 · PriceFormatterTest#shouldFormatForMarketLocaleWhenFormatting | ❌ no evidence — GAP |
-| REQ-AGG-MARKET-006 | automated | AT-MARKET-06 · LabelsTest#shouldTranslateEveryKeyWhenMarketLanguageRequested | ❌ no evidence — GAP |
+| REQ-AGG-MARKET-005 | automated | AT-MARKET-05 · PriceFormatterTest#shouldFormatForMarketLocaleWhenFormatting | ✅ |
+| REQ-AGG-MARKET-006 | automated | AT-MARKET-06 · LabelsTest#shouldTranslateEveryKeyWhenMarketLanguageRequested | ✅ |
 | REQ-AGG-MARKET-007 | automated | AT-MARKET-07 · ProductRestApiIT#shouldReturn404WhenProductOutsideMarketAssortment | ❌ no evidence — GAP |
 | REQ-AGG-MARKET-008 | automated | AT-ROB-04 · PricingSourceTest#shouldFailAsUnavailableWhenCurrencyDoesNotMatchMarket | ✅ |
 

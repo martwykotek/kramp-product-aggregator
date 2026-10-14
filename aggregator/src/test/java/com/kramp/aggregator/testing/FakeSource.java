@@ -22,7 +22,7 @@ public final class FakeSource<T> implements ProductDataSource<T> {
 
     record Value<T>(T value, Duration after) implements Step<T> {}
 
-    record NotFound<T>(Duration after) implements Step<T> {}
+    record NotFound<T>(String reason, Duration after) implements Step<T> {}
 
     record Unavailable<T>(Duration after, boolean retryable) implements Step<T> {}
 
@@ -33,7 +33,11 @@ public final class FakeSource<T> implements ProductDataSource<T> {
     }
 
     static <T> Step<T> notFound(Duration after) {
-      return new NotFound<>(after);
+      return new NotFound<>("PRODUCT_NOT_FOUND", after);
+    }
+
+    static <T> Step<T> notFound(String reason, Duration after) {
+      return new NotFound<>(reason, after);
     }
 
     static <T> Step<T> unavailable(Duration after) {
@@ -130,7 +134,7 @@ public final class FakeSource<T> implements ProductDataSource<T> {
     return switch (step) {
       case Step.Value<T> value -> value.value();
       case Step.NotFound<T> notFound ->
-          throw new UpstreamNotFoundException(name, "PRODUCT_NOT_FOUND");
+          throw new UpstreamNotFoundException(name, notFound.reason());
       case Step.Unavailable<T> unavailable ->
           throw new UpstreamUnavailableException(
               name, name + " answered 503", unavailable.retryable());

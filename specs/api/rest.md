@@ -28,7 +28,7 @@ Owns: REQ-API-REST-*, RC-API-REST-*
 | REQ-API-REST-004 | automated | AT-REST-04 · ProductRestApiIT#shouldReturn400WhenProductIdMalformed | ❌ no evidence — GAP |
 | REQ-API-REST-005 | automated | AT-REST-05 · ProductRestApiIT#shouldAdviseRetryAfterWhenCatalogCircuitOpen | ❌ no evidence — GAP |
 | REQ-API-REST-006 | automated | AT-REST-06 · ProductRestApiIT#shouldPublishOpenApiWhenRequested | ❌ no evidence — GAP |
-| REQ-API-REST-007 | automated | AT-ROB-02 · ProductViewServiceTest#shouldRejectWhenCustomerIdIsMalformed | ❌ no evidence — GAP |
+| REQ-API-REST-007 | automated | AT-ROB-02 · ProductViewServiceTest#shouldRejectWhenCustomerIdIsMalformed | ✅ |
 | RC-API-REST-001 | automated | AT-REST-RC1 · ProductRestApiIT#shouldNeverEchoUpstreamDetailsWhenUpstreamFails | ❌ no evidence — GAP |
 
 ## Where the code lives
