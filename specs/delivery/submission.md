@@ -23,10 +23,10 @@ None in this leaf.
 |----|-------------|-------|--------|
 | REQ-DLV-SUBMIT-001 | observed | TC-17 (local part) | ❌ no evidence — GAP |
 | REQ-DLV-SUBMIT-002 | observed | TC-17 (local part) | ❌ no evidence — GAP |
-| REQ-DLV-SUBMIT-003 | automated | AT-DLV-01 · ReadmeContractTest#shouldContainRequiredSectionsWhenReadmeChecked | ❌ no evidence — GAP |
-| REQ-DLV-SUBMIT-004 | automated | AT-DLV-01 · ReadmeContractTest#shouldContainRequiredSectionsWhenReadmeChecked | ❌ no evidence — GAP |
-| REQ-DLV-SUBMIT-005 | automated | AT-DLV-01 · ReadmeContractTest#shouldContainRequiredSectionsWhenReadmeChecked | ❌ no evidence — GAP |
-| REQ-DLV-SUBMIT-006 | automated | AT-DLV-01 · ReadmeContractTest#shouldContainRequiredSectionsWhenReadmeChecked | ❌ no evidence — GAP |
+| REQ-DLV-SUBMIT-003 | automated | AT-DLV-01 · ReadmeContractTest#shouldContainRequiredSectionsWhenReadmeChecked | ⚠️ checks presence and non-emptiness, not quality (quality: TC-18) |
+| REQ-DLV-SUBMIT-004 | automated | AT-DLV-01 · ReadmeContractTest#shouldContainRequiredSectionsWhenReadmeChecked | ⚠️ checks presence and non-emptiness, not quality (quality: TC-18) |
+| REQ-DLV-SUBMIT-005 | automated | AT-DLV-01 · ReadmeContractTest#shouldContainRequiredSectionsWhenReadmeChecked | ⚠️ checks presence and non-emptiness, not quality (quality: TC-18) |
+| REQ-DLV-SUBMIT-006 | automated | AT-DLV-01 · ReadmeContractTest#shouldContainRequiredSectionsWhenReadmeChecked | ⚠️ checks presence and non-emptiness, not quality (quality: TC-18) |
 | REQ-DLV-SUBMIT-007 | observed | TC-17 (GitHub part) | ❌ no evidence — GAP |
 
 ## Where the code lives
