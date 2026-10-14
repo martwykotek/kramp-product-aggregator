@@ -54,14 +54,14 @@ Owns: REQ-AGG-RES-*, RC-AGG-RES-*
 | REQ-AGG-RES-001 | automated | AT-RES-01 · ProductRestApiIT#shouldReturn503WhenCatalogFails | ❌ no evidence — GAP |
 | REQ-AGG-RES-002 | automated | AT-RES-02 · ProductRestApiIT#shouldReturn504WhenCatalogTooSlow | ❌ no evidence — GAP |
 | REQ-AGG-RES-003 | automated | AT-RES-03 · ProductRestApiIT#shouldReturn404WhenProductUnknown | ❌ no evidence — GAP |
-| REQ-AGG-RES-004 | automated | AT-RES-04 · ProductAggregationServiceTest#shouldFailFastWhenRequiredSourceFails | ❌ no evidence — GAP |
+| REQ-AGG-RES-004 | automated | AT-RES-04 · ProductAggregationServiceTest#shouldFailFastWhenRequiredSourceFails | ✅ |
 | REQ-AGG-RES-005 | automated | AT-RES-05 · ProductRestApiIT#shouldShowProductWithUnavailablePriceWhenPricingFails | ❌ no evidence — GAP |
 | REQ-AGG-RES-006 | automated | AT-RES-06 · ProductRestApiIT#shouldShowUnknownStockWhenAvailabilityFails | ❌ no evidence — GAP |
 | REQ-AGG-RES-007 | automated | AT-RES-07 · ProductRestApiIT#shouldFallBackToStandardWhenCustomerFails | ❌ no evidence — GAP |
-| REQ-AGG-RES-008 | automated | AT-RES-08 · ProductAggregationServiceTest#shouldMarkDegradedWhenAnyCalledOptionalSourceFails | ❌ no evidence — GAP |
+| REQ-AGG-RES-008 | automated | AT-RES-08 · ProductAggregationServiceTest#shouldMarkDegradedWhenAnyCalledOptionalSourceFails | ✅ |
 | REQ-AGG-RES-009 | automated | AT-RES-09 · ProductAggregationServiceTest#shouldNotMarkDegradedWhenOptionalSourceReportsNotFound, ProductRestApiIT#shouldTreatUnknownCustomerAsStandardWhenCustomerNotFound | ❌ no evidence — GAP |
 | REQ-AGG-RES-010 | automated | AT-RES-10 · UpstreamTimeoutsTest#shouldEndCallWithinBudgetWhenUpstreamHangs | ❌ no evidence — GAP |
-| REQ-AGG-RES-011 | automated | AT-RES-11 · ProductAggregationServiceTest#shouldFinishWithinGlobalDeadlineWhenAllSourcesHang | ❌ no evidence — GAP |
+| REQ-AGG-RES-011 | automated | AT-RES-11 · ProductAggregationServiceTest#shouldFinishWithinGlobalDeadlineWhenAllSourcesHang | ✅ |
 | REQ-AGG-RES-012 | automated | AT-RES-12 · GuardedSourceTest#shouldRetryOnceWhenFastFailureLeavesBudget, #shouldNotRetryWhenRemainingBudgetBelowTypicalLatency | ✅ |
 | REQ-AGG-RES-013 | automated | AT-RES-13 · GuardedSourceTest#shouldNotRetryWhenTimeoutOrNotFound | ✅ |
 | REQ-AGG-RES-014 | automated | AT-RES-14 · GuardedSourceTest#shouldOpenCircuitWhenHalfOfLastTwentyCallsFail; AT-RES-14b · ProductRestApiIT#shouldOpenPricingCircuitWhenPricingKeepsTimingOut | ✅ |

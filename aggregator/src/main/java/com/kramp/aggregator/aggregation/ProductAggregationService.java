@@ -1,8 +1,17 @@
 package com.kramp.aggregator.aggregation;
 
 import java.time.Duration;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import org.springframework.core.task.AsyncTaskExecutor;
 
 /**
@@ -41,6 +50,95 @@ public final class ProductAggregationService {
   }
 
   public AggregationResult aggregate(ProductRequest request) {
-    throw new UnsupportedOperationException("not implemented");
+    long start = System.nanoTime();
+    Map<String, SourceOutcome<?>> outcomes = new LinkedHashMap<>();
+    Map<String, Future<? extends SourceOutcome<?>>> running = new HashMap<>();
+    for (GuardedSource<?> source : sources) {
+      if (source.isApplicable(request)) {
+        outcomes.put(source.name(), null);
+        running.put(source.name(), executor.submit(() -> source.call(request)));
+      } else {
+        outcomes.put(source.name(), new SourceOutcome.Skipped<>());
+      }
+    }
+    for (GuardedSource<?> source : waitOrder) {
+      Future<? extends SourceOutcome<?>> future = running.get(source.name());
+      if (future == null) {
+        continue;
+      }
+      SourceOutcome<?> outcome = await(future, deadlineOf(source, start), start, running);
+      outcomes.put(source.name(), outcome);
+      if (source.criticality() == Criticality.REQUIRED && !(outcome instanceof SourceOutcome.Ok)) {
+        cancelUnfinished(running, outcomes, start);
+        RequiredSourceFailedException failure =
+            new RequiredSourceFailedException(
+                request,
+                source.name(),
+                outcome,
+                Collections.unmodifiableMap(outcomes),
+                since(start));
+        listener.failed(failure);
+        throw failure;
+      }
+    }
+    boolean degraded =
+        sources.stream()
+            .anyMatch(
+                source ->
+                    source.criticality() == Criticality.OPTIONAL
+                        && outcomes.get(source.name()) instanceof SourceOutcome.Failed);
+    AggregationResult result =
+        new AggregationResult(
+            request, Collections.unmodifiableMap(outcomes), degraded, since(start));
+    listener.completed(result);
+    return result;
+  }
+
+  private long deadlineOf(GuardedSource<?> source, long start) {
+    long ownDeadline = source.policy().timeout().plus(DEADLINE_GRACE).toNanos();
+    return start + Math.min(ownDeadline, globalDeadline.toNanos());
+  }
+
+  private static SourceOutcome<?> await(
+      Future<? extends SourceOutcome<?>> future,
+      long deadline,
+      long start,
+      Map<String, Future<? extends SourceOutcome<?>>> running) {
+    try {
+      return future.get(Math.max(0, deadline - System.nanoTime()), TimeUnit.NANOSECONDS);
+    } catch (TimeoutException late) {
+      future.cancel(true);
+      return new SourceOutcome.Failed<>(FailureKind.TIMEOUT, since(start));
+    } catch (ExecutionException bug) {
+      // GuardedSource never throws; only an Error inside a source gets here.
+      return new SourceOutcome.Failed<>(FailureKind.ERROR, since(start));
+    } catch (InterruptedException interrupted) {
+      running.values().forEach(other -> other.cancel(true));
+      Thread.currentThread().interrupt();
+      throw new CancellationException("aggregation interrupted");
+    }
+  }
+
+  /** Finished calls keep their outcome; the rest are interrupted and reported as TIMEOUT. */
+  private static void cancelUnfinished(
+      Map<String, Future<? extends SourceOutcome<?>>> running,
+      Map<String, SourceOutcome<?>> outcomes,
+      long start) {
+    running.forEach(
+        (name, future) -> {
+          if (outcomes.get(name) != null) {
+            return;
+          }
+          if (future.state() == Future.State.SUCCESS) {
+            outcomes.put(name, future.resultNow());
+          } else {
+            future.cancel(true);
+            outcomes.put(name, new SourceOutcome.Failed<>(FailureKind.TIMEOUT, since(start)));
+          }
+        });
+  }
+
+  private static Duration since(long start) {
+    return Duration.ofNanos(System.nanoTime() - start);
   }
 }
