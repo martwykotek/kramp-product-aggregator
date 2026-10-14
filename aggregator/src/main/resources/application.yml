@@ -12,6 +12,19 @@ spring:
   mvc:
     problemdetails:
       enabled: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        enabled: true
+logging:
+  pattern:
+    correlation: "[%X{correlationId:-}] "
 aggregator:
   global-deadline: 500ms
   circuit-breaker:

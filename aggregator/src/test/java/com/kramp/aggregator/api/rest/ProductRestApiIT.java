@@ -42,11 +42,14 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.system.CapturedOutput;
+import org.springframework.boot.test.system.OutputCaptureExtension;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -703,6 +706,31 @@ class ProductRestApiIT {
             getRequestedFor(urlPathMatching(path))
                 .withHeader("X-Correlation-Id", equalTo("it-corr-1")));
       }
+    }
+  }
+
+  @Nested
+  @ExtendWith(OutputCaptureExtension.class)
+  class Logging {
+
+    // proves: RC-OPS-OBS-001
+    @Test
+    void shouldKeepCustomerIdOutOfLogsWhenRequestFails(CapturedOutput output) throws Exception {
+      // Given
+      UpstreamStubs.standard(UPSTREAMS);
+      UPSTREAMS.stubFor(UpstreamStubs.serverError(UpstreamStubs.PRICING));
+
+      // When
+      requestStandard()
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.pricing.status").value("UNAVAILABLE"));
+
+      // Then — the failure and the summary are logged, the customer id is not
+      assertThat(output.getAll())
+          .contains(
+              "upstream_call_failed source=pricing",
+              "product_aggregated productId=W6103 market=pl-PL customer=present outcome=DEGRADED")
+          .doesNotContain("C-1002");
     }
   }
 }
