@@ -1,6 +1,8 @@
 package com.kramp.aggregator.config;
 
+import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
 import java.net.URI;
+import java.time.Clock;
 import java.time.Duration;
 import java.util.Currency;
 import java.util.List;
@@ -87,6 +89,11 @@ public record AggregatorProperties(
       require(
           permittedCallsInHalfOpenState > 0,
           "aggregator.circuit-breaker.permitted-calls-in-half-open-state must be positive");
+    }
+
+    /** The clock drives the open-state wait, so tests can advance it instead of sleeping. */
+    public CircuitBreakerConfig toCircuitBreakerConfig(Clock clock) {
+      throw new UnsupportedOperationException("not implemented");
     }
   }
 

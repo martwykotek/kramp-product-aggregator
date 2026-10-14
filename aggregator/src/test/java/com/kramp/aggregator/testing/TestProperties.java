@@ -3,6 +3,8 @@ package com.kramp.aggregator.testing;
 import com.kramp.aggregator.config.AggregatorProperties;
 import com.kramp.aggregator.market.Market;
 import com.kramp.aggregator.market.MarketRegistry;
+import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
+import java.time.Clock;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -67,6 +69,10 @@ public final class TestProperties {
 
   public static AggregatorProperties.CircuitBreakerSettings breakerSettings() {
     return valid(BASE_URL).circuitBreaker();
+  }
+
+  public static CircuitBreakerConfig breakerConfig(Clock clock) {
+    return breakerSettings().toCircuitBreakerConfig(clock);
   }
 
   private static void source(
