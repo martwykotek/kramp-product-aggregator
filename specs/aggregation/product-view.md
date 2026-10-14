@@ -28,7 +28,7 @@ None in this leaf.
 | REQ-AGG-VIEW-004 | automated | AT-VIEW-04 · ProductAggregationServiceTest#shouldCallSourcesConcurrentlyWhenAllApplicable | ✅ |
 | REQ-AGG-VIEW-005 | automated | AT-VIEW-05 · ProductRestApiIT#shouldSkipCustomerWhenHeaderMissing, ProductAggregationServiceTest#shouldNotInvokeSourceWhenNotApplicable | ✅ |
 | REQ-AGG-VIEW-006 | automated | AT-VIEW-06 · ProductViewAssemblerTest#shouldFlagPreferredBrandWhenBrandMatches | ✅ |
-| REQ-AGG-VIEW-007 | automated | AT-VIEW-07 · ExtensibilityIT#shouldAggregateNewSourceWhenRegisteredAsBean | ❌ no evidence — GAP |
+| REQ-AGG-VIEW-007 | automated | AT-VIEW-07 · ExtensibilityIT#shouldAggregateNewSourceWhenRegisteredAsBean | ✅ |
 
 ## Where the code lives
 `aggregator/src/main/java/com/kramp/aggregator/aggregation/`, `…/presentation/ProductViewAssembler.java`.
