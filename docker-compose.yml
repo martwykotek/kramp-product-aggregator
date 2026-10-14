@@ -1,0 +1,24 @@
+services:
+  upstream-mocks:
+    build:
+      context: .
+      dockerfile: upstream-mocks/Dockerfile
+    ports:
+      - "8081:8081"
+    environment:
+      # Passed through only when set in the shell; without it the mocks log the fresh seed they use.
+      - MOCKS_SEED
+
+  aggregator:
+    build:
+      context: .
+      dockerfile: aggregator/Dockerfile
+    ports:
+      - "8080:8080"
+      - "9090:9090"
+    environment:
+      - UPSTREAM_BASE_URL=http://upstream-mocks:8081
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      upstream-mocks:
+        condition: service_healthy
