@@ -130,7 +130,7 @@ Filled when implementation is complete: `| ID | Proof (by marker) | Evidence (CI
 ## Validation
 Run against `docker compose up --build`; requests in `docs/verification/aggregator.http` or `scripts/demo.sh`.
 
-### Environment and preconditions Environment and preconditions
+### Environment and preconditions
 
 1. Docker Desktop running; repo root; `docker compose up --build -d`; wait until `docker compose ps` shows both services `healthy`.
 2. Tools: `curl`, `jq`, `grpcurl` (`brew install grpcurl`), a browser.
@@ -144,7 +144,7 @@ Run against `docker compose up --build`; requests in `docs/verification/aggregat
 
 Base command used below: `P='localhost:8080/api/v1/products'`.
 
-### Test cases Test cases
+### Test cases
 
 | Test Scope | Steps | Expected Outcome | Passed |
 |---|---|---|---|
