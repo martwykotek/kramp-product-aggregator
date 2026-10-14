@@ -33,7 +33,7 @@ Owns: REQ-AGG-RES-*, RC-AGG-RES-*
 | global deadline | — | 500 ms | safety net |
 
 - A budget covers all attempts of one call. Each attempt is bounded by the HTTP read timeout (= budget) and by the orchestrator, which waits budget + 25 ms grace (never past the global deadline) so the client's own timeout fires first and is recorded by the breaker.
-- Retry: at most one, only after a fast failure (5xx, connection refused or reset) and only while the remaining budget is at least the source's typical latency. Never after a timeout, a not-found answer or an unusable body.
+- Retry: at most one, only after a fast failure (a 5xx answer) and only while the remaining budget is at least the source's typical latency. Never after a timeout, a not-found answer or an unusable body. A connection refused or reset before any answer is resent once by the JDK HTTP client itself, so the aggregator does not retry it again: every failure costs at most two upstream calls (decision I-33).
 - Circuit breaker per source: count-based window 20, minimum 10 calls, failure-rate threshold 50%, open 10 s, 3 half-open trial calls; the state is decided after the third trial (two or more failures re-open it). Every attempt, retries included, counts.
 - Calls the aggregator cancels (the request was already decided) release their breaker permission and are not recorded.
 
@@ -51,26 +51,26 @@ Owns: REQ-AGG-RES-*, RC-AGG-RES-*
 ## How it's proven
 | ID | Resolved by | Proof | Status |
 |----|-------------|-------|--------|
-| REQ-AGG-RES-001 | automated | AT-RES-01 · ProductRestApiIT#shouldReturn503WhenCatalogFails | ❌ no evidence — GAP |
-| REQ-AGG-RES-002 | automated | AT-RES-02 · ProductRestApiIT#shouldReturn504WhenCatalogTooSlow | ❌ no evidence — GAP |
-| REQ-AGG-RES-003 | automated | AT-RES-03 · ProductRestApiIT#shouldReturn404WhenProductUnknown | ❌ no evidence — GAP |
+| REQ-AGG-RES-001 | automated | AT-RES-01 · ProductRestApiIT#shouldReturn503WhenCatalogFails | ✅ |
+| REQ-AGG-RES-002 | automated | AT-RES-02 · ProductRestApiIT#shouldReturn504WhenCatalogTooSlow | ✅ |
+| REQ-AGG-RES-003 | automated | AT-RES-03 · ProductRestApiIT#shouldReturn404WhenProductUnknown | ✅ |
 | REQ-AGG-RES-004 | automated | AT-RES-04 · ProductAggregationServiceTest#shouldFailFastWhenRequiredSourceFails | ✅ |
-| REQ-AGG-RES-005 | automated | AT-RES-05 · ProductRestApiIT#shouldShowProductWithUnavailablePriceWhenPricingFails | ❌ no evidence — GAP |
-| REQ-AGG-RES-006 | automated | AT-RES-06 · ProductRestApiIT#shouldShowUnknownStockWhenAvailabilityFails | ❌ no evidence — GAP |
-| REQ-AGG-RES-007 | automated | AT-RES-07 · ProductRestApiIT#shouldFallBackToStandardWhenCustomerFails | ❌ no evidence — GAP |
+| REQ-AGG-RES-005 | automated | AT-RES-05 · ProductRestApiIT#shouldShowProductWithUnavailablePriceWhenPricingFails | ✅ |
+| REQ-AGG-RES-006 | automated | AT-RES-06 · ProductRestApiIT#shouldShowUnknownStockWhenAvailabilityFails | ✅ |
+| REQ-AGG-RES-007 | automated | AT-RES-07 · ProductRestApiIT#shouldFallBackToStandardWhenCustomerFails | ✅ |
 | REQ-AGG-RES-008 | automated | AT-RES-08 · ProductAggregationServiceTest#shouldMarkDegradedWhenAnyCalledOptionalSourceFails | ✅ |
-| REQ-AGG-RES-009 | automated | AT-RES-09 · ProductAggregationServiceTest#shouldNotMarkDegradedWhenOptionalSourceReportsNotFound, ProductRestApiIT#shouldTreatUnknownCustomerAsStandardWhenCustomerNotFound | ❌ no evidence — GAP |
+| REQ-AGG-RES-009 | automated | AT-RES-09 · ProductAggregationServiceTest#shouldNotMarkDegradedWhenOptionalSourceReportsNotFound, ProductRestApiIT#shouldTreatUnknownCustomerAsStandardWhenCustomerNotFound | ✅ |
 | REQ-AGG-RES-010 | automated | AT-RES-10 · UpstreamTimeoutsTest#shouldEndCallWithinBudgetWhenUpstreamHangs | ✅ |
 | REQ-AGG-RES-011 | automated | AT-RES-11 · ProductAggregationServiceTest#shouldFinishWithinGlobalDeadlineWhenAllSourcesHang | ✅ |
 | REQ-AGG-RES-012 | automated | AT-RES-12 · GuardedSourceTest#shouldRetryOnceWhenFastFailureLeavesBudget, #shouldNotRetryWhenRemainingBudgetBelowTypicalLatency | ✅ |
 | REQ-AGG-RES-013 | automated | AT-RES-13 · GuardedSourceTest#shouldNotRetryWhenTimeoutOrNotFound | ✅ |
 | REQ-AGG-RES-014 | automated | AT-RES-14 · GuardedSourceTest#shouldOpenCircuitWhenHalfOfLastTwentyCallsFail; AT-RES-14b · ProductRestApiIT#shouldOpenPricingCircuitWhenPricingKeepsTimingOut | ✅ |
-| REQ-AGG-RES-015 | automated | AT-RES-15 · ProductRestApiIT#shouldShortCircuitPricingWhenCircuitOpen | ❌ no evidence — GAP |
+| REQ-AGG-RES-015 | automated | AT-RES-15 · ProductRestApiIT#shouldShortCircuitPricingWhenCircuitOpen | ✅ |
 | REQ-AGG-RES-016 | automated | AT-RES-16 · GuardedSourceTest#shouldResumeAfterOpenPeriodWhenTrialCallsSucceed, #shouldReopenWhenTrialCallsFail | ✅ |
 | REQ-AGG-RES-017 | automated | AT-RES-17 · GuardedSourceTest#shouldIgnoreNotFoundWhenCountingFailures | ✅ |
 | REQ-AGG-RES-018 | automated | AT-RES-18 · AggregatorPropertiesTest#shouldRefuseToStartWhenBudgetsInvalid | ✅ |
 | REQ-AGG-RES-019 | automated | AT-ROB-03 · CatalogSourceTest#shouldFailAsUnavailableWhenBodyIsEmpty, PricingSourceTest#shouldFailAsUnavailableWhenRequiredFieldMissing | ✅ |
-| RC-AGG-RES-001 | automated | AT-RES-RC1 · ProductRestApiIT#shouldKeepDiscountWhenCustomerFails | ❌ no evidence — GAP |
+| RC-AGG-RES-001 | automated | AT-RES-RC1 · ProductRestApiIT#shouldKeepDiscountWhenCustomerFails | ✅ |
 | RC-AGG-RES-002 | automated | AT-ROB-06 · GuardedSourceTest#shouldNotCountCancellationWhenRequestAlreadyFailed; AT-RES-14b | ✅ |
 
 ## Where the code lives

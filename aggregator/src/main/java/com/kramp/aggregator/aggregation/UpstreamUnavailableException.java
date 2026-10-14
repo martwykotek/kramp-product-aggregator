@@ -10,7 +10,7 @@ public final class UpstreamUnavailableException extends UpstreamException {
     this.retryable = retryable;
   }
 
-  /** True for fast failures that a second attempt may cure (5xx, refused or reset connection). */
+  /** True for fast failures that a second attempt may cure: an upstream that answered 5xx. */
   public boolean retryable() {
     return retryable;
   }

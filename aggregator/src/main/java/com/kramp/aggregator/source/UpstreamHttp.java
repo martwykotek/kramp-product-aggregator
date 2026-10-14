@@ -3,6 +3,7 @@ package com.kramp.aggregator.source;
 import com.kramp.aggregator.aggregation.UpstreamException;
 import com.kramp.aggregator.aggregation.UpstreamTimeoutException;
 import com.kramp.aggregator.aggregation.UpstreamUnavailableException;
+import com.kramp.aggregator.observability.CorrelationId;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,7 +13,9 @@ import java.net.http.HttpTimeoutException;
 import java.time.Duration;
 import java.util.function.Supplier;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.http.client.JdkClientHttpRequestFactory;
@@ -43,6 +46,7 @@ public final class UpstreamHttp {
         .clone()
         .baseUrl(baseUrl.toString())
         .requestFactory(factory)
+        .requestInterceptor(UpstreamHttp::forwardCorrelationId)
         .requestInterceptor(bodyWithin(timeout))
         .build();
   }
@@ -64,7 +68,9 @@ public final class UpstreamHttp {
       if (causedBy(e, HttpTimeoutException.class)) {
         throw new UpstreamTimeoutException(source, source + " did not answer within its budget");
       }
-      throw new UpstreamUnavailableException(source, source + " connection failed", true);
+      // Not ours to retry: the JDK client already resent the GET once when the connection
+      // failed before any answer, so a second attempt here would make it four calls.
+      throw new UpstreamUnavailableException(source, source + " connection failed", false);
     } catch (RestClientException e) {
       throw new UpstreamUnavailableException(source, source + " sent an unreadable body", false);
     }
@@ -77,6 +83,15 @@ public final class UpstreamHttp {
   /** The answer was readable but breaks the upstream's contract. */
   public static UpstreamUnavailableException invalidBody(String source) {
     return new UpstreamUnavailableException(source, source + " sent an invalid body", false);
+  }
+
+  private static ClientHttpResponse forwardCorrelationId(
+      HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
+    String correlationId = CorrelationId.current();
+    if (correlationId != null) {
+      request.getHeaders().set(CorrelationId.HEADER, correlationId);
+    }
+    return execution.execute(request, body);
   }
 
   /**

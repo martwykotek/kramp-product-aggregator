@@ -215,18 +215,19 @@ class CatalogSourceTest {
     }
 
     @Test
-    void shouldTranslateConnectionResetAsRetryableFailure() {
+    void shouldNotRetryConnectionResetWhenClientAlreadyResent() {
       // Given
       upstream.stubFor(UpstreamStubs.connectionReset(UpstreamStubs.CATALOG));
 
       // When
       Throwable thrown = catchThrowable(() -> source().fetch(request("W6103", "pl-PL")));
 
-      // Then
+      // Then — the JDK client resends a GET once when the connection drops before any answer
       assertThat(thrown)
           .isInstanceOfSatisfying(
               UpstreamUnavailableException.class,
-              unavailable -> assertThat(unavailable.retryable()).isTrue());
+              unavailable -> assertThat(unavailable.retryable()).isFalse());
+      upstream.verify(2, getRequestedFor(urlPathMatching(UpstreamStubs.CATALOG)));
     }
   }
 }

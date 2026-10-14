@@ -8,6 +8,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
 
 import com.github.tomakehurst.wiremock.client.MappingBuilder;
 import com.github.tomakehurst.wiremock.http.Fault;
+import com.github.tomakehurst.wiremock.junit.Stubbing;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
@@ -26,6 +27,14 @@ public final class UpstreamStubs {
 
   private UpstreamStubs() {}
 
+  /** All four upstreams answer for W6103 · pl-PL · C-1002 (test specification 3.2). */
+  public static void standard(Stubbing upstreams) {
+    upstreams.stubFor(catalogOk("W6103", "pl"));
+    upstreams.stubFor(pricingOk("PLN", 64.90, 12, 57.11));
+    upstreams.stubFor(availabilityOk(42, "PL-MOD", "Modła Królewska", "PL", "2026-10-15"));
+    upstreams.stubFor(customerOk("C-1002", "WORKSHOP", List.of("MANN-FILTER", "SKF")));
+  }
+
   /** W6103 content; `id` and `lang` name the product and the language the catalog served. */
   public static MappingBuilder catalogOk(String id, String lang) {
     return get(urlPathEqualTo("/catalog/products/" + id)).willReturn(okJson(catalogBody(id, lang)));
@@ -43,6 +52,24 @@ public final class UpstreamStubs {
         "url":"https://www.kramp.com/shop-pl/pl/p/filtr-oleju-mann-hummel--W6103",\
         "language":"%s"}"""
         .formatted(id, lang);
+  }
+
+  /** The product has no content in the requested language, so the catalog served English. */
+  public static MappingBuilder catalogFallbackEn(String id) {
+    return get(urlPathEqualTo("/catalog/products/" + id))
+        .willReturn(
+            okJson(
+                """
+                {"id":"%s","brand":"Kramp","ean":"8719493244960","salesUnit":"EA",\
+                "name":"Seat top black PVC",\
+                "description":"Kramp unsprung seat top in black PVC (no suspension, no seatbelt \
+                or contact switch).",\
+                "category":"Forklift seats",\
+                "specs":[{"label":"Upholstery","value":"black PVC"}],\
+                "images":["https://images.kramp.com/images/17/a1/ts19110gp.jpg"],\
+                "url":"https://www.kramp.com/shop-gb/en/p/seat-top-black-pvc--TS19100KR",\
+                "language":"en"}"""
+                    .formatted(id)));
   }
 
   /** `PRODUCT_NOT_FOUND` or `NOT_IN_ASSORTMENT`, in the catalog's error shape. */

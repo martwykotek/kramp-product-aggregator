@@ -22,8 +22,8 @@ Owns: REQ-OPS-OBS-*, RC-OPS-OBS-*
 ## How it's proven
 | ID | Resolved by | Proof | Status |
 |----|-------------|-------|--------|
-| REQ-OPS-OBS-001 | automated | AT-OBS-01 · CorrelationIdFilterTest#shouldEchoWhenHeaderValid, #shouldGenerateWhenHeaderMissingOrInvalid | ❌ no evidence — GAP |
-| REQ-OPS-OBS-002 | automated | AT-OBS-02 · ProductRestApiIT#shouldForwardCorrelationIdWhenCallingUpstreams | ❌ no evidence — GAP |
+| REQ-OPS-OBS-001 | automated | AT-OBS-01 · CorrelationIdFilterTest#shouldEchoWhenHeaderValid, #shouldGenerateWhenHeaderMissingOrInvalid | ✅ |
+| REQ-OPS-OBS-002 | automated | AT-OBS-02 · ProductRestApiIT#shouldForwardCorrelationIdWhenCallingUpstreams | ✅ |
 | REQ-OPS-OBS-003 | automated | AT-OBS-03 · AggregationTelemetryTest#shouldLogOneSummaryLineWhenAggregationCompletes | ❌ no evidence — GAP |
 | REQ-OPS-OBS-004 | automated | AT-OBS-04 · AggregationTelemetryTest#shouldRecordMetricsWhenAggregationCompletes, ActuatorIT#shouldExposeAggregationMetricsWhenScraped | ❌ no evidence — GAP |
 | REQ-OPS-OBS-005 | automated | AT-OBS-05 · ActuatorIT#shouldStayReadyWhenUpstreamsFail | ❌ no evidence — GAP |

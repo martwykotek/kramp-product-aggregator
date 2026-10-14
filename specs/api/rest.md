@@ -22,14 +22,14 @@ Owns: REQ-API-REST-*, RC-API-REST-*
 ## How it's proven
 | ID | Resolved by | Proof | Status |
 |----|-------------|-------|--------|
-| REQ-API-REST-001 | automated | AT-VIEW-01 · ProductRestApiIT#shouldReturnAggregatedViewWhenAllUpstreamsAnswer | ❌ no evidence — GAP |
-| REQ-API-REST-002 | automated | AT-REST-02 · ProductRestApiIT#shouldPersonalizeWhenCustomerHeaderPresent | ❌ no evidence — GAP |
-| REQ-API-REST-003 | automated | AT-REST-03 · ProductRestApiIT#shouldRenderProblemJsonWhenRequestFails | ❌ no evidence — GAP |
-| REQ-API-REST-004 | automated | AT-REST-04 · ProductRestApiIT#shouldReturn400WhenProductIdMalformed | ❌ no evidence — GAP |
-| REQ-API-REST-005 | automated | AT-REST-05 · ProductRestApiIT#shouldAdviseRetryAfterWhenCatalogCircuitOpen | ❌ no evidence — GAP |
-| REQ-API-REST-006 | automated | AT-REST-06 · ProductRestApiIT#shouldPublishOpenApiWhenRequested | ❌ no evidence — GAP |
+| REQ-API-REST-001 | automated | AT-VIEW-01 · ProductRestApiIT#shouldReturnAggregatedViewWhenAllUpstreamsAnswer | ✅ |
+| REQ-API-REST-002 | automated | AT-REST-02 · ProductRestApiIT#shouldPersonalizeWhenCustomerHeaderPresent | ✅ |
+| REQ-API-REST-003 | automated | AT-REST-03 · ProductRestApiIT#shouldRenderProblemJsonWhenRequestFails | ✅ |
+| REQ-API-REST-004 | automated | AT-REST-04 · ProductRestApiIT#shouldReturn400WhenProductIdMalformed | ✅ |
+| REQ-API-REST-005 | automated | AT-REST-05 · ProductRestApiIT#shouldAdviseRetryAfterWhenCatalogCircuitOpen | ✅ |
+| REQ-API-REST-006 | automated | AT-REST-06 · ProductRestApiIT#shouldPublishOpenApiWhenRequested | ✅ |
 | REQ-API-REST-007 | automated | AT-ROB-02 · ProductViewServiceTest#shouldRejectWhenCustomerIdIsMalformed | ✅ |
-| RC-API-REST-001 | automated | AT-REST-RC1 · ProductRestApiIT#shouldNeverEchoUpstreamDetailsWhenUpstreamFails | ❌ no evidence — GAP |
+| RC-API-REST-001 | automated | AT-REST-RC1 · ProductRestApiIT#shouldNeverEchoUpstreamDetailsWhenUpstreamFails | ✅ |
 
 ## Where the code lives
 `aggregator/src/main/java/com/kramp/aggregator/api/rest/`, `…/presentation/ProductViewService.java`.
