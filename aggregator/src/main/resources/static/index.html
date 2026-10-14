@@ -1,0 +1,923 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KRAMP product aggregator demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&display=swap">
+<style>
+  :root {
+    --red: #9B1915;
+    --red-dark: #70130F;
+    --amber: #FF9E00;
+    --paper: #F5F7FA;
+    --ink: #121E31;
+    --steel: #6E7587;
+    --ok: #2C8500;
+    --info: #006BC2;
+    --line: #DCE1E8;
+    --white: #FFFFFF;
+    --body: "Barlow", "Barlow Fallback", "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
+    --display: "Barlow Condensed", "Barlow Condensed Fallback", "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font: 400 16px/1.5 var(--body);
+    font-variant-numeric: tabular-nums;
+  }
+  h1, h2, h3 { font-family: var(--display); font-weight: 700; line-height: 1.1; margin: 0; }
+  h2 { font-size: 1.6rem; }
+  p { margin: 0; }
+  a { color: var(--info); }
+  button, select, input { font: inherit; color: inherit; }
+  :focus-visible { outline: 3px solid var(--amber); outline-offset: 2px; }
+
+  /* Header: the Kramp red bar with a text wordmark (no logo file). */
+  .masthead { background: var(--red); color: var(--white); }
+  .masthead-inner {
+    max-width: 1280px; margin: 0 auto; padding: 14px 24px;
+    display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap;
+  }
+  .wordmark { font: 700 2.1rem/1 var(--display); letter-spacing: 0.04em; }
+  .tagline { font: 500 1.15rem/1 var(--display); opacity: 0.92; }
+  .masthead-note { margin-left: auto; font-size: 0.95rem; opacity: 0.92; }
+
+  .request-bar { background: var(--white); border-bottom: 1px solid var(--line); }
+  .request-bar form {
+    max-width: 1280px; margin: 0 auto; padding: 12px 24px;
+    display: flex; gap: 16px; flex-wrap: wrap; align-items: end;
+  }
+  .field { display: grid; gap: 4px; font-size: 0.9rem; color: var(--steel); }
+  .field select {
+    min-width: 12rem; padding: 8px 10px; border: 1px solid var(--line); border-radius: 4px;
+    background: var(--white); color: var(--ink); font-size: 1rem;
+  }
+
+  .button {
+    border: 0; border-radius: 4px; padding: 9px 16px; cursor: pointer;
+    font: 600 1.05rem/1.2 var(--display); letter-spacing: 0.01em;
+  }
+  .button-primary { background: var(--red); color: var(--white); }
+  .button-primary:hover { background: var(--red-dark); }
+  .button-secondary { background: var(--amber); color: #000000; }
+  .button-secondary:hover { filter: brightness(0.95); }
+  .button-quiet { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+  .button:disabled, select:disabled, input:disabled { opacity: 0.45; cursor: not-allowed; }
+
+  main { max-width: 1280px; margin: 0 auto; padding: 24px; display: grid; gap: 24px; }
+  .panel { background: var(--white); border: 1px solid var(--line); border-radius: 6px; padding: 20px; min-width: 0; }
+  .panel-head { display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap; margin-bottom: 14px; }
+  .panel-head p { color: var(--steel); font-size: 0.95rem; }
+  .stage { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+
+  /* Product card */
+  .product { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 24px; }
+  .product-image {
+    width: 220px; height: 220px; border: 1px solid var(--line); border-radius: 4px;
+    display: grid; place-items: center; background: var(--white); overflow: hidden;
+  }
+  .product-image img { max-width: 100%; max-height: 100%; object-fit: contain; }
+  .image-placeholder { color: var(--steel); font-size: 0.9rem; text-align: center; padding: 12px; }
+  .brand { color: var(--steel); font-weight: 600; }
+  .product-name { font-size: 2rem; margin: 2px 0 6px; }
+  .product-meta { color: var(--steel); font-size: 0.95rem; }
+  .facts { display: grid; gap: 14px; margin-top: 18px; }
+  .fact { border-left: 4px solid var(--line); padding-left: 12px; }
+  .fact[data-tone="ok"] { border-color: var(--ok); }
+  .fact[data-tone="warn"] { border-color: var(--amber); }
+  .fact[data-tone="bad"] { border-color: var(--red); }
+  .fact-from { font-size: 0.85rem; color: var(--steel); }
+  .price { font: 700 2.4rem/1 var(--display); }
+  .price-was { color: var(--steel); text-decoration: line-through; margin-left: 10px; font-size: 1.1rem; }
+  .discount { background: var(--amber); color: #000000; border-radius: 3px; padding: 1px 6px; font-weight: 600; margin-left: 8px; }
+  .fact-label { font-weight: 600; font-size: 1.1rem; }
+  .badges { display: flex; gap: 8px; flex-wrap: wrap; }
+  .badge { border-radius: 999px; padding: 2px 10px; font-size: 0.9rem; font-weight: 600; border: 1px solid var(--line); }
+  .badge-segment { background: var(--ink); color: var(--white); border-color: var(--ink); }
+  .badge-preferred { background: var(--amber); color: #000000; border-color: var(--amber); }
+  .specs { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 16px; margin: 20px 0 0; font-size: 0.95rem; }
+  .specs dt { color: var(--steel); }
+  .specs dd { margin: 0; }
+  .problem-status { font: 700 3rem/1 var(--display); color: var(--red); }
+  .problem-code { font: 700 1.4rem/1.2 var(--display); margin-top: 6px; }
+  .problem dl { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 16px; margin: 14px 0 0; }
+  .problem dt { color: var(--steel); }
+  .problem dd { margin: 0; overflow-wrap: anywhere; }
+
+  /* Timeline: every source starts at zero, which is what "called in parallel" looks like. */
+  .timeline { display: grid; gap: 12px; }
+  .lane { display: grid; grid-template-columns: 6.5rem minmax(0, 1fr); gap: 4px 12px; align-items: center; }
+  .lane-name { font: 600 1.1rem/1 var(--display); }
+  .lane-total .lane-name { color: var(--steel); }
+  .track { position: relative; height: 22px; background: var(--paper); border-radius: 3px; overflow: hidden; }
+  .bar { position: absolute; inset: 0 auto 0 0; width: 0; border-radius: 3px; background: var(--steel); transition: width 240ms ease-out; }
+  .bar[data-status="OK"] { background: var(--ok); }
+  .bar[data-status="TIMEOUT"] { background: var(--amber); }
+  .bar[data-status="ERROR"] { background: var(--red); }
+  .bar[data-status="CIRCUIT_OPEN"] { background: var(--red-dark); }
+  .bar[data-status="NOT_FOUND"] { background: var(--info); }
+  .bar[data-status="TOTAL"] { background: var(--ink); }
+  .lane-detail { grid-column: 2; display: flex; justify-content: space-between; gap: 8px; font-size: 0.92rem; }
+  .lane-status { font-weight: 600; }
+  .circuit { border-radius: 999px; padding: 0 8px; font-size: 0.82rem; font-weight: 600; border: 1px solid var(--line); color: var(--steel); white-space: nowrap; }
+  .circuit[data-state="OPEN"] { background: var(--red); border-color: var(--red); color: var(--white); }
+  .circuit[data-state="HALF_OPEN"] { background: var(--amber); border-color: var(--amber); color: #000000; }
+  .scale { display: flex; justify-content: space-between; color: var(--steel); font-size: 0.8rem; margin-left: calc(6.5rem + 12px); }
+  .outcome { display: grid; gap: 6px; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line); font-size: 0.95rem; }
+  .outcome strong { font-family: var(--display); font-size: 1.15rem; }
+  .outcome [data-degraded="true"] { color: var(--red); }
+  .muted { color: var(--steel); }
+  .id { overflow-wrap: anywhere; }
+
+  /* Chaos panel */
+  .chaos-rows { display: grid; gap: 10px; }
+  .chaos-row { display: grid; grid-template-columns: 7rem minmax(0, 1fr); gap: 8px 12px; align-items: center; }
+  .modes { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .mode { border: 1px solid var(--line); background: var(--white); border-radius: 4px; padding: 5px 12px; cursor: pointer; font-weight: 500; }
+  .mode[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--white); }
+  .mode[aria-pressed="true"][data-mode="HEALTHY"] { background: var(--ok); border-color: var(--ok); }
+  .mode-setting { display: inline-flex; gap: 6px; align-items: center; margin-left: 6px; color: var(--steel); font-size: 0.92rem; }
+  .mode-setting input { width: 5rem; padding: 4px 8px; border: 1px solid var(--line); border-radius: 4px; }
+  .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+  .notice { margin-top: 12px; padding: 10px 12px; border-left: 4px solid var(--red); background: var(--paper); }
+  .status-line { min-height: 1.5em; margin-top: 12px; color: var(--steel); }
+  .status-line[data-tone="bad"] { color: var(--red); font-weight: 600; }
+
+  /* Responses table, shared by "Fire 20 requests" and the scenarios */
+  .rows-wrap { overflow-x: auto; margin-top: 14px; border: 1px solid var(--line); border-radius: 4px; }
+  .rows-wrap:empty { display: none; }
+  table.rows { border-collapse: collapse; width: 100%; font-size: 0.88rem; }
+  .rows th, .rows td { text-align: left; vertical-align: top; padding: 6px 10px; border-bottom: 1px solid var(--line); }
+  .rows th { background: var(--paper); font-weight: 600; white-space: nowrap; position: sticky; top: 0; }
+  .rows td { white-space: nowrap; }
+  .rows td.wrap { white-space: normal; min-width: 12rem; max-width: 18rem; }
+  .rows td.correlation { font-size: 0.8rem; }
+  .rows .sub { display: block; color: var(--steel); }
+  .rows .separator td { background: var(--paper); font-weight: 600; }
+  .s-OK, .s-AVAILABLE, .s-IN_STOCK, .s-PERSONALIZED { color: var(--ok); }
+  .s-TIMEOUT, .s-UNKNOWN, .s-UNAVAILABLE, .s-OUT_OF_STOCK { color: #A15C00; }
+  .s-ERROR, .s-CIRCUIT_OPEN, .s-http-error { color: var(--red); font-weight: 600; }
+
+  /* Scenarios */
+  .scenarios { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .scenario-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+  .scenario-button {
+    text-align: left; display: flex; gap: 8px; align-items: baseline;
+    padding: 6px 12px; border: 1px solid var(--line); border-radius: 4px; background: var(--white); cursor: pointer;
+  }
+  .scenario-button:hover:not(:disabled) { border-color: var(--red); }
+  .scenario-button[aria-current="true"] { border-color: var(--red); box-shadow: inset 4px 0 0 var(--red); }
+  .scenario-id { font: 700 1.05rem/1.3 var(--display); color: var(--red); }
+  .scenario-detail h3 { font-size: 1.5rem; }
+  .scenario-facts { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 6px 16px; margin: 12px 0 0; }
+  .scenario-facts dt { color: var(--steel); }
+  .scenario-facts dd { margin: 0; }
+  .expected { background: var(--paper); border-left: 4px solid var(--ink); padding: 10px 12px; }
+
+  footer { max-width: 1280px; margin: 0 auto; padding: 8px 24px 32px; color: var(--steel); font-size: 0.95rem; }
+
+  @media (max-width: 960px) {
+    .stage { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .masthead-inner, .request-bar form, main, footer { padding-left: 16px; padding-right: 16px; }
+    .product { grid-template-columns: minmax(0, 1fr); }
+    .product-image { width: 100%; }
+    .field, .field select { width: 100%; min-width: 0; }
+    .masthead-note { margin-left: 0; }
+    .chaos-row { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .bar { transition: none; }
+  }
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="masthead-inner">
+    <span class="wordmark">KRAMP</span>
+    <span class="tagline">It's that easy</span>
+    <span class="masthead-note">Product information aggregator, running locally</span>
+  </div>
+</header>
+
+<div class="request-bar">
+  <form id="request-form">
+    <label class="field">Product <select id="product"></select></label>
+    <label class="field">Market <select id="market"></select></label>
+    <label class="field">Customer <select id="customer"></select></label>
+    <button class="button button-primary" type="submit">Send request</button>
+  </form>
+</div>
+
+<main>
+  <div class="stage">
+    <section class="panel" aria-label="Product">
+      <div id="product-view" aria-live="polite"><p class="muted">Sending the first request…</p></div>
+    </section>
+
+    <section class="panel" aria-labelledby="timeline-title">
+      <div class="panel-head">
+        <h2 id="timeline-title">How this answer was assembled</h2>
+        <p>All upstreams are called at once, so every bar starts at zero. Circuit states come from <code>/actuator/health</code>.</p>
+      </div>
+      <div id="timeline" class="timeline"></div>
+      <div id="outcome" class="outcome"></div>
+    </section>
+  </div>
+
+  <section class="panel" aria-labelledby="chaos-title">
+    <div class="panel-head">
+      <h2 id="chaos-title">Break the upstreams</h2>
+      <p>Switches the mocks on port 8081. A change applies to the next request.</p>
+    </div>
+    <div id="chaos-rows" class="chaos-rows"></div>
+    <div id="chaos-notice" class="notice" hidden></div>
+    <div class="actions">
+      <button id="fire" class="button button-secondary" type="button">Fire 20 requests</button>
+      <button id="reset" class="button button-quiet" type="button">Reset all mocks</button>
+    </div>
+    <p id="burst-status" class="status-line" aria-live="polite"></p>
+    <div id="burst-rows" class="rows-wrap"></div>
+  </section>
+
+  <section class="panel" aria-labelledby="scenarios-title">
+    <div class="panel-head">
+      <h2 id="scenarios-title">Validation scenarios — run against the local stack; results are judged by a person, not by this page.</h2>
+    </div>
+    <div class="scenarios">
+      <ul id="scenario-list" class="scenario-list"></ul>
+      <div id="scenario-detail" class="scenario-detail">
+        <p class="muted">Pick a scenario. Each run first puts every mock in deterministic mode, waits until every circuit is closed and sends 20 warm-up requests; afterwards it resets the mocks.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>Recruitment assignment demo. Product data from kramp.com; prices, stock and customers are fictitious.</footer>
+
+<script>
+"use strict";
+
+const API = "/api/v1/products";
+const HEALTH = "/actuator/health";
+// The mocks accept chaos requests from http://localhost:8080 only (CORS).
+const CHAOS = "http://localhost:8081/chaos";
+const SOURCES = ["catalog", "pricing", "availability", "customer"];
+
+const PRODUCTS = [
+  ["W6103", "MANN-FILTER"], ["SH62142", "HiFi Filter"], ["P551329", "Donaldson"], ["FFH121GASF", "Faster"],
+  ["10G1", "Gates"], ["W2100860", "Walterscheid"], ["180012130", "Comer"], ["62052RSC3SKF", "SKF"],
+  ["VB17800KR", "Kramp"], ["LA10830", "Kramp"], ["G1564033", "Grammer"], ["TS19100KR", "Kramp"],
+  ["RT0502", "Kramp"], ["10112PB", "Facom"], ["80213500WEKR", "Kramp"],
+];
+const MARKETS = [
+  ["nl-NL", "Netherlands"], ["nl-BE", "Belgium (Dutch)"], ["fr-BE", "Belgium (French)"], ["fr-FR", "France"],
+  ["de-DE", "Germany"], ["de-AT", "Austria"], ["pl-PL", "Poland"], ["en-GB", "United Kingdom"],
+];
+const CUSTOMERS = ["C-1001", "C-1002", "C-1003", "C-1004", "C-1005", "C-1006"];
+const MODES = [["HEALTHY", "Healthy"], ["SLOW", "Slow"], ["TIMEOUT", "Timeout"], ["DOWN", "Down"], ["FLAKY", "Flaky"]];
+const DETERMINISTIC = { mode: "FLAKY", reliability: 1.0 };
+
+const POLAND = { product: "W6103", market: "pl-PL", customer: "C-1002" };
+const POLAND_NO_CUSTOMER = { product: "W6103", market: "pl-PL", customer: "" };
+
+// Expected outcomes are copied word for word from the test specification §5.2 (addendum D-18).
+const SCENARIOS = [
+  { id: "TC-01", title: "Customer in Poland",
+    steps: [{ request: POLAND }],
+    expected: "200; language pl; \"Filtr oleju Mann & Hummel\"; PLN 64.90 − 12 % = 57.11, \"57,11 zł\"; IN_STOCK 42, Modła Królewska; delivery next working day (before 18:00 Warsaw) or the one after; PERSONALIZED / WORKSHOP / preferred brand; not degraded; four sources OK" },
+  { id: "TC-02", title: "No customer",
+    steps: [{ request: POLAND_NO_CUSTOMER }],
+    expected: "STANDARD; customer SKIPPED; discount 0, final 64.90; not degraded" },
+  { id: "TC-03", title: "Another market",
+    steps: [{ request: { product: "W6103", market: "de-AT", customer: "C-1002" } }],
+    expected: "language de; \"Ölfilter M+H\"; EUR 14.90, \"€ 14,90\"; Strullendorf; German labels" },
+  { id: "TC-04", title: "Language fallback",
+    steps: [{ request: { product: "TS19100KR", market: "nl-BE", customer: "" } }],
+    expected: "200; language en; \"Seat top black PVC\"; Dutch labels; EUR 54.30" },
+  { id: "TC-05", title: "Outside assortment",
+    steps: [{ request: { product: "10112PB", market: "pl-PL", customer: "" } }],
+    expected: "404 problem+json; PRODUCT_NOT_IN_MARKET; body correlationId = response header" },
+  { id: "TC-06", title: "Unknown product",
+    steps: [{ request: { product: "NOPE123", market: "pl-PL", customer: "" } }],
+    expected: "404 PRODUCT_NOT_FOUND" },
+  { id: "TC-07", title: "Unsupported market",
+    steps: [{ request: { product: "W6103", market: "xx-XX", customer: "" } },
+            { request: { product: "W6103", market: "PL_pl", customer: "" } }],
+    expected: "400 UNSUPPORTED_MARKET listing 8 markets; then 200 (normalised)" },
+  { id: "TC-08", title: "Pricing starts timing out",
+    steps: [{ chaos: { pricing: { mode: "TIMEOUT" } } }, { request: POLAND, times: 20 },
+            { recover: true }, { request: POLAND, times: 5 }],
+    expected: "1–10: pricing UNAVAILABLE, \"Cena chwilowo niedostępna\", source TIMEOUT, ≈ 300 ms; 11–20: CIRCUIT_OPEN, < 150 ms, product and stock still shown; after 11 s: first 3 are trials and OK, all 5 AVAILABLE" },
+  { id: "TC-09", title: "Availability down",
+    steps: [{ chaos: { availability: { mode: "DOWN" } } }, { request: POLAND }],
+    expected: "200; UNKNOWN, \"Stan magazynowy nieznany\"; degraded; price present" },
+  { id: "TC-10", title: "Customer down",
+    steps: [{ chaos: { customer: { mode: "DOWN" } } }, { request: POLAND }],
+    expected: "200; STANDARD; discount 12 and final 57.11 still present; degraded" },
+  { id: "TC-11a", title: "Catalog down",
+    steps: [{ chaos: { catalog: { mode: "DOWN" } } }, { request: POLAND, times: 7 }],
+    expected: "1–5: 503 CATALOG_UNAVAILABLE, Retry-After 1; 6–7: 503, Retry-After 10, < 50 ms" },
+  { id: "TC-11b", title: "Catalog slow",
+    steps: [{ chaos: { catalog: { mode: "TIMEOUT" } } }, { request: POLAND }],
+    expected: "504 CATALOG_TIMEOUT in ≈ 250 ms" },
+  { id: "TC-12", title: "All optional sources hang",
+    steps: [{ chaos: { pricing: { mode: "TIMEOUT" }, availability: { mode: "TIMEOUT" }, customer: { mode: "TIMEOUT" } } },
+            { request: POLAND }],
+    expected: "200 in < 500 ms (≈ 350 ms); product shown; UNAVAILABLE / UNKNOWN / STANDARD; degraded" },
+];
+
+const $ = (id) => document.getElementById(id);
+
+/** Builds an element; strings become text nodes, so upstream data is never parsed as HTML. */
+function h(tag, attrs, ...children) {
+  const el = document.createElement(tag);
+  for (const [key, value] of Object.entries(attrs || {})) {
+    if (value === null || value === undefined || value === false) continue;
+    if (key === "class") el.className = value;
+    else if (key.startsWith("on")) el.addEventListener(key.slice(2), value);
+    else el.setAttribute(key, value === true ? "" : String(value));
+  }
+  for (const child of children.flat(Infinity)) {
+    if (child === null || child === undefined || child === false) continue;
+    el.append(child instanceof Node ? child : document.createTextNode(String(child)));
+  }
+  return el;
+}
+
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+async function countdown(seconds, report) {
+  for (let left = seconds; left > 0; left--) {
+    report(left);
+    await sleep(1000);
+  }
+}
+
+// ---- calls ----
+
+async function requestProduct({ product, market, customer }) {
+  const headers = customer ? { "X-Customer-Id": customer } : {};
+  const url = `${API}/${encodeURIComponent(product)}?market=${encodeURIComponent(market)}`;
+  const started = performance.now();
+  const response = await fetch(url, { headers, cache: "no-store" });
+  const text = await response.text();
+  const ms = Math.round(performance.now() - started);
+  let body = null;
+  try { body = JSON.parse(text); } catch { body = null; }
+  return {
+    request: { product, market, customer }, status: response.status, ms, body,
+    contentType: response.headers.get("Content-Type"),
+    retryAfter: response.headers.get("Retry-After"),
+    correlationHeader: response.headers.get("X-Correlation-Id"),
+  };
+}
+
+async function readCircuits() {
+  try {
+    const response = await fetch(HEALTH, { cache: "no-store" });
+    const body = await response.json();
+    return body?.components?.upstreams?.details ?? null;
+  } catch {
+    return null;
+  }
+}
+
+class ChaosUnreachable extends Error {}
+
+async function chaosCall(path, init) {
+  let response;
+  try {
+    response = await fetch(CHAOS + path, init);
+  } catch {
+    throw new ChaosUnreachable(
+      "The Chaos API at http://localhost:8081 did not answer. Start the stack with docker compose up and open this page as http://localhost:8080; the mocks accept chaos requests from that address only.");
+  }
+  if (!response.ok) throw new Error(`The Chaos API answered ${response.status} to ${init?.method ?? "GET"} /chaos${path}.`);
+  return response.status === 204 ? null : response.json();
+}
+
+const chaosState = () => chaosCall("", {});
+const chaosSet = (source, setting) => chaosCall(`/${source}`, {
+  method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(setting),
+});
+const chaosReset = () => chaosCall("", { method: "DELETE" });
+
+// ---- product card ----
+
+function correlationOf(body) {
+  return body?.meta?.correlationId ?? body?.correlationId ?? null;
+}
+
+function renderProduct(result) {
+  const view = $("product-view");
+  const body = result.body;
+  if (result.status !== 200 || !body?.product) {
+    view.replaceChildren(renderProblem(result));
+    return;
+  }
+  const { product, pricing, availability, personalization } = body;
+  const image = product.images?.[0];
+  const imageBox = h("div", { class: "product-image" });
+  const placeholder = () => h("p", { class: "image-placeholder" }, "Image unavailable from images.kramp.com");
+  if (image) {
+    imageBox.append(h("img", {
+      src: image, alt: product.name, loading: "lazy",
+      onerror: () => imageBox.replaceChildren(placeholder()),
+    }));
+  } else {
+    imageBox.append(placeholder());
+  }
+
+  view.replaceChildren(h("article", { class: "product" },
+    imageBox,
+    h("div", {},
+      h("p", { class: "brand" }, product.brand),
+      h("h3", { class: "product-name", lang: body.language }, product.name),
+      h("p", { class: "product-meta" },
+        `${body.productId} in ${body.market}, content in ${body.language}`,
+        product.category ? `, ${product.category}` : "",
+        product.shopUrl ? [". ", h("a", { href: product.shopUrl, target: "_blank", rel: "noopener" }, "Open on kramp.com")] : ""),
+      h("div", { class: "facts" },
+        renderPricing(pricing), renderAvailability(availability), renderPersonalization(personalization)),
+      renderSpecs(product.specs))));
+}
+
+function renderPricing(pricing) {
+  if (pricing.status === "AVAILABLE") {
+    const discounted = pricing.discountPercent > 0;
+    return h("div", { class: "fact", "data-tone": "ok" },
+      h("span", { class: "price" }, pricing.formatted.finalPrice),
+      discounted ? h("span", { class: "price-was" }, pricing.formatted.basePrice) : null,
+      discounted ? h("span", { class: "discount" }, `−${pricing.discountPercent} %`) : null,
+      h("p", { class: "fact-from" }, `${pricing.priceType} price in ${pricing.currency}, from Pricing`));
+  }
+  return h("div", { class: "fact", "data-tone": "warn" },
+    h("p", { class: "fact-label" }, pricing.label),
+    h("p", { class: "fact-from" }, `Pricing: ${pricing.status}`));
+}
+
+function renderAvailability(availability) {
+  const tone = { IN_STOCK: "ok", OUT_OF_STOCK: "warn", UNKNOWN: "warn" }[availability.status] ?? "warn";
+  const where = availability.warehouse
+    ? `${availability.stockLevel} in stock at ${availability.warehouse.city} (${availability.warehouse.country}), from Availability`
+    : `Availability: ${availability.status}`;
+  return h("div", { class: "fact", "data-tone": tone },
+    h("p", { class: "fact-label" }, availability.label),
+    h("p", { class: "fact-from" }, where));
+}
+
+function renderPersonalization(personalization) {
+  if (personalization.status !== "PERSONALIZED") {
+    return h("div", { class: "fact" },
+      h("p", { class: "fact-label" }, "Standard prices"),
+      h("p", { class: "fact-from" }, `Personalization: ${personalization.status}`));
+  }
+  return h("div", { class: "fact", "data-tone": "ok" },
+    h("div", { class: "badges" },
+      h("span", { class: "badge badge-segment" }, personalization.segment),
+      personalization.preferredBrand ? h("span", { class: "badge badge-preferred" }, "Preferred brand") : null),
+    h("p", { class: "fact-from" }, "Personalization: PERSONALIZED, from Customer"));
+}
+
+function renderSpecs(specs) {
+  if (!specs?.length) return null;
+  return h("dl", { class: "specs" }, specs.map((spec) => [h("dt", {}, spec.label), h("dd", {}, spec.value)]));
+}
+
+function renderProblem(result) {
+  const body = result.body ?? {};
+  const rows = [
+    ["Detail", body.detail],
+    ["Supported markets", body.supportedMarkets?.join(", ")],
+    ["Retry-After", result.retryAfter ? `${result.retryAfter} s` : null],
+    ["Content-Type", result.contentType],
+    ["Correlation id (body)", body.correlationId],
+    ["Correlation id (header)", result.correlationHeader],
+  ].filter(([, value]) => value);
+  return h("div", { class: "problem" },
+    h("p", { class: "problem-status" }, result.status),
+    h("p", { class: "problem-code" }, body.code ?? body.title ?? "No problem details in the response"),
+    h("dl", {}, rows.map(([label, value]) => [h("dt", {}, label), h("dd", { class: "id" }, value)])));
+}
+
+// ---- timeline and circuit states ----
+
+let lastResult = null;
+let lastCircuits = null;
+
+function renderTimeline() {
+  const result = lastResult;
+  const reported = result?.body?.meta?.sources ?? {};
+  const names = [...new Set([...SOURCES, ...Object.keys(reported), ...Object.keys(lastCircuits ?? {})])];
+  const longest = Math.max(result?.ms ?? 0, ...Object.values(reported).map((s) => s.durationMs));
+  const scale = Math.max(100, Math.ceil(longest / 100) * 100);
+  const width = (ms) => `${Math.min(100, (ms / scale) * 100)}%`;
+
+  const lanes = [];
+  if (result) {
+    lanes.push(h("div", { class: "lane lane-total" },
+      h("span", { class: "lane-name" }, "Response"),
+      h("div", { class: "track" }, h("div", { class: "bar", "data-status": "TOTAL", style: `width:${width(result.ms)}` })),
+      h("div", { class: "lane-detail" },
+        h("span", {}, `HTTP ${result.status}, ${result.ms} ms in this browser`))));
+  }
+  for (const name of names) {
+    const source = reported[name];
+    const circuit = lastCircuits?.[name];
+    lanes.push(h("div", { class: "lane" },
+      h("span", { class: "lane-name" }, name),
+      h("div", { class: "track" },
+        source ? h("div", { class: "bar", "data-status": source.status, style: `width:${width(source.durationMs)}` }) : null),
+      h("div", { class: "lane-detail" },
+        h("span", { class: `lane-status s-${source?.status ?? ""}` },
+          source ? `${source.status}, ${source.durationMs} ms` : result ? "not in this response" : "no request yet"),
+        h("span", { class: "circuit", "data-state": circuit ?? "" }, circuit ? `circuit ${circuit}` : "circuit state unknown"))));
+  }
+  lanes.push(h("div", { class: "scale", "aria-hidden": "true" },
+    h("span", {}, "0 ms"), h("span", {}, `${scale / 2} ms`), h("span", {}, `${scale} ms`)));
+  $("timeline").replaceChildren(...lanes);
+
+  const outcome = $("outcome");
+  if (!result) { outcome.replaceChildren(); return; }
+  const degraded = result.body?.meta?.degraded;
+  outcome.replaceChildren(
+    degraded === undefined
+      ? h("strong", { "data-degraded": "true" }, `No product view: HTTP ${result.status}`)
+      : h("strong", { "data-degraded": String(degraded) },
+          degraded ? "Degraded: some optional data is missing" : "Complete: every called source answered"),
+    h("span", { class: "id" }, h("span", { class: "muted" }, "Correlation id "), correlationOf(result.body) ?? "none"));
+}
+
+async function refreshCircuits() {
+  lastCircuits = await readCircuits();
+  renderTimeline();
+  return lastCircuits;
+}
+
+function show(result) {
+  lastResult = result;
+  renderProduct(result);
+  renderTimeline();
+}
+
+// ---- busy state: one run at a time ----
+
+let busy = false;
+
+function setBusy(value) {
+  busy = value;
+  document.querySelectorAll("button, select, input").forEach((el) => { el.disabled = value; });
+}
+
+// ---- request bar ----
+
+function selection() {
+  return { product: $("product").value, market: $("market").value, customer: $("customer").value };
+}
+
+async function sendSelected() {
+  if (busy) return;
+  setBusy(true);
+  try {
+    show(await requestProduct(selection()));
+    await refreshCircuits();
+  } catch (error) {
+    $("product-view").replaceChildren(h("p", { class: "notice" }, `The aggregator did not answer: ${error.message}`));
+  } finally {
+    setBusy(false);
+  }
+}
+
+function fillSelects() {
+  $("product").replaceChildren(...PRODUCTS.map(([id, brand]) => h("option", { value: id }, `${id} (${brand})`)));
+  $("market").replaceChildren(...MARKETS.map(([code, name]) => h("option", { value: code }, `${code}, ${name}`)));
+  $("customer").replaceChildren(h("option", { value: "" }, "No customer"),
+    ...CUSTOMERS.map((id) => h("option", { value: id }, id)));
+  $("product").value = POLAND.product;
+  $("market").value = POLAND.market;
+  $("customer").value = POLAND.customer;
+}
+
+// ---- chaos panel ----
+
+const chaosFields = {};
+
+function buildChaosRows() {
+  $("chaos-rows").replaceChildren(...SOURCES.map((source) => {
+    const slow = h("input", { type: "number", min: "1", step: "1", value: "5", "aria-label": `${source} latency factor` });
+    const reliability = h("input", { type: "number", min: "0", max: "1", step: "0.05", value: "0.5", "aria-label": `${source} reliability` });
+    // Only the value the selected mode uses is shown (decision I-36).
+    const slowBox = h("label", { class: "mode-setting", hidden: true }, "latency ×", slow);
+    const reliabilityBox = h("label", { class: "mode-setting", hidden: true }, "reliability", reliability);
+    const buttons = MODES.map(([mode, label]) => h("button", {
+      type: "button", class: "mode", "data-mode": mode, "aria-pressed": "false",
+      onclick: () => applyChaos(source, mode),
+    }, label));
+    chaosFields[source] = { slow, reliability, slowBox, reliabilityBox, buttons };
+    slow.addEventListener("change", () => applyChaos(source, "SLOW"));
+    reliability.addEventListener("change", () => applyChaos(source, "FLAKY"));
+    return h("div", { class: "chaos-row" },
+      h("span", { class: "lane-name" }, source),
+      h("div", { class: "modes", role: "group", "aria-label": `${source} mode` }, buttons, slowBox, reliabilityBox));
+  }));
+}
+
+function renderChaos(state) {
+  for (const source of SOURCES) {
+    const fields = chaosFields[source];
+    const setting = state?.[source];
+    for (const button of fields.buttons) {
+      button.setAttribute("aria-pressed", String(setting?.mode === button.dataset.mode));
+    }
+    fields.slowBox.hidden = setting?.mode !== "SLOW";
+    fields.reliabilityBox.hidden = setting?.mode !== "FLAKY";
+    if (setting?.mode === "SLOW") fields.slow.value = setting.slowFactor;
+    if (setting?.mode === "FLAKY") fields.reliability.value = setting.reliability;
+  }
+}
+
+function chaosNotice(error) {
+  const notice = $("chaos-notice");
+  notice.hidden = !error;
+  notice.textContent = error ? error.message : "";
+}
+
+async function refreshChaos() {
+  try {
+    renderChaos(await chaosState());
+    chaosNotice(null);
+  } catch (error) {
+    renderChaos(null);
+    chaosNotice(error);
+  }
+}
+
+async function applyChaos(source, mode) {
+  if (busy) return;
+  const fields = chaosFields[source];
+  const setting = { mode };
+  if (mode === "SLOW") setting.slowFactor = Number(fields.slow.value);
+  if (mode === "FLAKY") setting.reliability = Number(fields.reliability.value);
+  try {
+    await chaosSet(source, setting);
+    chaosNotice(null);
+  } catch (error) {
+    chaosNotice(error);
+  }
+  await refreshChaos();
+}
+
+// ---- responses table ----
+
+const COLUMNS = ["#", "HTTP", "Time", "Error", "Retry-After", "Catalog call", "Pricing call", "Availability call",
+  "Customer call", "Price shown", "Stock shown", "Personalization", "Degraded", "Language", "Correlation id (body / header)"];
+
+function newTable(container) {
+  const tbody = h("tbody");
+  container.replaceChildren(h("table", { class: "rows" },
+    h("thead", {}, h("tr", {}, COLUMNS.map((c) => h("th", { scope: "col" }, c)))), tbody));
+  return tbody;
+}
+
+function separatorRow(tbody, text) {
+  tbody.append(h("tr", { class: "separator" }, h("td", { colspan: COLUMNS.length }, text)));
+}
+
+function cell(text, subs, className) {
+  const lines = [subs].flat().filter(Boolean);
+  return h("td", { class: className }, text ?? "", lines.map((line) => h("span", { class: "sub" }, line)));
+}
+
+function addRow(tbody, number, result) {
+  const body = result.body ?? {};
+  const problem = result.status >= 400;
+  const pricing = body.pricing;
+  const availability = body.availability;
+  const personalization = body.personalization;
+  const sources = body.meta?.sources ?? {};
+  tbody.append(h("tr", {},
+    cell(number),
+    cell(result.status, null, problem ? "s-http-error" : null),
+    cell(`${result.ms} ms`),
+    problem
+      ? h("td", { class: "wrap" }, h("strong", {}, body.code ?? ""),
+          h("span", { class: "sub" }, body.detail ?? ""),
+          body.supportedMarkets ? h("span", { class: "sub" }, `supported: ${body.supportedMarkets.join(", ")}`) : null)
+      : cell(""),
+    cell(result.retryAfter),
+    ...SOURCES.map((name) => sources[name]
+      ? cell(sources[name].status, `${sources[name].durationMs} ms`, `s-${sources[name].status}`)
+      : cell("")),
+    pricing
+      ? cell(pricing.status,
+          pricing.status === "AVAILABLE"
+            ? `${pricing.formatted.finalPrice}, discount ${pricing.discountPercent} %`
+            : pricing.label,
+          `wrap s-${pricing.status}`)
+      : cell(""),
+    availability
+      ? cell(availability.status,
+          [availability.warehouse ? `${availability.stockLevel}, ${availability.warehouse.city}` : null, availability.label],
+          `wrap s-${availability.status}`)
+      : cell(""),
+    personalization
+      ? cell(personalization.status,
+          [personalization.segment, personalization.preferredBrand ? "preferred brand" : null].filter(Boolean).join(", "),
+          `s-${personalization.status}`)
+      : cell(""),
+    cell(body.meta ? String(body.meta.degraded) : ""),
+    cell(body.language),
+    cell(correlationOf(result.body) ?? "", result.correlationHeader, "correlation")));
+}
+
+// ---- Fire 20 requests ----
+
+async function fireBurst() {
+  if (busy) return;
+  setBusy(true);
+  const status = $("burst-status");
+  status.removeAttribute("data-tone");
+  const tbody = newTable($("burst-rows"));
+  const request = selection();
+  try {
+    for (let i = 1; i <= 20; i++) {
+      status.textContent = `Request ${i} of 20: ${request.product}, ${request.market}, ${request.customer || "no customer"}`;
+      const result = await requestProduct(request);
+      show(result);
+      addRow(tbody, i, result);
+      await refreshCircuits();
+    }
+    status.textContent = "20 requests sent.";
+  } catch (error) {
+    status.dataset.tone = "bad";
+    status.textContent = `Stopped: ${error.message}`;
+  } finally {
+    setBusy(false);
+  }
+}
+
+async function resetMocks() {
+  if (busy) return;
+  try {
+    await chaosReset();
+    chaosNotice(null);
+  } catch (error) {
+    chaosNotice(error);
+  }
+  await refreshChaos();
+}
+
+// ---- scenarios ----
+
+const allClosed = (circuits) => Object.values(circuits).every((state) => state === "CLOSED");
+const openOnes = (circuits) => Object.entries(circuits).filter(([, s]) => s !== "CLOSED").map(([n, s]) => `${n} ${s}`).join(", ");
+
+async function deterministicMode() {
+  for (const source of SOURCES) await chaosSet(source, DETERMINISTIC);
+  await refreshChaos();
+}
+
+async function circuitsOrFail() {
+  const circuits = await refreshCircuits();
+  if (!circuits) throw new Error("/actuator/health did not report circuit states (components.upstreams.details).");
+  return circuits;
+}
+
+/** Same start for every scenario: deterministic mode, every circuit CLOSED, 20 successful calls. */
+async function prepare(log) {
+  log("Prepare: deterministic mode (every mock FLAKY with reliability 1.0)");
+  await deterministicMode();
+  let circuits = await circuitsOrFail();
+  if (!allClosed(circuits)) {
+    const open = openOnes(circuits);
+    // An open circuit lets calls through again only after its 10 s open state, on the next call.
+    await countdown(11, (left) => log(`Prepare: ${open}; waiting ${left} s for the open state to end`));
+    for (let i = 1; i <= 10 && !allClosed(circuits); i++) {
+      log(`Prepare: closing circuits, request ${i} of at most 10`);
+      show(await requestProduct(POLAND));
+      circuits = await circuitsOrFail();
+    }
+    if (!allClosed(circuits)) {
+      throw new Error(`Circuits still not closed after 10 requests (${openOnes(circuits)}). Restart the aggregator with docker compose restart aggregator, then run the scenario again.`);
+    }
+  }
+  // A window full of successes makes the opening point exact: 10 failed calls (D-18 addendum).
+  for (let i = 1; i <= 20; i++) {
+    log(`Prepare: warm-up request ${i} of 20`);
+    show(await requestProduct(POLAND));
+  }
+  await refreshCircuits();
+}
+
+function describeRequest({ product, market, customer }) {
+  return `${product} / ${market} / ${customer || "no customer"}`;
+}
+
+function describeSteps(steps) {
+  return steps.filter((s) => s.request || s.recover).map((s) => s.recover
+    ? "then chaos reset, deterministic mode, 11 s countdown"
+    : `${s.times ? `${s.times} × ` : ""}${describeRequest(s.request)}`).join("; ");
+}
+
+function describeChaos(steps) {
+  const chaos = steps.filter((s) => s.chaos).flatMap((s) => Object.entries(s.chaos).map(([n, c]) => `${n} ${c.mode}`));
+  return chaos.length ? chaos.join(", ") : "none (deterministic mode only)";
+}
+
+function buildScenarioList() {
+  $("scenario-list").replaceChildren(...SCENARIOS.map((scenario) => h("li", {},
+    h("button", {
+      type: "button", class: "scenario-button", "data-id": scenario.id,
+      onclick: () => runScenario(scenario),
+    }, h("span", { class: "scenario-id" }, scenario.id), h("span", {}, scenario.title)))));
+}
+
+function renderScenario(scenario) {
+  document.querySelectorAll(".scenario-button").forEach((b) => {
+    b.setAttribute("aria-current", String(b.dataset.id === scenario.id));
+  });
+  const status = h("p", { class: "status-line", "aria-live": "polite" });
+  const rows = h("div", { class: "rows-wrap" });
+  $("scenario-detail").replaceChildren(
+    h("h3", {}, `${scenario.id} ${scenario.title}`),
+    h("dl", { class: "scenario-facts" },
+      h("dt", {}, "Chaos after Prepare"), h("dd", {}, describeChaos(scenario.steps)),
+      h("dt", {}, "Requests"), h("dd", {}, describeSteps(scenario.steps)),
+      h("dt", {}, "Expected"), h("dd", { class: "expected" }, scenario.expected)),
+    status, rows);
+  return { status, rows };
+}
+
+async function runScenario(scenario) {
+  if (busy) return;
+  setBusy(true);
+  const { status, rows } = renderScenario(scenario);
+  const log = (text) => { status.textContent = text; };
+  const poll = setInterval(refreshCircuits, 1000);
+  try {
+    await prepare(log);
+    const tbody = newTable(rows);
+    // Requests are numbered as in the expected outcome: from 1, and from 1 again after a recovery.
+    let number = 0;
+    for (const step of scenario.steps) {
+      if (step.chaos) {
+        for (const [source, setting] of Object.entries(step.chaos)) await chaosSet(source, setting);
+        await refreshChaos();
+      } else if (step.recover) {
+        await chaosReset();
+        await deterministicMode();
+        await countdown(11, (left) => log(`Run: chaos reset, deterministic mode; waiting ${left} s`));
+        separatorRow(tbody, "After chaos reset, deterministic mode and 11 s");
+        number = 0;
+      } else {
+        const times = step.times ?? 1;
+        for (let i = 1; i <= times; i++) {
+          log(`Run: request ${i} of ${times}, ${describeRequest(step.request)}`);
+          const result = await requestProduct(step.request);
+          show(result);
+          addRow(tbody, ++number, result);
+          await refreshCircuits();
+        }
+      }
+    }
+    log("Done. Compare the rows with the expected outcome and record Pass or Fail in CR-001 § Validation.");
+  } catch (error) {
+    status.dataset.tone = "bad";
+    status.textContent = `Stopped: ${error.message}`;
+  } finally {
+    clearInterval(poll);
+    try {
+      await chaosReset();
+    } catch (error) {
+      chaosNotice(error);
+    }
+    await refreshChaos();
+    await refreshCircuits();
+    setBusy(false);
+  }
+}
+
+// ---- start ----
+
+fillSelects();
+buildChaosRows();
+buildScenarioList();
+renderTimeline();
+$("request-form").addEventListener("submit", (event) => { event.preventDefault(); sendSelected(); });
+["product", "market", "customer"].forEach((id) => $(id).addEventListener("change", sendSelected));
+$("fire").addEventListener("click", fireBurst);
+$("reset").addEventListener("click", resetMocks);
+refreshChaos();
+sendSelected();
+</script>
+</body>
+</html>

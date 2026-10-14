@@ -95,6 +95,8 @@ Each system requirement, the user requirement it serves and its acceptance crite
 | REQ-DEMO-PAGE-001 | UR-11 | TC-15 (CR-001 § Validation) |
 | REQ-DEMO-PAGE-002 | UR-11 | TC-15 (CR-001 § Validation) |
 | REQ-DEMO-PAGE-003 | UR-11 | TC-15 (CR-001 § Validation) |
+| REQ-DEMO-PAGE-004 | UR-11 | TC-15 (CR-001 § Validation) |
+| REQ-DEMO-PAGE-005 | UR-11 | TC-15 (CR-001 § Validation) |
 | RC-DEMO-PAGE-001 | UR-10 | TC-15 (CR-001 § Validation) |
 | RC-DEMO-PAGE-002 | UR-10 | TC-18 (CR-001 § Validation) |
 | REQ-DLV-SUBMIT-001 | UR-10 | TC-17 (local part) (CR-001 § Validation) |
@@ -144,6 +146,8 @@ Run against `docker compose up --build`; requests in `docs/verification/aggregat
 
 Base command used below: `P='localhost:8080/api/v1/products'`.
 
+6. **Scenario panel (addendum 14.10, D-18):** TC-01…TC-12 can be run from the demo page's "Validation scenarios" panel (one click each; Prepare = deterministic mode + breaker recovery + 20 warm-up requests, which replaces the aggregator restarts). The page shows expected next to actual; the person judges. The curl steps below stay the reference. TC-15 additionally checks: every scenario button runs and renders its rows; breaker states (CLOSED/OPEN/HALF_OPEN) are shown per source.
+
 ### Test cases
 
 | Test Scope | Steps | Expected Outcome | Passed |
@@ -163,7 +167,7 @@ Base command used below: `P='localhost:8080/api/v1/products'`.
 | TC-12: All optional sources hang | R, D; TIMEOUT for pricing, availability, customer; TC-01 | 200 in < 500 ms (≈ 350 ms); product shown; pricing UNAVAILABLE, availability UNKNOWN, personalization STANDARD; `degraded` true | |
 | TC-13: Correlation and logs — REQ-OPS-OBS-001/003, RC-OPS-OBS-001 | D; TC-01 with `-H 'X-Correlation-Id: tc13-abc' -i`; `docker compose logs aggregator \| grep tc13-abc`; `docker compose logs aggregator \| grep -c C-1002` | response header and `meta.correlationId` = tc13-abc; exactly one `product_aggregated` line with tc13-abc, `customer=present`, four `source=STATUS/ms` pairs; grep count of C-1002 = 0 | |
 | TC-14: gRPC — REQ-API-GRPC-001/002/003 | `grpcurl -plaintext localhost:9090 list`; `grpcurl -plaintext -d '{"product_id":"W6103","market":"pl-PL","customer_id":"C-1002"}' localhost:9090 kramp.aggregator.v1.ProductAggregator/GetProduct`; same with `NOPE123` | `kramp.aggregator.v1.ProductAggregator` listed (reflection); response mirrors TC-01 (final price "57.11"); NOPE123 → `Code: NotFound` | |
-| TC-15: Demo page — REQ-DEMO-PAGE-001/002/003, RC-DEMO-PAGE-001 | open `http://localhost:8080/`; choose W6103 / pl-PL / C-1002; Pricing → TIMEOUT; "Fire 20 requests"; Reset | Kramp styling (red `#9B1915` header, Barlow fonts, text wordmark "KRAMP", tagline); card with product image, Polish name, price, stock, delivery, segment badge; source bar shows four statuses with ms; under chaos the price area shows the Polish label and the bar shows TIMEOUT then CIRCUIT_OPEN; footer states prices, stock and customers are fictitious | |
+| TC-15: Demo page — REQ-DEMO-PAGE-001/002/003/004/005, RC-DEMO-PAGE-001 (004/005: addendum 14.10, D-18) | open `http://localhost:8080/`; choose W6103 / pl-PL / C-1002; Pricing → TIMEOUT; "Fire 20 requests"; Reset | Kramp styling (red `#9B1915` header, Barlow fonts, text wordmark "KRAMP", tagline); card with product image, Polish name, price, stock, delivery, segment badge; source bar shows four statuses with ms; under chaos the price area shows the Polish label and the bar shows TIMEOUT then CIRCUIT_OPEN; footer states prices, stock and customers are fictitious | |
 | TC-16: Operations — REQ-OPS-OBS-004/005/006 | R; `PUT /chaos/pricing {"mode":"DOWN"}`; TC-01 × 12; `curl localhost:8080/actuator/health/readiness`; `curl localhost:8080/actuator/health \| jq .components.upstreams`; `curl -s localhost:8080/actuator/prometheus \| grep -E 'upstream_call_seconds_count\|aggregation_result_total'` | readiness `UP`; `upstreams.details.pricing` OPEN, others CLOSED; both metric families present with `source`/`outcome` tags | |
 | TC-17: Fresh clone — REQ-DLV-SUBMIT-001/002/007 | in an empty dir: `git clone <GitHub URL>`; `docker compose up --build`; separately (JDK 21) `./mvnw verify`; open the latest GitHub Actions run | both succeed without extra steps; CI run green; repo visible on GitHub | |
 | TC-18: Hygiene before submission — RC-DEMO-PAGE-002, quality of README | read README end to end; run the hygiene scan kept outside the repository; `git ls-files \| grep -iE 'logo\|\.svg$\|\.env'` | README answers every Deliverables bullet and Design Question A clearly; scan finds nothing; no Kramp logo or env files tracked | |
