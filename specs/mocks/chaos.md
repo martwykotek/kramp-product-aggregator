@@ -17,9 +17,9 @@ None in this leaf.
 ## How it's proven
 | ID | Resolved by | Proof | Status |
 |----|-------------|-------|--------|
-| REQ-MOCK-CHAOS-001 | automated | AT-CHAOS-01 · ChaosApiIT#shouldReportModeWhenModeIsSet | ❌ no evidence — GAP |
-| REQ-MOCK-CHAOS-002 | automated | AT-CHAOS-02 · ChaosApiIT#shouldRestoreEveryUpstreamWhenReset | ❌ no evidence — GAP |
-| REQ-MOCK-CHAOS-003 | automated | AT-CHAOS-01 · ChaosApiIT#shouldReportModeWhenModeIsSet | ❌ no evidence — GAP |
+| REQ-MOCK-CHAOS-001 | automated | AT-CHAOS-01 · ChaosApiIT#shouldReportModeWhenModeIsSet | ✅ |
+| REQ-MOCK-CHAOS-002 | automated | AT-CHAOS-02 · ChaosApiIT#shouldRestoreEveryUpstreamWhenReset | ✅ |
+| REQ-MOCK-CHAOS-003 | automated | AT-CHAOS-01 · ChaosApiIT#shouldReportModeWhenModeIsSet | ✅ |
 
 ## Where the code lives
 `upstream-mocks/src/main/java/com/kramp/mocks/chaos/`, `…/behavior/`.

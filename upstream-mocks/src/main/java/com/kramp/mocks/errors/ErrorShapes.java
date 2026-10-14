@@ -1,6 +1,8 @@
 package com.kramp.mocks.errors;
 
 import com.kramp.mocks.behavior.Upstream;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +31,16 @@ public final class ErrorShapes {
               .contentType(MediaType.TEXT_PLAIN)
               .body(status.getReasonPhrase());
     };
+  }
+
+  public static void write(
+      Upstream upstream, HttpStatus status, String code, String message, HttpServletResponse out)
+      throws IOException {
+    ResponseEntity<String> entity = response(upstream, status, code, message);
+    out.setStatus(status.value());
+    out.setContentType(String.valueOf(entity.getHeaders().getContentType()));
+    out.setCharacterEncoding("UTF-8");
+    out.getWriter().write(entity.getBody());
   }
 
   private static ResponseEntity<String> json(HttpStatus status, String body) {
