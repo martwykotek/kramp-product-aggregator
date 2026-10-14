@@ -60,7 +60,8 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
-@SpringBootTest
+// A free port: the gRPC server starts with every context, and 9090 may be taken (docker compose).
+@SpringBootTest(properties = "spring.grpc.server.port=0")
 @AutoConfigureMockMvc
 class ProductRestApiIT {
 

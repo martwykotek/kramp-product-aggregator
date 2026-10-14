@@ -12,6 +12,9 @@ spring:
   mvc:
     problemdetails:
       enabled: true
+  grpc:
+    server:
+      port: 9090
 management:
   endpoints:
     web:

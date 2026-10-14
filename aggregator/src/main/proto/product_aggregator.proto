@@ -1,0 +1,96 @@
+syntax = "proto3";
+
+package kramp.aggregator.v1;
+
+option java_multiple_files = true;
+option java_package = "com.kramp.aggregator.api.grpc.v1";
+
+// The same aggregated product view as GET /api/v1/products/{productId}.
+// Correlation id: request metadata `x-correlation-id`.
+service ProductAggregator {
+  rpc GetProduct(GetProductRequest) returns (ProductView);
+}
+
+message GetProductRequest {
+  string product_id = 1;
+  string market = 2;
+  optional string customer_id = 3;
+}
+
+message ProductView {
+  string product_id = 1;
+  string market = 2;
+  string language = 3;
+  Product product = 4;
+  Pricing pricing = 5;
+  Availability availability = 6;
+  Personalization personalization = 7;
+  Meta meta = 8;
+}
+
+message Product {
+  string name = 1;
+  string brand = 2;
+  optional string description = 3;
+  optional string category = 4;
+  optional string ean = 5;
+  optional string sales_unit = 6;
+  repeated Spec specs = 7;
+  repeated string images = 8;
+  optional string shop_url = 9;
+}
+
+message Spec {
+  string label = 1;
+  string value = 2;
+}
+
+// Money as decimal strings: no floating point on the wire.
+message Pricing {
+  string status = 1;
+  optional string currency = 2;
+  optional string price_type = 3;
+  optional string base_price = 4;
+  optional int32 discount_percent = 5;
+  optional string final_price = 6;
+  optional Formatted formatted = 7;
+  optional string label = 8;
+}
+
+message Formatted {
+  string base_price = 1;
+  string final_price = 2;
+}
+
+message Availability {
+  string status = 1;
+  optional int32 stock_level = 2;
+  optional Warehouse warehouse = 3;
+  optional string expected_delivery = 4;
+  string label = 5;
+}
+
+message Warehouse {
+  string code = 1;
+  string city = 2;
+  string country = 3;
+}
+
+message Personalization {
+  string status = 1;
+  optional string segment = 2;
+  optional bool preferred_brand = 3;
+}
+
+// Sources in the same order as the JSON `meta.sources` object.
+message Meta {
+  bool degraded = 1;
+  string correlation_id = 2;
+  repeated SourceReport sources = 3;
+}
+
+message SourceReport {
+  string name = 1;
+  string status = 2;
+  int64 duration_ms = 3;
+}

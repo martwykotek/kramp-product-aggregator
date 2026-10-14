@@ -18,8 +18,8 @@ None in this leaf.
 ## How it's proven
 | ID | Resolved by | Proof | Status |
 |----|-------------|-------|--------|
-| REQ-API-GRPC-001 | automated | AT-GRPC-01 · ProductGrpcIT#shouldReturnSameViewAsRestWhenAllUpstreamsAnswer | ❌ no evidence — GAP |
-| REQ-API-GRPC-002 | automated | AT-GRPC-02 · ProductGrpcIT#shouldMapFailureToGrpcStatusWhenRequestFails | ❌ no evidence — GAP |
+| REQ-API-GRPC-001 | automated | AT-GRPC-01 · ProductGrpcIT#shouldReturnSameViewAsRestWhenAllUpstreamsAnswer | ✅ |
+| REQ-API-GRPC-002 | automated | AT-GRPC-02 · ProductGrpcIT#shouldMapFailureToGrpcStatusWhenRequestFails | ✅ |
 | REQ-API-GRPC-003 | observed | TC-14 (grpcurl list) | ❌ no evidence — GAP |
 
 ## Where the code lives

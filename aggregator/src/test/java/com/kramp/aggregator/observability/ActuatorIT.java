@@ -23,7 +23,8 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-@SpringBootTest
+// A free port: the gRPC server starts with every context, and 9090 may be taken (docker compose).
+@SpringBootTest(properties = "spring.grpc.server.port=0")
 @AutoConfigureMockMvc
 @AutoConfigureMetrics
 class ActuatorIT {
