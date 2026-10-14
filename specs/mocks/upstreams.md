@@ -31,10 +31,10 @@ None in this leaf.
 ## How it's proven
 | ID | Resolved by | Proof | Status |
 |----|-------------|-------|--------|
-| REQ-MOCK-UPSTREAM-001 | automated | AT-MOCK-01 · LatencyModelTest#shouldCentreOnMedianWithLongTailWhenSampledManyTimes | ❌ no evidence — GAP |
-| REQ-MOCK-UPSTREAM-002 | automated | AT-MOCK-02 · UpstreamBehaviorTest#shouldFailAtOneMinusReliabilityWhenHealthy | ❌ no evidence — GAP |
-| REQ-MOCK-UPSTREAM-003 | automated | AT-MOCK-03 · UpstreamBehaviorTest#shouldSplitFailuresByConfiguredMixWhenFailing | ❌ no evidence — GAP |
-| REQ-MOCK-UPSTREAM-004 | automated | AT-MOCK-04 · UpstreamBehaviorTest#shouldReproduceSequenceWhenSeedIsTheSame | ❌ no evidence — GAP |
+| REQ-MOCK-UPSTREAM-001 | automated | AT-MOCK-01 · LatencyModelTest#shouldCentreOnMedianWithLongTailWhenSampledManyTimes | ✅ |
+| REQ-MOCK-UPSTREAM-002 | automated | AT-MOCK-02 · UpstreamBehaviorTest#shouldFailAtOneMinusReliabilityWhenHealthy | ✅ |
+| REQ-MOCK-UPSTREAM-003 | automated | AT-MOCK-03 · UpstreamBehaviorTest#shouldSplitFailuresByConfiguredMixWhenFailing | ✅ |
+| REQ-MOCK-UPSTREAM-004 | automated | AT-MOCK-04 · UpstreamBehaviorTest#shouldReproduceSequenceWhenSeedIsTheSame | ✅ |
 | REQ-MOCK-UPSTREAM-005 | automated | AT-MOCK-05 · CatalogFixturesTest#shouldContainExactlyTheResearchedKrampProductsWhenLoaded | ❌ no evidence — GAP |
 | REQ-MOCK-UPSTREAM-006 | automated | AT-MOCK-06 · DeliveryDateCalculatorTest#shouldPromiseNextWorkingDayWhenOrderedBeforeCutoff | ❌ no evidence — GAP |
 | REQ-MOCK-UPSTREAM-007 | automated | AT-MOCK-07 · AvailabilityLookupTest#shouldShipFromVarsseveldOneDayLaterWhenLocalWarehouseIsEmpty | ❌ no evidence — GAP |

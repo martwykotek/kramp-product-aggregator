@@ -1,0 +1,17 @@
+mocks:
+  seed: 1
+  hang-min: 50ms
+  hang-max: 60ms
+  upstreams:
+    catalog:
+      median-latency: 1ms
+      reliability: 1.0
+    pricing:
+      median-latency: 1ms
+      reliability: 1.0
+    availability:
+      median-latency: 1ms
+      reliability: 1.0
+    customer:
+      median-latency: 1ms
+      reliability: 1.0

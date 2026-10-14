@@ -1,0 +1,34 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: upstream-mocks
+  threads:
+    virtual:
+      enabled: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+mocks:
+  # seed: set MOCKS_SEED to reproduce a run; without it a fresh seed is logged at startup
+  hang-min: 2s
+  hang-max: 5s
+  failure-mix:
+    fast-unavailable: 0.5
+    slow-error: 0.3
+    hang: 0.2
+  upstreams:
+    catalog:
+      median-latency: 50ms
+      reliability: 0.999
+    pricing:
+      median-latency: 80ms
+      reliability: 0.995
+    availability:
+      median-latency: 100ms
+      reliability: 0.98
+    customer:
+      median-latency: 60ms
+      reliability: 0.99

@@ -18,6 +18,7 @@
   <name>Kramp Product Information Aggregator</name>
 
   <modules>
+    <module>upstream-mocks</module>
     <module>quality-gates</module>
   </modules>
 
