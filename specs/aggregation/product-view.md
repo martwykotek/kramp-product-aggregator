@@ -24,7 +24,7 @@ None in this leaf.
 |----|-------------|-------|--------|
 | REQ-AGG-VIEW-001 | automated | AT-VIEW-01 · ProductRestApiIT#shouldReturnAggregatedViewWhenAllUpstreamsAnswer | ❌ no evidence — GAP |
 | REQ-AGG-VIEW-002 | automated | AT-VIEW-02 · ProductRestApiIT#shouldReturnAggregatedViewWhenAllUpstreamsAnswer | ❌ no evidence — GAP |
-| REQ-AGG-VIEW-003 | automated | AT-VIEW-03 · PricingSourceTest#shouldSendCustomerIdWhenCustomerGiven, #shouldOmitCustomerIdWhenNoCustomer | ❌ no evidence — GAP |
+| REQ-AGG-VIEW-003 | automated | AT-VIEW-03 · PricingSourceTest#shouldSendCustomerIdWhenCustomerGiven, #shouldOmitCustomerIdWhenNoCustomer | ✅ |
 | REQ-AGG-VIEW-004 | automated | AT-VIEW-04 · ProductAggregationServiceTest#shouldCallSourcesConcurrentlyWhenAllApplicable | ✅ |
 | REQ-AGG-VIEW-005 | automated | AT-VIEW-05 · ProductRestApiIT#shouldSkipCustomerWhenHeaderMissing, ProductAggregationServiceTest#shouldNotInvokeSourceWhenNotApplicable | ❌ no evidence — GAP |
 | REQ-AGG-VIEW-006 | automated | AT-VIEW-06 · ProductViewAssemblerTest#shouldFlagPreferredBrandWhenBrandMatches | ❌ no evidence — GAP |
