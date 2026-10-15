@@ -1,6 +1,6 @@
 # Validation protocol TC-01…TC-16 as IntelliJ HTTP Client requests, one per step.
-# Run against `docker compose up --build`. Steps and expected outcomes: test-specification.md §5.2;
-# results are recorded in .changes/CR-001_product-aggregator.md § Validation.
+# Run against `docker compose up --build`. Steps and expected outcomes: .changes/CR-001_product-aggregator.md § Validation;
+# results are summarised in docs/verification/validation-report.md.
 # "D" = deterministic mode (four requests below), "R" = reset; after a step that opened a circuit,
 # `docker compose restart aggregator` (circuit breakers live in the aggregator).
 

@@ -54,7 +54,7 @@ class ReadmeContractTest {
   /**
    * The non-empty lines between the first {@code ## } heading that starts with {@code title} and
    * the next {@code ## } heading. Matching by prefix lets "Use of AI tools and my role" satisfy
-   * "Use of AI tools" (decision I-17).
+   * "Use of AI tools".
    */
   static Optional<List<String>> section(List<String> readme, String title) {
     List<String> body = null;

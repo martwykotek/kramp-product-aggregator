@@ -2,10 +2,10 @@
 
 | | |
 |---|---|
-| Status | Approved (v2, 2026-10-14) — v1 approved section by section, v2 adds the eight clarifications found while writing the test specification ([decision log P1–P8](decision-log.md)) |
+| Status | Approved (v2, 2026-10-14) — v2 adds eight clarifications found while specifying the tests |
 | Author | Dawid Kłos |
 | Requirements | [`specs/`](../../specs/index.md) — 77 requirements derived from this spec |
-| Tests | [test specification](../verification/test-specification.md) — when an example here and a test oracle there differ, the test specification wins |
+| Tests | automated tests named in each `specs/` leaf; validation on the running system: [validation report](../verification/validation-report.md) |
 
 ## 1. Goal and success criteria
 
@@ -18,7 +18,7 @@ Success means:
 3. Mocks behave like real services over HTTP: long-tailed latency, failures at the stated reliability, several failure kinds, and a Chaos API to show failure handling live.
 4. Real Kramp products and a Kramp-styled demo page make the scenarios tangible.
 5. The README covers everything the assignment asks for, including Design Question A.
-6. Every significant decision is recorded with its alternatives ([decision log](decision-log.md), [ADRs](../adr/)).
+6. Every significant decision is recorded with its alternatives ([ADRs](../adr/)).
 
 **Non-goals:** real authentication, persistence, caching, cloud deployment, horizontal scaling.
 
@@ -86,7 +86,7 @@ Packages in `aggregator` (hexagonal-lite; ArchUnit keeps `aggregation` free of t
 | `X-Customer-Id` | header | optional, `[A-Za-z0-9-]{1,64}`; a header keeps it out of URLs, access logs and caches (in production it would come from the token) |
 | `X-Correlation-Id` | header | optional; generated when absent; always echoed |
 
-**200** whenever Catalog returned the product (oracle values from the test specification):
+**200** whenever Catalog returned the product (values the tests assert):
 
 ```json
 {
@@ -170,7 +170,7 @@ Packages in `aggregator` (hexagonal-lite; ArchUnit keeps `aggregation` free of t
 
 A budget covers all attempts of a source. Each attempt is bounded by the HTTP read timeout (= budget) and by the orchestrator deadline.
 
-**Retry:** at most one, only after a fast failure (a 5xx answer) and only if the remaining budget is at least the source's typical latency. Never after a timeout, a not-found answer or an unusable body. A connection refused or reset before any answer is not retried by the aggregator: the JDK `HttpClient` already resends an idempotent request once by itself, and a second layer would make it four upstream calls (I-33).
+**Retry:** at most one, only after a fast failure (a 5xx answer) and only if the remaining budget is at least the source's typical latency. Never after a timeout, a not-found answer or an unusable body. A connection refused or reset before any answer is not retried by the aggregator: the JDK `HttpClient` already resends an idempotent request once by itself, and a second layer would make it four upstream calls.
 
 **Circuit breaker** (one per source): count-based window of 20 calls, minimum 10, 50% failure threshold, 10 s open, 3 half-open trial calls. Not-found answers are ignored. **Calls the aggregator cancels (because Catalog already failed) release their permission without counting as failures** — otherwise a Catalog outage would open the other breakers and hide prices after recovery. `Retry-After` on a Catalog 503 is the configured open-state wait (10 s, an upper bound) when the circuit is open, otherwise 1.
 
@@ -237,7 +237,7 @@ One HTML file served at `/` in Kramp colours (`#9B1915`, `#FF9E00`) and fonts (B
 
 ## 11. Verification
 
-Every requirement in `specs/` names its proof; the [test specification](../verification/test-specification.md) defines 73 automated cases with exact expected outputs and a 20-step validation protocol, written before the code. A build gate fails when a claimed proof does not resolve.
+Every requirement in `specs/` names its proof; every automated case had its exact expected output written down before the code, and a 20-step protocol validates the running system ([validation report](../verification/validation-report.md)). A build gate fails when a claimed proof does not resolve.
 
 ## 12. Design Question A — Related Products (200 ms, 90 %)
 

@@ -214,8 +214,8 @@ One subtle case is handled on purpose. When Catalog fails, the aggregator cancel
 calls. Counted as failures, those cancellations would open the Pricing, Availability and Customer circuits
 during a Catalog outage and keep prices hidden after Catalog recovers. Cancelled calls therefore release
 their circuit-breaker permission without counting, while real timeouts still count (the aggregator waits
-budget + 25 ms so the HTTP client's own timeout is recorded first). This gap was found by writing the test
-specification before any code (P8 in the decision log). The review then found the mirror case: a retry
+budget + 25 ms so the HTTP client's own timeout is recorded first). This case was found while specifying the
+tests, before any code was written. The final review found the mirror case: a retry
 starts with a full read timeout, so the aggregator may interrupt it first. An attempt interrupted after its
 source's budget is spent therefore counts as that source's timeout; one interrupted earlier is `CANCELLED`
 and appears neither in the circuit breaker nor in `upstream_call_seconds`.
@@ -230,11 +230,11 @@ and appears neither in the circuit breaker nor in `upstream_call_seconds`.
 | 200 with a status per section ([ADR-0004](docs/adr/0004-200-with-section-status.md)) | one contract for full and partial pages | monitoring must watch `meta.degraded`, not only status codes |
 | Customer id in a header ([ADR-0005](docs/adr/0005-customer-id-in-header.md)) | keeps personal data out of URLs, logs and caches | less convenient to try in a browser |
 | Pricing owns discounts | it already receives the customer id | if Customer fails the discount stays; if Pricing fails there is no price |
-| Java 21, not Java 25 | the version I can defend line by line | virtual-thread pinning in `synchronized` (avoided by rule) |
+| Java 21, not Java 25 | the LTS I work with every day; no toolchain surprises before a deadline | virtual threads pin inside `synchronized` until JEP 491 (Java 24+); avoided by rule |
 | Spring Boot 4.1.1 | latest GA, gRPC starters inside Boot | newer APIs (Jackson 3), checked in a spike first |
 | resilience4j called from code, not annotations | the budget-aware retry and the cancellation rule are explicit and testable with an injected clock | a few more lines than `@CircuitBreaker` |
 
-Every decision, its alternatives and who took it: [docs/design/decision-log.md](docs/design/decision-log.md).
+The full design, with the alternatives considered: [docs/design/design-spec.md](docs/design/design-spec.md).
 
 ## How I would operate it
 
@@ -265,12 +265,12 @@ Every decision, its alternatives and who took it: [docs/design/decision-log.md](
 - Real authentication (customer id from the token), rate limiting.
 - Distributed tracing with OpenTelemetry instead of a correlation id only.
 - Contract tests with the upstream teams, and load tests (Gatling or k6) against the latency budget.
-- Findings from the final review I accepted for now (`.changes/CR-001_review.md`): a 404 counts as "not
-  found" only when the body has the upstream's own error shape, so a missing route is not mistaken for an
-  empty catalogue (F10); a contract violation in one record should not count against the whole upstream's
-  circuit (F11); a cap on buffered upstream bodies, and a `Throwable` inside a source releasing its breaker
-  permission (F6); one clock for interrupted calls, so the summary line and the circuit breaker always agree
-  on whether a call cut short at a deadline timed out (re-review N1).
+- Findings from the final review I accepted for now: a 404 counts as "not found" only when the body has
+  the upstream's own error shape, so a missing route is not mistaken for an empty catalogue; a contract
+  violation in one record should not count against the whole upstream's circuit; a cap on buffered
+  upstream bodies, and a `Throwable` inside a source releasing its breaker permission; one clock for
+  interrupted calls, so the summary line and the circuit breaker always agree on whether a call cut short
+  at a deadline timed out.
 
 ## Design question A — Related Products
 
@@ -319,14 +319,13 @@ one fails.
 
 The assignment was broken down into 11 user requirements and **80 system requirements** (68 proven by
 automated tests, 12 by observed validation steps), each in a leaf under [`specs/`](specs/index.md).
-Every test case was specified with its exact expected result before the code:
-[docs/verification/test-specification.md](docs/verification/test-specification.md).
+Every test case had its exact expected result written down before the code.
 
 A test proves a requirement with a `// proves: REQ-…` comment above it. The requirements traceability gate
 runs in `./mvnw verify` and fails the build when a claimed proof does not resolve;
-`./mvnw verify -Dgate.strict=true` also fails while any requirement is unproven. The manual validation
-protocol (TC-01…TC-19) and its signed results are in
-[`.changes/CR-001_product-aggregator.md`](.changes/CR-001_product-aggregator.md).
+`./mvnw verify -Dgate.strict=true` also fails while any requirement is unproven. What was checked on the
+running system (TC-01…TC-19) and the results: [docs/verification/validation-report.md](docs/verification/validation-report.md);
+the steps behind each case: [`.changes/CR-001_product-aggregator.md`](.changes/CR-001_product-aggregator.md).
 
 ## Use of AI tools
 

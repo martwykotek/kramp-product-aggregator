@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.Currency;
 import java.util.List;
 
-/** What the four sources answer for W6103 · pl-PL · C-1002 (test specification 3.2 and 3.7). */
+/** What the four sources answer for W6103 · pl-PL · C-1002. */
 public final class Products {
 
   public static final CatalogProduct W6103_PL = catalog("MANN-FILTER");

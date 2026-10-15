@@ -25,4 +25,4 @@ proof does not resolve; `-Dgate.strict=true` additionally fails on any open gap.
 - Evidence kinds (`Resolved by`): `automated` · `observed` (a TC step in CR-001 § Validation) · `covered-by <ID>`.
 - Statuses: `✅` · `⚠️ <limitation>` · `❌ no evidence — GAP` · `de-scoped`.
 - What earns a requirement: an externally observable commitment (client, operator, reviewer). Internal structure (package layering, formatting) is guarded by tests without IDs.
-- Test cases (AT-…) and the validation protocol (TC-…) are specified in `docs/verification/test-specification.md`.
+- Automated test cases (AT-…) are named in each leaf's proof table; the validation protocol (TC-…) is in `.changes/CR-001_product-aggregator.md` § Validation, summarised in `docs/verification/validation-report.md`.

@@ -1,6 +1,6 @@
 # ADR-0005: Customer id in the `X-Customer-Id` header
 
-Status: accepted, 2026-10-14 · Decided by: Dawid (decision log D-07)
+Status: accepted, 2026-10-14
 
 ## Context
 The customer id is optional input. It selects personal discounts and the customer's segment, and it is

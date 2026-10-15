@@ -110,7 +110,7 @@
   .problem dl { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 16px; margin: 14px 0 0; }
   .problem dt { color: var(--steel); }
   .problem dd { margin: 0; overflow-wrap: anywhere; }
-  /* Error card: what the customer reads first, the technical problem collapsed below (D-19). */
+  /* Error card: what the customer reads first, the technical problem collapsed below. */
   .customer-error { border-left: 4px solid var(--red); padding: 4px 0 4px 16px; }
   .customer-error[data-tone="temporary"] { border-color: var(--amber); }
   .customer-error h3 { font-size: 2rem; }
@@ -298,7 +298,7 @@ const DETERMINISTIC = { mode: "FLAKY", reliability: 1.0 };
 const POLAND = { product: "W6103", market: "pl-PL", customer: "C-1002" };
 const POLAND_NO_CUSTOMER = { product: "W6103", market: "pl-PL", customer: "" };
 
-// Expected outcomes are copied word for word from the test specification §5.2 (addendum D-18).
+// Expected outcomes are copied word for word from the validation protocol (CR-001 § Validation).
 const SCENARIOS = [
   { id: "TC-01", title: "Customer in Poland",
     steps: [{ request: POLAND }],
@@ -344,7 +344,7 @@ const SCENARIOS = [
     expected: "200 in < 500 ms (≈ 350 ms); product shown; UNAVAILABLE / UNKNOWN / STANDARD; degraded" },
 ];
 
-// What a customer reads when the product cannot be shown (D-19). The API answers with a stable
+// What a customer reads when the product cannot be shown. The API answers with a stable
 // `code`; the wording belongs to the client, in the language of the selected market.
 const COPY = {
   en: { unavailable: "Product temporarily unavailable", retryIn: (n) => `We'll try again in ${n} s.`,
@@ -543,7 +543,7 @@ function renderProblem(result) {
     h("dl", {}, rows.map(([label, value]) => [h("dt", {}, label), h("dd", { class: "id" }, value)])));
 }
 
-// ---- customer view of an error and its automatic retry (D-19) ----
+// ---- customer view of an error and its automatic retry ----
 
 // Only the person's own request retries by itself: a scenario or a burst never does, because the
 // extra requests would shift the breaker counts they show (TC-08, TC-11a).
@@ -706,7 +706,7 @@ function buildChaosRows() {
   $("chaos-rows").replaceChildren(...SOURCES.map((source) => {
     const slow = h("input", { type: "number", min: "1", step: "1", value: "5", "aria-label": `${source} latency factor` });
     const reliability = h("input", { type: "number", min: "0", max: "1", step: "0.05", value: "0.5", "aria-label": `${source} reliability` });
-    // Only the value the selected mode uses is shown (decision I-36).
+    // Only the value the selected mode uses is shown.
     const slowBox = h("label", { class: "mode-setting", hidden: true }, "latency ×", slow);
     const reliabilityBox = h("label", { class: "mode-setting", hidden: true }, "reliability", reliability);
     const buttons = MODES.map(([mode, label]) => h("button", {
@@ -902,7 +902,7 @@ async function prepare(log) {
       throw new Error(`Circuits still not closed after 10 requests (${openOnes(circuits)}). Restart the aggregator with docker compose restart aggregator, then run the scenario again.`);
     }
   }
-  // A window full of successes makes the opening point exact: 10 failed calls (D-18 addendum).
+  // A window full of successes makes the opening point exact: 10 failed calls.
   for (let i = 1; i <= 20; i++) {
     log(`Prepare: warm-up request ${i} of 20`);
     show(await requestProduct(POLAND));

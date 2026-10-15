@@ -13,7 +13,7 @@ Owns: REQ-DEMO-PAGE-*, RC-DEMO-PAGE-*
 ## Rules & invariants
 - Colours `#9B1915` (primary, white text) and `#FF9E00` (secondary, black text), background `#F5F7FA`, text `#121E31`; fonts Barlow / Barlow Condensed; text wordmark "KRAMP", tagline "It's that easy".
 - The page runs locally only; nothing is published.
-- The scenario panel does not judge: it shows the expected outcome next to the raw responses, and a person records Pass or Fail in CR-001 § Validation. The curl steps in the test specification stay the reference.
+- The scenario panel does not judge: it shows the expected outcome next to the raw responses, and a person records Pass or Fail in CR-001 § Validation. The curl steps in CR-001 § Validation stay the reference.
 - Every scenario starts from the same state: deterministic mode, every circuit CLOSED, 20 successful warm-up requests; it ends with a chaos reset.
 - An error card shows the customer's message first and the technical problem collapsed below it; nothing is removed from the technical part.
 - Only the person's own request retries automatically, at most 5 times per action; scenarios and "Fire 20 requests" never do, because extra requests would shift the breaker counts they show. Changing the selection or starting a run cancels a pending retry.

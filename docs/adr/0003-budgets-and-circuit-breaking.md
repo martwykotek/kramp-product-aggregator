@@ -1,6 +1,6 @@
 # ADR-0003: Time budgets, one budgeted retry and a circuit breaker per source
 
-Status: accepted, 2026-10-14 · Decided by: Dawid (decision log D-08, D-17, P8)
+Status: accepted, 2026-10-14
 
 ## Context
 Customers on slow rural connections need a bounded response time. Catalog is required; Pricing,
@@ -14,7 +14,7 @@ response nor be hammered while it is down.
 - **One retry**, only after a fast failure (a 5xx answer) and only when the remaining budget is at least
   the source's typical latency. Never after a timeout, a not-found answer or an unusable body. A
   connection refused or reset is not retried by us: the JDK client already resends an idempotent request
-  once (decision I-33).
+  once.
 - **One circuit breaker per source** (resilience4j, used programmatically): count-based window of 20
   calls, minimum 10, 50 % failure threshold, 10 s open, 3 half-open trial calls. Not-found answers do not
   count. **Calls the aggregator cancels because Catalog already failed release their permission without

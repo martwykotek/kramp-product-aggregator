@@ -1,6 +1,6 @@
 # ADR-0002: Upstream mocks as a separate HTTP process
 
-Status: accepted, 2026-10-14 · Decided by: Dawid (decision log D-05, D-09)
+Status: accepted, 2026-10-14
 
 ## Context
 The assignment says the mocks matter: they must show realistic latency and the stated reliability.

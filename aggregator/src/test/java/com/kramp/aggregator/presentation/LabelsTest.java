@@ -16,7 +16,7 @@ class LabelsTest {
 
   static final String DATE = "15.10.2026";
 
-  /** Test specification 3.4: key → language → text. */
+  /** Expected labels: key → language → text. */
   static final Map<String, Map<String, String>> ORACLE =
       Map.of(
           "pricing.unavailable",

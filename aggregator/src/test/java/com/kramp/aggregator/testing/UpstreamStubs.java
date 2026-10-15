@@ -27,7 +27,7 @@ public final class UpstreamStubs {
 
   private UpstreamStubs() {}
 
-  /** All four upstreams answer for W6103 · pl-PL · C-1002 (test specification 3.2). */
+  /** All four upstreams answer for W6103 · pl-PL · C-1002. */
   public static void standard(Stubbing upstreams) {
     upstreams.stubFor(catalogOk("W6103", "pl"));
     upstreams.stubFor(pricingOk("PLN", 64.90, 12, 57.11));

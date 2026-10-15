@@ -1,6 +1,6 @@
 # ADR-0001: Virtual threads and a blocking HTTP client instead of WebFlux
 
-Status: accepted, 2026-10-14 · Decided by: Dawid (decision log D-05, D-17)
+Status: accepted, 2026-10-14
 
 ## Context
 One request fans out to four upstreams that answer in 50–100 ms typically and sometimes hang for

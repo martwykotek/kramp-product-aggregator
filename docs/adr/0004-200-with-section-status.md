@@ -1,6 +1,6 @@
 # ADR-0004: HTTP 200 with a status per section for partial data
 
-Status: accepted, 2026-10-14 · Decided by: Dawid (decision log D-06)
+Status: accepted, 2026-10-14
 
 ## Context
 The assignment defines what happens when each upstream fails: no Catalog means no response; without

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # The interview scenarios in a terminal, against `docker compose up`: a customer in Poland (TC-01),
 # no customer (TC-02), language fallback (TC-04), a product outside the market (TC-05) and
-# "Pricing starts timing out" (TC-08). Steps and expected results: docs/verification/test-specification.md §5.2.
+# "Pricing starts timing out" (TC-08). Steps and expected results: .changes/CR-001_product-aggregator.md § Validation.
 set -euo pipefail
 
 P=http://localhost:8080/api/v1/products
