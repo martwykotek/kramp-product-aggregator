@@ -302,6 +302,23 @@ Options:
 
 I would start with option 2 and move to option 3 only if the cache hit rate stays low.
 
+## Design questions B and C, in brief
+
+The assignment asks for one answer; A above is mine. In short, how the current design would take the other two:
+
+**B — Flash sales.** Prices are never cached: every request asks Pricing, so a price that changes every few
+minutes is still shown correctly. I would add a validity window from Pricing (`validUntil`), passed on to the
+client so the page refreshes the price in time; a rule that a stale price is never shown (no price is better
+than a wrong one, the same rule that already hides a price in the wrong currency); re-pricing at checkout,
+since this view is for display; and a bulkhead on Pricing calls for the traffic spike. The orchestration does
+not change.
+
+**C — Five new markets.** A market is configuration, not code: a code and a currency in `application.yml`,
+validated at start-up, plus a label bundle for a new language (the service refuses to start without one).
+Prices and dates are formatted from the JDK's locale data. Translated content, the new currency and the
+delivery rules (warehouses, cut-off times, public holidays) belong to Catalog, Pricing and Availability. The
+aggregation, the sources and the API do not change.
+
 ## Data: what is real and what is fictitious
 
 | Real (from kramp.com, October 2026) | Fictitious, and labelled so |
