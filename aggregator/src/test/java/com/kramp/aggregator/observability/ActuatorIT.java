@@ -87,11 +87,13 @@ class ActuatorIT {
     // proves: REQ-OPS-OBS-005
     @Test
     void shouldStayReadyWhenUpstreamsFail() throws Exception {
-      // Given — every upstream answers 503; 15 requests open the breakers
+      // Given — every upstream answers 503; 15 requests open the breakers. Each request fails with
+      // 503, or with 504 when a slow CI runner spends Catalog's budget on the retry: both are
+      // failed Catalog calls, which is all this setup needs.
       UPSTREAMS.stubFor(UpstreamStubs.unavailable(UpstreamStubs.CATALOG));
       OPTIONAL_UPSTREAMS.forEach(path -> UPSTREAMS.stubFor(UpstreamStubs.unavailable(path)));
       for (int i = 0; i < 15; i++) {
-        requestProduct().andExpect(status().isServiceUnavailable());
+        requestProduct().andExpect(status().is5xxServerError());
       }
       assertThat(breakers.circuitBreaker("catalog").getState())
           .isEqualTo(CircuitBreaker.State.OPEN);
