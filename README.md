@@ -40,7 +40,9 @@ mocks log the seed they picked.
 **The page** at <http://localhost:8080/> has four parts:
 
 - a product, market and customer picker with the product card (price, stock and delivery, segment and
-  "preferred brand" badges);
+  "preferred brand" badges). When the product cannot be shown, the card says why in the market's language,
+  the way a customer would see it; after a 503 it retries by itself once `Retry-After` has passed. The
+  problem details (code, `Retry-After`, correlation ids) sit under "Technical details";
 - **How this answer was assembled**: one bar per upstream, all starting at zero because the calls run in
   parallel, with each call's status and time and each circuit's state from `/actuator/health`;
 - **Break the upstreams**: switch any mock to Healthy, Slow, Timeout, Down or Flaky, then "Fire 20

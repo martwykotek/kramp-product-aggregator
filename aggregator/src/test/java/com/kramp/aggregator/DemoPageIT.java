@@ -49,7 +49,13 @@ class DemoPageIT {
       assertThat(response.statusCode()).isEqualTo(200);
       assertThat(response.headers().firstValue("Content-Type"))
           .hasValueSatisfying(type -> assertThat(type).startsWith("text/html"));
-      assertThat(response.body()).contains("KRAMP", FOOTER, "Validation scenarios");
+      assertThat(response.body())
+          .contains(
+              "KRAMP",
+              FOOTER,
+              "Validation scenarios",
+              "Technical details",
+              "Produkt chwilowo niedostępny");
     }
   }
 }

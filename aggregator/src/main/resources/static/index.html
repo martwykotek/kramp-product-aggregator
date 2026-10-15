@@ -110,6 +110,15 @@
   .problem dl { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 16px; margin: 14px 0 0; }
   .problem dt { color: var(--steel); }
   .problem dd { margin: 0; overflow-wrap: anywhere; }
+  /* Error card: what the customer reads first, the technical problem collapsed below (D-19). */
+  .customer-error { border-left: 4px solid var(--red); padding: 4px 0 4px 16px; }
+  .customer-error[data-tone="temporary"] { border-color: var(--amber); }
+  .customer-error h3 { font-size: 2rem; }
+  .customer-error p { margin-top: 6px; font-size: 1.1rem; }
+  .customer-error .button { margin-top: 14px; }
+  .problem-details { margin-top: 24px; padding-top: 12px; border-top: 1px solid var(--line); }
+  .problem-details summary { cursor: pointer; color: var(--steel); font-weight: 600; }
+  .problem-details .problem { margin-top: 12px; }
 
   /* Timeline: every source starts at zero, which is what "called in parallel" looks like. */
   .timeline { display: grid; gap: 12px; }
@@ -335,6 +344,31 @@ const SCENARIOS = [
     expected: "200 in < 500 ms (≈ 350 ms); product shown; UNAVAILABLE / UNKNOWN / STANDARD; degraded" },
 ];
 
+// What a customer reads when the product cannot be shown (D-19). The API answers with a stable
+// `code`; the wording belongs to the client, in the language of the selected market.
+const COPY = {
+  en: { unavailable: "Product temporarily unavailable", retryIn: (n) => `We'll try again in ${n} s.`,
+        later: "Please try again in a moment.", tryNow: "Try now", notFound: "Product not found",
+        notInMarket: "This product is not available in your country", generic: "Something went wrong" },
+  pl: { unavailable: "Produkt chwilowo niedostępny", retryIn: (n) => `Spróbujemy ponownie za ${n} s.`,
+        later: "Spróbuj ponownie za chwilę.", tryNow: "Spróbuj teraz", notFound: "Nie znaleziono produktu",
+        notInMarket: "Ten produkt nie jest dostępny w Twoim kraju", generic: "Coś poszło nie tak" },
+  de: { unavailable: "Produkt vorübergehend nicht verfügbar", retryIn: (n) => `Neuer Versuch in ${n} s.`,
+        later: "Bitte versuchen Sie es gleich noch einmal.", tryNow: "Jetzt versuchen", notFound: "Produkt nicht gefunden",
+        notInMarket: "Dieses Produkt ist in Ihrem Land nicht erhältlich", generic: "Etwas ist schiefgelaufen" },
+  nl: { unavailable: "Product tijdelijk niet beschikbaar", retryIn: (n) => `We proberen het over ${n} s opnieuw.`,
+        later: "Probeer het zo meteen opnieuw.", tryNow: "Nu proberen", notFound: "Product niet gevonden",
+        notInMarket: "Dit product is niet leverbaar in uw land", generic: "Er is iets misgegaan" },
+  fr: { unavailable: "Produit temporairement indisponible", retryIn: (n) => `Nouvel essai dans ${n} s.`,
+        later: "Veuillez réessayer dans un instant.", tryNow: "Réessayer maintenant", notFound: "Produit introuvable",
+        notInMarket: "Ce produit n'est pas disponible dans votre pays", generic: "Une erreur s'est produite" },
+};
+const TITLES = {
+  CATALOG_UNAVAILABLE: "unavailable", CATALOG_TIMEOUT: "unavailable",
+  PRODUCT_NOT_FOUND: "notFound", PRODUCT_NOT_IN_MARKET: "notInMarket",
+};
+const MAX_AUTOMATIC_RETRIES = 5;
+
 const $ = (id) => document.getElementById(id);
 
 /** Builds an element; strings become text nodes, so upstream data is never parsed as HTML. */
@@ -417,11 +451,11 @@ function correlationOf(body) {
   return body?.meta?.correlationId ?? body?.correlationId ?? null;
 }
 
-function renderProduct(result) {
+function renderProduct(result, mayRetry) {
   const view = $("product-view");
   const body = result.body;
   if (result.status !== 200 || !body?.product) {
-    view.replaceChildren(renderProblem(result));
+    view.replaceChildren(renderError(result, mayRetry));
     return;
   }
   const { product, pricing, availability, personalization } = body;
@@ -509,6 +543,61 @@ function renderProblem(result) {
     h("dl", {}, rows.map(([label, value]) => [h("dt", {}, label), h("dd", { class: "id" }, value)])));
 }
 
+// ---- customer view of an error and its automatic retry (D-19) ----
+
+// Only the person's own request retries by itself: a scenario or a burst never does, because the
+// extra requests would shift the breaker counts they show (TC-08, TC-11a).
+let retryTimer = null;
+let automaticRetries = 0;
+// Kept across re-renders, so an expanded "Technical details" stays open while a retry runs.
+let detailsOpen = false;
+
+function cancelRetry() {
+  clearInterval(retryTimer);
+  retryTimer = null;
+}
+
+function languageOf(market) {
+  return MARKETS.some(([code]) => code === market) ? market.slice(0, 2) : "en";
+}
+
+function renderError(result, mayRetry) {
+  const language = languageOf(result.request.market);
+  const copy = COPY[language];
+  const temporary = result.status === 503 || result.status === 504;
+  const seconds = Number(result.retryAfter);
+  const counting = mayRetry && result.status === 503 && Number.isInteger(seconds) && seconds > 0
+    && automaticRetries < MAX_AUTOMATIC_RETRIES;
+  const text = h("p", { "aria-live": "off" }, counting ? copy.retryIn(seconds) : temporary ? copy.later : null);
+  if (counting) startRetry(seconds, text, copy);
+  const details = h("details", { class: "problem-details", open: detailsOpen },
+    h("summary", {}, "Technical details"), renderProblem(result));
+  details.addEventListener("toggle", () => { detailsOpen = details.open; });
+  return h("div", {},
+    h("div", { class: "customer-error", "data-tone": temporary ? "temporary" : null, lang: language },
+      h("h3", {}, copy[TITLES[result.body?.code] ?? "generic"]),
+      temporary ? text : null,
+      temporary ? h("button", {
+        type: "button", class: "button button-primary", disabled: busy, onclick: () => sendSelected(),
+      }, copy.tryNow) : null),
+    details);
+}
+
+function startRetry(seconds, text, copy) {
+  cancelRetry();
+  let left = seconds;
+  retryTimer = setInterval(() => {
+    left--;
+    if (left > 0) {
+      text.textContent = copy.retryIn(left);
+      return;
+    }
+    cancelRetry();
+    automaticRetries++;
+    sendSelected({ automatic: true });
+  }, 1000);
+}
+
 // ---- timeline and circuit states ----
 
 let lastResult = null;
@@ -563,9 +652,9 @@ async function refreshCircuits() {
   return lastCircuits;
 }
 
-function show(result) {
+function show(result, mayRetry = false) {
   lastResult = result;
-  renderProduct(result);
+  renderProduct(result, mayRetry);
   renderTimeline();
 }
 
@@ -584,11 +673,13 @@ function selection() {
   return { product: $("product").value, market: $("market").value, customer: $("customer").value };
 }
 
-async function sendSelected() {
+async function sendSelected({ automatic = false } = {}) {
   if (busy) return;
+  cancelRetry();
+  if (!automatic) automaticRetries = 0;
   setBusy(true);
   try {
-    show(await requestProduct(selection()));
+    show(await requestProduct(selection()), true);
     await refreshCircuits();
   } catch (error) {
     $("product-view").replaceChildren(h("p", { class: "notice" }, `The aggregator did not answer: ${error.message}`));
@@ -743,6 +834,7 @@ function addRow(tbody, number, result) {
 
 async function fireBurst() {
   if (busy) return;
+  cancelRetry();
   setBusy(true);
   const status = $("burst-status");
   status.removeAttribute("data-tone");
@@ -859,6 +951,7 @@ function renderScenario(scenario) {
 
 async function runScenario(scenario) {
   if (busy) return;
+  cancelRetry();
   setBusy(true);
   const { status, rows } = renderScenario(scenario);
   const log = (text) => { status.textContent = text; };
@@ -913,7 +1006,7 @@ buildChaosRows();
 buildScenarioList();
 renderTimeline();
 $("request-form").addEventListener("submit", (event) => { event.preventDefault(); sendSelected(); });
-["product", "market", "customer"].forEach((id) => $(id).addEventListener("change", sendSelected));
+["product", "market", "customer"].forEach((id) => $(id).addEventListener("change", () => sendSelected()));
 $("fire").addEventListener("click", fireBurst);
 $("reset").addEventListener("click", resetMocks);
 refreshChaos();
