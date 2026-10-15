@@ -99,7 +99,7 @@ jq --arg header "$header_id" --arg type "$content_type" \
   '{contentType: $type, status, code, detail, correlationId, sameAsHeader: (.correlationId == $header)}' "$tmp/body"
 
 section "TC-08 Pricing starts timing out: Pricing in TIMEOUT mode, 20 requests" \
-  "1-10 pricing UNAVAILABLE, source TIMEOUT, ≈ 300 ms; 11-20 CIRCUIT_OPEN, < 150 ms; product and stock still shown"
+  "1-10 pricing UNAVAILABLE, source TIMEOUT, ≈ 300 ms; 11-20 CIRCUIT_OPEN in ≈ 0 ms (no call to Pricing), total without Pricing's 300 ms wait; product and stock still shown"
 chaos pricing '{"mode":"TIMEOUT"}'
 for i in $(seq 20); do pricing_row "$i"; done
 echo "   circuits: $(breakers)"
