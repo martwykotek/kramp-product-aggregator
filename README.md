@@ -251,7 +251,8 @@ Every decision, its alternatives and who took it: [docs/design/decision-log.md](
   found" only when the body has the upstream's own error shape, so a missing route is not mistaken for an
   empty catalogue (F10); a contract violation in one record should not count against the whole upstream's
   circuit (F11); a cap on buffered upstream bodies, and a `Throwable` inside a source releasing its breaker
-  permission (F6).
+  permission (F6); one clock for interrupted calls, so the summary line and the circuit breaker always agree
+  on whether a call cut short at a deadline timed out (re-review N1).
 
 ## Design question A — Related Products
 

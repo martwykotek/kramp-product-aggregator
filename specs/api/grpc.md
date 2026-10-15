@@ -21,7 +21,7 @@ None in this leaf.
 |----|-------------|-------|--------|
 | REQ-API-GRPC-001 | automated | AT-GRPC-01 · ProductGrpcIT#shouldReturnSameViewAsRestWhenAllUpstreamsAnswer | ✅ |
 | REQ-API-GRPC-002 | automated | AT-GRPC-02 · ProductGrpcIT#shouldMapFailureToGrpcStatusWhenRequestFails, #shouldAnswerInternalAndLogOnceWhenViewServiceFailsUnexpectedly | ✅ |
-| REQ-API-GRPC-003 | observed | TC-14 (grpcurl list) | ❌ no evidence — GAP |
+| REQ-API-GRPC-003 | observed | TC-14 (grpcurl list) | ✅ |
 
 ## Where the code lives
 `aggregator/src/main/proto/product_aggregator.proto`, `aggregator/src/main/java/com/kramp/aggregator/api/grpc/`.

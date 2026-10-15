@@ -25,14 +25,14 @@ Owns: REQ-DEMO-PAGE-*, RC-DEMO-PAGE-*
 ## How it's proven
 | ID | Resolved by | Proof | Status |
 |----|-------------|-------|--------|
-| REQ-DEMO-PAGE-001 | observed | TC-15 | ❌ no evidence — GAP |
-| REQ-DEMO-PAGE-002 | observed | TC-15 | ❌ no evidence — GAP |
-| REQ-DEMO-PAGE-003 | observed | TC-15 | ❌ no evidence — GAP |
-| REQ-DEMO-PAGE-004 | observed | TC-15 | ❌ no evidence — GAP |
-| REQ-DEMO-PAGE-005 | observed | TC-15 | ❌ no evidence — GAP |
-| REQ-DEMO-PAGE-006 | observed | TC-15 | ❌ no evidence — GAP |
-| RC-DEMO-PAGE-001 | observed | TC-15 | ❌ no evidence — GAP |
-| RC-DEMO-PAGE-002 | observed | TC-18 | ❌ no evidence — GAP |
+| REQ-DEMO-PAGE-001 | observed | TC-15 | ✅ |
+| REQ-DEMO-PAGE-002 | observed | TC-15 | ✅ |
+| REQ-DEMO-PAGE-003 | observed | TC-15 | ✅ |
+| REQ-DEMO-PAGE-004 | observed | TC-15 | ✅ |
+| REQ-DEMO-PAGE-005 | observed | TC-15 | ✅ |
+| REQ-DEMO-PAGE-006 | observed | TC-15 | ✅ |
+| RC-DEMO-PAGE-001 | observed | TC-15 | ✅ |
+| RC-DEMO-PAGE-002 | observed | TC-18 | ✅ |
 
 ## Where the code lives
 `aggregator/src/main/resources/static/index.html`.
