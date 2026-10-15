@@ -22,6 +22,7 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.Matchers.startsWith;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.request;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -51,6 +52,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.system.CapturedOutput;
 import org.springframework.boot.test.system.OutputCaptureExtension;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -524,45 +526,73 @@ class ProductRestApiIT {
       return Stream.of(
           arguments(
               "unsupported market",
+              HttpMethod.GET,
               "/api/v1/products/W6103?market=xx-XX",
               null,
               400,
               "UNSUPPORTED_MARKET"),
           arguments(
-              "malformed id", "/api/v1/products/W6103$?market=pl-PL", null, 400, "INVALID_REQUEST"),
-          arguments("missing market", "/api/v1/products/W6103", null, 400, "INVALID_REQUEST"),
+              "malformed id",
+              HttpMethod.GET,
+              "/api/v1/products/W6103$?market=pl-PL",
+              null,
+              400,
+              "INVALID_REQUEST"),
+          arguments(
+              "missing market",
+              HttpMethod.GET,
+              "/api/v1/products/W6103",
+              null,
+              400,
+              "INVALID_REQUEST"),
           arguments(
               "unknown product",
+              HttpMethod.GET,
               "/api/v1/products/W6103?market=pl-PL",
               UpstreamStubs.catalogNotFound("PRODUCT_NOT_FOUND"),
               404,
               "PRODUCT_NOT_FOUND"),
           arguments(
               "not in market",
+              HttpMethod.GET,
               "/api/v1/products/10112PB?market=pl-PL",
               UpstreamStubs.catalogNotFound("NOT_IN_ASSORTMENT"),
               404,
               "PRODUCT_NOT_IN_MARKET"),
           arguments(
               "catalog 500",
+              HttpMethod.GET,
               "/api/v1/products/W6103?market=pl-PL",
               UpstreamStubs.serverError(UpstreamStubs.CATALOG),
               503,
               "CATALOG_UNAVAILABLE"),
           arguments(
               "catalog slow",
+              HttpMethod.GET,
               "/api/v1/products/W6103?market=pl-PL",
               UpstreamStubs.slow(UpstreamStubs.CATALOG, 1000),
               504,
               "CATALOG_TIMEOUT"),
-          arguments("unknown path", "/api/v1/nope", null, 404, "NOT_FOUND"));
+          arguments("unknown path", HttpMethod.GET, "/api/v1/nope", null, 404, "NOT_FOUND"),
+          arguments(
+              "wrong method",
+              HttpMethod.POST,
+              "/api/v1/products/W6103?market=pl-PL",
+              null,
+              405,
+              "INVALID_REQUEST"));
     }
 
     // proves: REQ-API-REST-003
     @ParameterizedTest(name = "{0}")
     @MethodSource("failingRequests")
     void shouldRenderProblemJsonWhenRequestFails(
-        String label, String uri, MappingBuilder catalog, int expectedStatus, String code)
+        String label,
+        HttpMethod method,
+        String uri,
+        MappingBuilder catalog,
+        int expectedStatus,
+        String code)
         throws Exception {
       // Given
       UpstreamStubs.standard(UPSTREAMS);
@@ -571,7 +601,7 @@ class ProductRestApiIT {
       }
 
       // When
-      MvcResult result = mvc.perform(get(uri)).andReturn();
+      MvcResult result = mvc.perform(request(method, uri)).andReturn();
 
       // Then
       assertThat(result.getResponse().getStatus()).isEqualTo(expectedStatus);

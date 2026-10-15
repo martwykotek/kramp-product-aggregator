@@ -22,6 +22,7 @@ Owns: REQ-AGG-MARKET-*
 | en-GB | en | GBP |
 
 - Codes are normalised to `ll-CC`; any casing and `_` as separator are accepted.
+- A configured market whose language has no label bundle (`messages_ll.properties`) stops the start-up; it never falls back to the English base bundle.
 - Catalog falls back to English when the market language is missing; `language` reports what was served, labels stay in the market language.
 - Availability labels show the delivery date formatted for the market locale (`FormatStyle.MEDIUM`), never relative words like "tomorrow".
 - A price quoted in another currency is never shown: pricing becomes UNAVAILABLE and the response is degraded.
@@ -38,12 +39,12 @@ None in this leaf.
 | REQ-AGG-MARKET-003 | automated | AT-MARKET-03 · CatalogSourceTest#shouldRequestMarketLanguageWhenFetching | ✅ |
 | REQ-AGG-MARKET-004 | automated | AT-MARKET-04 · ProductRestApiIT#shouldReportServedLanguageWhenCatalogFallsBack | ✅ |
 | REQ-AGG-MARKET-005 | automated | AT-MARKET-05 · PriceFormatterTest#shouldFormatForMarketLocaleWhenFormatting | ✅ |
-| REQ-AGG-MARKET-006 | automated | AT-MARKET-06 · LabelsTest#shouldTranslateEveryKeyWhenMarketLanguageRequested | ✅ |
+| REQ-AGG-MARKET-006 | automated | AT-MARKET-06 · LabelsTest#shouldTranslateEveryKeyWhenMarketLanguageRequested, AggregationConfigTest#shouldRefuseToStartWhenMarketLanguageHasNoLabelBundle | ✅ |
 | REQ-AGG-MARKET-007 | automated | AT-MARKET-07 · ProductRestApiIT#shouldReturn404WhenProductOutsideMarketAssortment | ✅ |
 | REQ-AGG-MARKET-008 | automated | AT-ROB-04 · PricingSourceTest#shouldFailAsUnavailableWhenCurrencyDoesNotMatchMarket | ✅ |
 
 ## Where the code lives
-`aggregator/src/main/java/com/kramp/aggregator/market/`, `…/presentation/`, `…/source/pricing/`, `aggregator/src/main/resources/messages*.properties`.
+`aggregator/src/main/java/com/kramp/aggregator/market/`, `…/presentation/`, `…/source/pricing/`, `…/config/AggregationConfig.java` (label bundle check), `aggregator/src/main/resources/messages*.properties`.
 
 ## Connected
 UR-2.

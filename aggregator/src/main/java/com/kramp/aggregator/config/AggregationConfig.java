@@ -103,11 +103,34 @@ class AggregationConfig {
       MarketRegistry markets,
       ProductAggregationService aggregation,
       MessageSource messages) {
+    Labels labels = new Labels(messages);
+    requireLabelBundles(markets, labels);
     return new ProductViewService(
         markets,
         aggregation,
-        new ProductViewAssembler(new Labels(messages)),
+        new ProductViewAssembler(labels),
         properties.circuitBreaker().waitInOpenState());
+  }
+
+  /**
+   * A market whose language has no bundle would get the base bundle's English labels without any
+   * error, so it is a deployment mistake and stops startup.
+   */
+  private static void requireLabelBundles(MarketRegistry markets, Labels labels) {
+    for (String code : markets.supportedCodes()) {
+      Market market = markets.resolve(code);
+      if (!labels.hasBundleFor(market.locale())) {
+        throw new IllegalStateException(
+            "market "
+                + code
+                + " has no label bundle for its language "
+                + market.language()
+                + ": add messages_"
+                + market.language()
+                + ".properties with bundle.language="
+                + market.language());
+      }
+    }
   }
 
   private static <T> GuardedSource<T> guard(

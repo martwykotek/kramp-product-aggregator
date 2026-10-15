@@ -13,7 +13,7 @@ Owns: REQ-API-REST-*, RC-API-REST-*
 
 ## Rules & invariants
 - `productId` matches `[A-Za-z0-9-]{1,40}`; `X-Customer-Id`, when present, matches `[A-Za-z0-9-]{1,64}`. Nothing is sent upstream for an invalid request. A `customerId` query parameter is ignored: the contract is header-only.
-- Error codes: UNSUPPORTED_MARKET (400, with `supportedMarkets`), INVALID_REQUEST (400, also for a missing `market`), PRODUCT_NOT_FOUND and PRODUCT_NOT_IN_MARKET (404), NOT_FOUND (404, unknown path), CATALOG_UNAVAILABLE (503), CATALOG_TIMEOUT (504), INTERNAL_ERROR (500, generic detail, never a stack trace).
+- Error codes: UNSUPPORTED_MARKET (400, with `supportedMarkets`), INVALID_REQUEST (400, also for a missing `market`), PRODUCT_NOT_FOUND and PRODUCT_NOT_IN_MARKET (404), NOT_FOUND (404, unknown path), CATALOG_UNAVAILABLE (503), CATALOG_TIMEOUT (504), INTERNAL_ERROR (500, generic detail, never a stack trace). The set is closed: any other client error (e.g. 405 for a wrong method) keeps its status and is INVALID_REQUEST; any server error not listed keeps its status and is INTERNAL_ERROR with the generic detail, logged as `request_failed_unexpectedly`.
 - `Retry-After` on CATALOG_UNAVAILABLE is the configured open-state wait in seconds (an upper bound) when the circuit is open, otherwise 1.
 
 ## Risk controls
@@ -24,7 +24,7 @@ Owns: REQ-API-REST-*, RC-API-REST-*
 |----|-------------|-------|--------|
 | REQ-API-REST-001 | automated | AT-VIEW-01 · ProductRestApiIT#shouldReturnAggregatedViewWhenAllUpstreamsAnswer | ✅ |
 | REQ-API-REST-002 | automated | AT-REST-02 · ProductRestApiIT#shouldPersonalizeWhenCustomerHeaderPresent | ✅ |
-| REQ-API-REST-003 | automated | AT-REST-03 · ProductRestApiIT#shouldRenderProblemJsonWhenRequestFails | ✅ |
+| REQ-API-REST-003 | automated | AT-REST-03 · ProductRestApiIT#shouldRenderProblemJsonWhenRequestFails, ProblemDetailsAdviceTest#shouldAnswerInternalErrorWhenSpringRaisesServerError | ✅ |
 | REQ-API-REST-004 | automated | AT-REST-04 · ProductRestApiIT#shouldReturn400WhenProductIdMalformed | ✅ |
 | REQ-API-REST-005 | automated | AT-REST-05 · ProductRestApiIT#shouldAdviseRetryAfterWhenCatalogCircuitOpen | ✅ |
 | REQ-API-REST-006 | automated | AT-REST-06 · ProductRestApiIT#shouldPublishOpenApiWhenRequested | ✅ |

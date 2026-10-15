@@ -23,6 +23,9 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 class ProblemDetailsAdvice extends ResponseEntityExceptionHandler {
 
   private static final Logger log = LoggerFactory.getLogger(ProblemDetailsAdvice.class);
+  private static final String UNEXPECTED_FAILURE = "request_failed_unexpectedly";
+  private static final String INTERNAL_ERROR = "INTERNAL_ERROR";
+  private static final String GENERIC_DETAIL = "The request could not be processed";
 
   @ExceptionHandler(ProductViewException.class)
   ResponseEntity<ProblemDetail> productView(ProductViewException failure) {
@@ -43,13 +46,17 @@ class ProblemDetailsAdvice extends ResponseEntityExceptionHandler {
   /** A bug, not an upstream failure: those never leave the aggregation as exceptions. */
   @ExceptionHandler(Exception.class)
   ResponseEntity<ProblemDetail> unexpected(Exception failure) {
-    log.error("request_failed_unexpectedly", failure);
+    log.error(UNEXPECTED_FAILURE, failure);
     HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
-    return ResponseEntity.status(status)
-        .body(problem(status, "The request could not be processed", "INTERNAL_ERROR"));
+    return ResponseEntity.status(status).body(problem(status, GENERIC_DETAIL, INTERNAL_ERROR));
   }
 
-  /** Spring's own problems (unknown path, missing parameter, wrong method) get our fields too. */
+  /**
+   * Spring's own problems (unknown path, missing parameter, wrong method) get our fields too. The
+   * code set stays closed so clients can switch on it: a client error Spring raises is
+   * INVALID_REQUEST, anything else is a failure on our side and is reported like {@link
+   * #unexpected}.
+   */
   @Override
   protected ResponseEntity<Object> handleExceptionInternal(
       Exception failure,
@@ -57,9 +64,17 @@ class ProblemDetailsAdvice extends ResponseEntityExceptionHandler {
       HttpHeaders headers,
       HttpStatusCode statusCode,
       WebRequest request) {
+    boolean clientError = statusCode.is4xxClientError();
+    if (!clientError) {
+      // Logged before the response is built: Spring builds none once the response is committed.
+      log.error(UNEXPECTED_FAILURE, failure);
+    }
     ResponseEntity<Object> response =
         super.handleExceptionInternal(failure, body, headers, statusCode, request);
     if (response != null && response.getBody() instanceof ProblemDetail problem) {
+      if (!clientError) {
+        problem.setDetail(GENERIC_DETAIL);
+      }
       problem.setProperty("code", codeOf(statusCode));
       problem.setProperty("correlationId", CorrelationId.current());
     }
@@ -83,10 +98,9 @@ class ProblemDetailsAdvice extends ResponseEntityExceptionHandler {
   }
 
   private static String codeOf(HttpStatusCode status) {
-    return switch (status.value()) {
-      case 400 -> ErrorCode.INVALID_REQUEST.name();
-      case 404 -> "NOT_FOUND";
-      default -> HttpStatus.valueOf(status.value()).name();
-    };
+    if (status.isSameCodeAs(HttpStatus.NOT_FOUND)) {
+      return "NOT_FOUND";
+    }
+    return status.is4xxClientError() ? ErrorCode.INVALID_REQUEST.name() : INTERNAL_ERROR;
   }
 }
