@@ -9,12 +9,16 @@ import com.kramp.aggregator.presentation.ProductViewException;
 import com.kramp.aggregator.presentation.ProductViewService;
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.grpc.server.service.GrpcService;
 
 /** gRPC `GetProduct`: the same service and the same view as REST, with gRPC status codes. */
 @GrpcService
 final class ProductGrpcService extends ProductAggregatorGrpc.ProductAggregatorImplBase {
+
+  private static final Logger log = LoggerFactory.getLogger(ProductGrpcService.class);
 
   private final ProductViewService views;
 
@@ -36,6 +40,14 @@ final class ProductGrpcService extends ProductAggregatorGrpc.ProductAggregatorIm
     } catch (ProductViewException failure) {
       responses.onError(
           status(failure.code()).withDescription(description(failure)).asRuntimeException());
+    } catch (RuntimeException failure) {
+      // A bug or an interrupted aggregation, never an upstream failure; left to Spring gRPC it
+      // would be logged at DEBUG only and reach the client as UNKNOWN.
+      log.error("request_failed_unexpectedly", failure);
+      responses.onError(
+          Status.INTERNAL
+              .withDescription("The request could not be processed")
+              .asRuntimeException());
     } finally {
       MDC.remove(CorrelationId.MDC_KEY);
     }

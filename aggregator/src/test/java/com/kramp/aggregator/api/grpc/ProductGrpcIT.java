@@ -8,6 +8,9 @@ import static com.kramp.aggregator.testing.SharedWireMock.UPSTREAMS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowableOfType;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -18,6 +21,7 @@ import com.jayway.jsonpath.JsonPath;
 import com.kramp.aggregator.api.grpc.v1.GetProductRequest;
 import com.kramp.aggregator.api.grpc.v1.ProductAggregatorGrpc;
 import com.kramp.aggregator.api.grpc.v1.ProductView;
+import com.kramp.aggregator.presentation.ProductViewService;
 import com.kramp.aggregator.testing.SharedWireMock;
 import com.kramp.aggregator.testing.UpstreamStubs;
 import io.github.resilience4j.circuitbreaker.CircuitBreaker;
@@ -32,11 +36,13 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -44,9 +50,12 @@ import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.system.CapturedOutput;
+import org.springframework.boot.test.system.OutputCaptureExtension;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest(
@@ -58,6 +67,7 @@ class ProductGrpcIT {
 
   @Autowired MockMvc mvc;
   @Autowired CircuitBreakerRegistry breakers;
+  @MockitoSpyBean ProductViewService views;
 
   ManagedChannel channel;
   ProductAggregatorGrpc.ProductAggregatorBlockingStub grpc;
@@ -266,6 +276,67 @@ class ProductGrpcIT {
           .isNotBlank()
           .doesNotContain("UPSTREAM-SECRET-42", "Internal Server Error");
       assertThat(mentioned).allSatisfy(text -> assertThat(description).contains(text));
+    }
+  }
+
+  @Nested
+  @ExtendWith(OutputCaptureExtension.class)
+  class UnexpectedFailure {
+
+    static final String BUG_TEXT = "BUG-SECRET-7 mapper field was null";
+
+    // proves: REQ-API-GRPC-002
+    @Test
+    void shouldAnswerInternalAndLogOnceWhenViewServiceFailsUnexpectedly(CapturedOutput output) {
+      // Given
+      doThrow(new IllegalStateException(BUG_TEXT)).when(views).view(any(), any(), any());
+      Metadata metadata = new Metadata();
+      metadata.put(Correlation.HEADER, "grpc-corr-bug");
+
+      // When
+      StatusRuntimeException failure =
+          catchThrowableOfType(
+              StatusRuntimeException.class,
+              () ->
+                  grpc.withInterceptors(MetadataUtils.newAttachHeadersInterceptor(metadata))
+                      .getProduct(
+                          request("W6103", "pl-PL").toBuilder().setCustomerId("C-1002").build()));
+
+      // Then
+      assertThat(failure.getStatus().getCode()).isEqualTo(Status.Code.INTERNAL);
+      assertThat(failure.getStatus().getDescription())
+          .isEqualTo("The request could not be processed")
+          .doesNotContain("BUG-SECRET-7");
+      assertThat(
+              output.getAll().lines().filter(line -> line.contains("request_failed_unexpectedly")))
+          .singleElement()
+          .asString()
+          .contains("[grpc-corr-bug]");
+      assertThat(output.getAll()).doesNotContain("C-1002");
+    }
+  }
+
+  @Nested
+  class Threading {
+
+    @Test
+    void shouldServeGetProductOnVirtualThreadWhenClientCalls() {
+      // Given
+      UpstreamStubs.standard(UPSTREAMS);
+      AtomicReference<Thread> handler = new AtomicReference<>();
+      doAnswer(
+              call -> {
+                handler.set(Thread.currentThread());
+                return call.callRealMethod();
+              })
+          .when(views)
+          .view(any(), any(), any());
+
+      // When
+      grpc.getProduct(request("W6103", "pl-PL"));
+
+      // Then
+      assertThat(handler.get().isVirtual()).as("GetProduct served on %s", handler.get()).isTrue();
     }
   }
 
