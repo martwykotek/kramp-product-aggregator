@@ -43,6 +43,7 @@ public sealed interface SourceOutcome<T> {
         case TIMEOUT -> SourceStatus.TIMEOUT;
         case ERROR -> SourceStatus.ERROR;
         case CIRCUIT_OPEN -> SourceStatus.CIRCUIT_OPEN;
+        case CANCELLED -> SourceStatus.CANCELLED;
       };
     }
   }

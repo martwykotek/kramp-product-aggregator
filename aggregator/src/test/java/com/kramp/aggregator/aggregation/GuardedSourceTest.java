@@ -3,6 +3,7 @@ package com.kramp.aggregator.aggregation;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
+import com.kramp.aggregator.testing.Awaits;
 import com.kramp.aggregator.testing.FakeNanoClock;
 import com.kramp.aggregator.testing.FakeSource;
 import com.kramp.aggregator.testing.FakeSource.Step;
@@ -265,8 +266,9 @@ class GuardedSourceTest {
 
       // When — cancelled 15 times, as when Catalog has already failed
       for (int i = 0; i < 15; i++) {
+        int started = i + 1;
         Thread caller = Thread.ofVirtual().start(() -> outcomes.add(guarded.call(REQUEST)));
-        Thread.sleep(20);
+        Awaits.until(() -> hanging.invocations() == started, Duration.ofSeconds(1));
         caller.interrupt();
         caller.join();
       }
@@ -275,11 +277,35 @@ class GuardedSourceTest {
       assertThat(outcomes)
           .hasSize(15)
           .extracting(SourceOutcome::status)
-          .containsOnly(SourceStatus.TIMEOUT);
+          .containsOnly(SourceStatus.CANCELLED);
       assertThat(hanging.interruptions()).isEqualTo(15);
       assertThat(breaker.getState()).isEqualTo(CircuitBreaker.State.CLOSED);
       assertThat(breaker.getMetrics().getNumberOfFailedCalls()).isZero();
       assertThat(breaker.getMetrics().getNumberOfBufferedCalls()).isZero();
+    }
+
+    // proves: REQ-AGG-RES-014
+    @Test
+    void shouldCountInterruptedRetryAsTimeoutWhenBudgetIsSpent() throws InterruptedException {
+      // Given — a fast 5xx leaves 200 ms of the 300 ms budget, so the retry starts and hangs;
+      // real time, because the orchestrator interrupts the calling thread
+      FakeSource<String> fake =
+          FakeSource.<String>optional("pricing")
+              .then(Step.unavailable(ms(100)), Step.value("quote", Duration.ofSeconds(2)));
+      GuardedSource<String> guarded = new GuardedSource<>(fake, PRICING, breaker, System::nanoTime);
+      List<SourceOutcome<String>> outcomes = new CopyOnWriteArrayList<>();
+
+      // When — interrupted once the budget is spent, as the orchestrator does at its deadline
+      Thread caller = Thread.ofVirtual().start(() -> outcomes.add(guarded.call(REQUEST)));
+      Awaits.until(() -> fake.invocations() == 2, Duration.ofSeconds(1));
+      Thread.sleep(PRICING.timeout().plus(ms(30)));
+      caller.interrupt();
+      caller.join();
+
+      // Then — both attempts count against the upstream
+      assertThat(outcomes).extracting(SourceOutcome::status).containsExactly(SourceStatus.TIMEOUT);
+      assertThat(breaker.getMetrics().getNumberOfFailedCalls()).isEqualTo(2);
+      assertThat(breaker.getMetrics().getNumberOfBufferedCalls()).isEqualTo(2);
     }
   }
 }

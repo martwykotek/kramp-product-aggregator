@@ -50,6 +50,10 @@ class AggregatorPropertiesTest {
               set("aggregator.sources.pricing.timeout", "600ms"),
               "aggregator.sources.pricing.timeout"),
           arguments(
+              "availability timeout leaving no room for the 25 ms grace before the deadline",
+              set("aggregator.sources.availability.timeout", "490ms"),
+              "aggregator.sources.availability.timeout"),
+          arguments(
               "pricing typical latency not below its timeout",
               set("aggregator.sources.pricing.typical-latency", "300ms"),
               "aggregator.sources.pricing.typical-latency"),

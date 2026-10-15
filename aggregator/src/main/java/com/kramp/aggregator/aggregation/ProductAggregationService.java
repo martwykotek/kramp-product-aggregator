@@ -119,23 +119,29 @@ public final class ProductAggregationService {
     }
   }
 
-  /** Finished calls keep their outcome; the rest are interrupted and reported as TIMEOUT. */
-  private static void cancelUnfinished(
+  /**
+   * Finished calls keep their outcome; the rest are interrupted. A call already past its own
+   * deadline timed out; any other was cancelled because the request had failed without it.
+   */
+  private void cancelUnfinished(
       Map<String, Future<? extends SourceOutcome<?>>> running,
       Map<String, SourceOutcome<?>> outcomes,
       long start) {
-    running.forEach(
-        (name, future) -> {
-          if (outcomes.get(name) != null) {
-            return;
-          }
-          if (future.state() == Future.State.SUCCESS) {
-            outcomes.put(name, future.resultNow());
-          } else {
-            future.cancel(true);
-            outcomes.put(name, new SourceOutcome.Failed<>(FailureKind.TIMEOUT, since(start)));
-          }
-        });
+    long now = System.nanoTime();
+    for (GuardedSource<?> source : sources) {
+      Future<? extends SourceOutcome<?>> future = running.get(source.name());
+      if (future == null || outcomes.get(source.name()) != null) {
+        continue;
+      }
+      if (future.state() == Future.State.SUCCESS) {
+        outcomes.put(source.name(), future.resultNow());
+        continue;
+      }
+      future.cancel(true);
+      FailureKind kind =
+          now - deadlineOf(source, start) >= 0 ? FailureKind.TIMEOUT : FailureKind.CANCELLED;
+      outcomes.put(source.name(), new SourceOutcome.Failed<>(kind, since(start)));
+    }
   }
 
   private static Duration since(long start) {

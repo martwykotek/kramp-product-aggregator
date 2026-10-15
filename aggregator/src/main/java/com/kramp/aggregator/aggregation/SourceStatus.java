@@ -6,5 +6,6 @@ public enum SourceStatus {
   NOT_FOUND,
   TIMEOUT,
   ERROR,
-  CIRCUIT_OPEN
+  CIRCUIT_OPEN,
+  CANCELLED
 }

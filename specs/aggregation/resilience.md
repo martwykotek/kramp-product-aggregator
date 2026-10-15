@@ -32,10 +32,10 @@ Owns: REQ-AGG-RES-*, RC-AGG-RES-*
 | customer | 60 ms | 200 ms | OPTIONAL |
 | global deadline | — | 500 ms | safety net |
 
-- A budget covers all attempts of one call. Each attempt is bounded by the HTTP read timeout (= budget) and by the orchestrator, which waits budget + 25 ms grace (never past the global deadline) so the client's own timeout fires first and is recorded by the breaker.
+- A budget covers all attempts of one call. Each attempt is bounded by the HTTP read timeout (= budget) and by the orchestrator, which waits budget + 25 ms grace (never past the global deadline) so the client's own timeout fires first and is recorded by the breaker. Every budget therefore leaves room for the grace: budget + 25 ms ≤ global deadline, otherwise the application refuses to start (REQ-AGG-RES-018).
 - Retry: at most one, only after a fast failure (a 5xx answer) and only while the remaining budget is at least the source's typical latency. Never after a timeout, a not-found answer or an unusable body. A connection refused or reset before any answer is resent once by the JDK HTTP client itself, so the aggregator does not retry it again: every failure costs at most two upstream calls (decision I-33).
 - Circuit breaker per source: count-based window 20, minimum 10 calls, failure-rate threshold 50%, open 10 s, 3 half-open trial calls; the state is decided after the third trial (two or more failures re-open it). Every attempt, retries included, counts.
-- Calls the aggregator cancels (the request was already decided) release their breaker permission and are not recorded.
+- An attempt the aggregator interrupts after the source's budget is spent counts as that source's timeout (for example a retry that started with a full read timeout). An attempt interrupted earlier was cancelled because the request was already decided: it releases its breaker permission, is not recorded and is reported as CANCELLED.
 
 | Source | Ok | Not found | Failed (timeout / error / circuit open) | Skipped |
 |---|---|---|---|---|
@@ -64,14 +64,14 @@ Owns: REQ-AGG-RES-*, RC-AGG-RES-*
 | REQ-AGG-RES-011 | automated | AT-RES-11 · ProductAggregationServiceTest#shouldFinishWithinGlobalDeadlineWhenAllSourcesHang | ✅ |
 | REQ-AGG-RES-012 | automated | AT-RES-12 · GuardedSourceTest#shouldRetryOnceWhenFastFailureLeavesBudget, #shouldNotRetryWhenRemainingBudgetBelowTypicalLatency | ✅ |
 | REQ-AGG-RES-013 | automated | AT-RES-13 · GuardedSourceTest#shouldNotRetryWhenTimeoutOrNotFound | ✅ |
-| REQ-AGG-RES-014 | automated | AT-RES-14 · GuardedSourceTest#shouldOpenCircuitWhenHalfOfLastTwentyCallsFail; AT-RES-14b · ProductRestApiIT#shouldOpenPricingCircuitWhenPricingKeepsTimingOut | ✅ |
+| REQ-AGG-RES-014 | automated | AT-RES-14 · GuardedSourceTest#shouldOpenCircuitWhenHalfOfLastTwentyCallsFail; AT-RES-14b · ProductRestApiIT#shouldOpenPricingCircuitWhenPricingKeepsTimingOut; AT-RES-14c · GuardedSourceTest#shouldCountInterruptedRetryAsTimeoutWhenBudgetIsSpent | ✅ |
 | REQ-AGG-RES-015 | automated | AT-RES-15 · ProductRestApiIT#shouldShortCircuitPricingWhenCircuitOpen | ✅ |
 | REQ-AGG-RES-016 | automated | AT-RES-16 · GuardedSourceTest#shouldResumeAfterOpenPeriodWhenTrialCallsSucceed, #shouldReopenWhenTrialCallsFail | ✅ |
 | REQ-AGG-RES-017 | automated | AT-RES-17 · GuardedSourceTest#shouldIgnoreNotFoundWhenCountingFailures | ✅ |
 | REQ-AGG-RES-018 | automated | AT-RES-18 · AggregatorPropertiesTest#shouldRefuseToStartWhenBudgetsInvalid | ✅ |
 | REQ-AGG-RES-019 | automated | AT-ROB-03 · CatalogSourceTest#shouldFailAsUnavailableWhenBodyIsEmpty, PricingSourceTest#shouldFailAsUnavailableWhenRequiredFieldMissing | ✅ |
 | RC-AGG-RES-001 | automated | AT-RES-RC1 · ProductRestApiIT#shouldKeepDiscountWhenCustomerFails | ✅ |
-| RC-AGG-RES-002 | automated | AT-ROB-06 · GuardedSourceTest#shouldNotCountCancellationWhenRequestAlreadyFailed; AT-RES-14b | ✅ |
+| RC-AGG-RES-002 | automated | AT-ROB-06 · GuardedSourceTest#shouldNotCountCancellationWhenRequestAlreadyFailed; AT-ROB-07 · ProductAggregationServiceTest#shouldReportUnfinishedSourcesAsCancelledUnlessPastTheirDeadline; AT-RES-14b | ✅ |
 
 ## Where the code lives
 `aggregator/src/main/java/com/kramp/aggregator/aggregation/` (`GuardedSource`, `ProductAggregationService`), `…/config/AggregatorProperties.java`, `…/source/UpstreamHttp.java`.

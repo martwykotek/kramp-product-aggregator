@@ -63,12 +63,20 @@ public final class GuardedSource<T> {
         // upstream.
         breaker.releasePermission();
         return new SourceOutcome.NotFound<>(notFound.reason(), since(start));
-      } catch (RuntimeException failure) {
+      } catch (RuntimeException thrown) {
+        RuntimeException failure = thrown;
         if (Thread.currentThread().isInterrupted()) {
-          // Cancelled by the orchestrator because the request was already decided; says nothing
-          // about this upstream's health (RC-AGG-RES-002). Reported as TIMEOUT for the log only.
-          breaker.releasePermission();
-          return new SourceOutcome.Failed<>(FailureKind.TIMEOUT, since(start));
+          if (remaining(start) > 0) {
+            // Cancelled because the request was already decided; says nothing about this
+            // upstream's health (RC-AGG-RES-002).
+            breaker.releasePermission();
+            return new SourceOutcome.Failed<>(FailureKind.CANCELLED, since(start));
+          }
+          // The orchestrator stopped waiting because this call ran past its budget, e.g. a retry
+          // that started with a full read timeout: that is this upstream's timeout.
+          failure =
+              new UpstreamTimeoutException(
+                  source.name(), source.name() + " did not answer within its budget");
         }
         breaker.onError(nanoTime.getAsLong() - attemptStart, TimeUnit.NANOSECONDS, failure);
         log.warn(

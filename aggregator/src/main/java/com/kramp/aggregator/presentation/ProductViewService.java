@@ -92,6 +92,9 @@ public final class ProductViewService {
             case TIMEOUT -> error(ErrorCode.CATALOG_TIMEOUT, "The catalog did not answer in time");
             case ERROR -> unavailable(ERROR_RETRY_AFTER);
             case CIRCUIT_OPEN -> unavailable(openCircuitRetryAfter);
+            case CANCELLED ->
+                throw new IllegalStateException(
+                    "the required source decides the request and is never cancelled");
           };
       case SourceOutcome.Ok<?> ok ->
           throw new IllegalStateException("a required source that answered cannot fail");

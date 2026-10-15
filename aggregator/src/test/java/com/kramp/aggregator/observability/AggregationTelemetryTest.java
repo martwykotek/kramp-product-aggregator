@@ -80,14 +80,15 @@ class AggregationTelemetryTest {
     return new AggregationResult(ANONYMOUS, outcomes, false, Duration.ofMillis(99));
   }
 
-  /** Catalog answered 503; the calls still running were cancelled and are reported as TIMEOUT. */
+  /** Catalog answered 503; the calls still running were cancelled. */
   static RequiredSourceFailedException catalogFailed() {
     SourceOutcome<?> catalog = new SourceOutcome.Failed<>(FailureKind.ERROR, Duration.ofMillis(7));
     Map<String, SourceOutcome<?>> outcomes = new LinkedHashMap<>();
     outcomes.put("catalog", catalog);
-    outcomes.put("pricing", new SourceOutcome.Failed<>(FailureKind.TIMEOUT, Duration.ofMillis(8)));
     outcomes.put(
-        "availability", new SourceOutcome.Failed<>(FailureKind.TIMEOUT, Duration.ofMillis(8)));
+        "pricing", new SourceOutcome.Failed<>(FailureKind.CANCELLED, Duration.ofMillis(8)));
+    outcomes.put(
+        "availability", new SourceOutcome.Failed<>(FailureKind.CANCELLED, Duration.ofMillis(8)));
     outcomes.put("customer", new SourceOutcome.Skipped<>());
     return new RequiredSourceFailedException(
         ANONYMOUS, "catalog", catalog, outcomes, Duration.ofMillis(9));
@@ -115,7 +116,7 @@ class AggregationTelemetryTest {
               "required source failed",
               (Consumer<AggregationTelemetry>) telemetry -> telemetry.failed(catalogFailed()),
               "product_aggregated productId=W6103 market=pl-PL customer=absent outcome=FAILED"
-                  + " durationMs=9 catalog=ERROR/7 pricing=TIMEOUT/8 availability=TIMEOUT/8"
+                  + " durationMs=9 catalog=ERROR/7 pricing=CANCELLED/8 availability=CANCELLED/8"
                   + " customer=SKIPPED/0"));
     }
 
@@ -166,7 +167,7 @@ class AggregationTelemetryTest {
     }
 
     @Test
-    void shouldCountFailureAndTimeCalledSourcesWhenRequiredSourceFails() {
+    void shouldNotTimeCancelledCallsWhenRequiredSourceFails() {
       // Given / When
       telemetry.failed(catalogFailed());
 
@@ -180,7 +181,7 @@ class AggregationTelemetryTest {
                   .timer()
                   .count())
           .isEqualTo(1);
-      assertThat(meters.get("upstream.call").timers()).hasSize(3);
+      assertThat(meters.get("upstream.call").timers()).hasSize(1);
     }
   }
 

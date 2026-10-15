@@ -1,5 +1,6 @@
 package com.kramp.aggregator.config;
 
+import com.kramp.aggregator.aggregation.ProductAggregationService;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
 import java.net.URI;
 import java.time.Clock;
@@ -47,10 +48,17 @@ public record AggregatorProperties(
       require(
           baseUrl != null && baseUrl.isAbsolute(),
           prefix + ".base-url must be an absolute URL, was " + baseUrl);
+      // The orchestrator waits budget + grace so the client's own timeout is recorded first;
+      // a deadline that cuts the grace off would hide hanging calls from the breaker.
       require(
-          timeout != null && timeout.isPositive() && timeout.compareTo(globalDeadline) <= 0,
+          timeout != null
+              && timeout.isPositive()
+              && timeout.plus(ProductAggregationService.DEADLINE_GRACE).compareTo(globalDeadline)
+                  <= 0,
           prefix
-              + ".timeout must be positive and at most aggregator.global-deadline ("
+              + ".timeout must be positive and leave the "
+              + ProductAggregationService.DEADLINE_GRACE.toMillis()
+              + " ms grace before aggregator.global-deadline ("
               + globalDeadline.toMillis()
               + " ms), was "
               + timeout);

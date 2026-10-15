@@ -38,7 +38,10 @@ public final class RequiredSourceFailedException extends RuntimeException {
     return outcome;
   }
 
-  /** Every source's outcome; calls cancelled because of this failure are reported as TIMEOUT. */
+  /**
+   * Every source's outcome; calls cut short by this failure are CANCELLED (TIMEOUT if past their
+   * deadline).
+   */
   public Map<String, SourceOutcome<?>> outcomes() {
     return outcomes;
   }

@@ -129,7 +129,7 @@ orchestrator, budgets, circuit breaker, `meta.sources` and the degraded flag app
 5. **Assembly.** Polish labels, the price formatted for `pl-PL`, the delivery date from the Polish
    warehouse, and `preferredBrand`, a fact neither upstream knows alone: MANN-FILTER is one of the
    customer's preferred brands.
-6. **One log line** per request, without the customer id:
+6. **One log line** per aggregation, without the customer id:
    `product_aggregated productId=W6103 market=pl-PL customer=present outcome=OK durationMs=81 catalog=OK/49 pricing=OK/74 availability=OK/44 customer=OK/80`
 
 ```json
@@ -158,7 +158,7 @@ falls back to English content (`"language": "en"`) while the labels stay Dutch.
 
 | Source fails with… | Response |
 |---|---|
-| Catalog: timeout | 504 `CATALOG_TIMEOUT` at ≈ 250 ms; other calls cancelled |
+| Catalog: timeout | 504 `CATALOG_TIMEOUT` at ≈ 250 ms; other calls cancelled (`CANCELLED` in the log line) |
 | Catalog: error or open circuit | 503 `CATALOG_UNAVAILABLE`, `Retry-After: 1` (10 when the circuit is open) |
 | Catalog: unknown product / not sold in the market | 404 `PRODUCT_NOT_FOUND` / `PRODUCT_NOT_IN_MARKET` |
 | Pricing | 200, `pricing.status: UNAVAILABLE` with a localized label, `meta.degraded: true` |
@@ -197,7 +197,10 @@ calls. Counted as failures, those cancellations would open the Pricing, Availabi
 during a Catalog outage and keep prices hidden after Catalog recovers. Cancelled calls therefore release
 their circuit-breaker permission without counting, while real timeouts still count (the aggregator waits
 budget + 25 ms so the HTTP client's own timeout is recorded first). This gap was found by writing the test
-specification before any code (P8 in the decision log).
+specification before any code (P8 in the decision log). The review then found the mirror case: a retry
+starts with a full read timeout, so the aggregator may interrupt it first. An attempt interrupted after its
+source's budget is spent therefore counts as that source's timeout; one interrupted earlier is `CANCELLED`
+and appears neither in the circuit breaker nor in `upstream_call_seconds`.
 
 ## Key decisions and trade-offs
 
@@ -225,10 +228,11 @@ Every decision, its alternatives and who took it: [docs/design/decision-log.md](
   the HTTP server timers. One dashboard row per upstream: latency, outcomes, circuit state.
 - **Health**: `/actuator/health/liveness` and `/actuator/health/readiness` never depend on upstreams; the
   `upstreams` component of `/actuator/health` shows each circuit (`CLOSED` / `OPEN` / `HALF_OPEN`).
-- **Logs**: one `product_aggregated` line per request with the outcome and each source's status and time,
+- **Logs**: one `product_aggregated` line per aggregation with the outcome and each source's status and time
+  (a request rejected before aggregation, such as an unsupported market, has none),
   JSON in the `docker` profile, always with the correlation id and never with the customer id.
 - **Runbook "Pricing timing out"**: confirm with `upstream_call_seconds_count{source="pricing",outcome="TIMEOUT"}`
-  and the circuit state; customers see products without prices, nothing to restart; contact the Pricing
+  and the circuit state (calls cancelled during a Catalog outage are not in this metric); customers see products without prices, nothing to restart; contact the Pricing
   team; prices return by themselves within 10 s of Pricing recovering.
 - **Configuration**: budgets, circuit settings, markets and upstream URLs live in `application.yml` and are
   validated at start-up; an invalid value stops the service instead of running with a default.
@@ -243,6 +247,11 @@ Every decision, its alternatives and who took it: [docs/design/decision-log.md](
 - Real authentication (customer id from the token), rate limiting.
 - Distributed tracing with OpenTelemetry instead of a correlation id only.
 - Contract tests with the upstream teams, and load tests (Gatling or k6) against the latency budget.
+- Findings from the final review I accepted for now (`.changes/CR-001_review.md`): a 404 counts as "not
+  found" only when the body has the upstream's own error shape, so a missing route is not mistaken for an
+  empty catalogue (F10); a contract violation in one record should not count against the whole upstream's
+  circuit (F11); a cap on buffered upstream bodies, and a `Throwable` inside a source releasing its breaker
+  permission (F6).
 
 ## Design question A — Related Products
 

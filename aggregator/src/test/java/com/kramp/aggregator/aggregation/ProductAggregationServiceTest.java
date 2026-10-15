@@ -1,5 +1,6 @@
 package com.kramp.aggregator.aggregation;
 
+import static com.kramp.aggregator.testing.Timing.SCHEDULING_TOLERANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
@@ -9,6 +10,7 @@ import com.kramp.aggregator.testing.FakeSource;
 import com.kramp.aggregator.testing.FakeSource.Step;
 import com.kramp.aggregator.testing.MutableClock;
 import com.kramp.aggregator.testing.TestProperties;
+import com.kramp.aggregator.testing.Timing;
 import io.github.resilience4j.circuitbreaker.CircuitBreaker;
 import java.time.Duration;
 import java.util.Arrays;
@@ -62,10 +64,14 @@ class ProductAggregationServiceTest {
   }
 
   ProductAggregationService service(FakeSource<?>... fakes) {
+    return service(Duration.ofMillis(500), fakes);
+  }
+
+  ProductAggregationService service(Duration globalDeadline, FakeSource<?>... fakes) {
     List<GuardedSource<?>> guarded =
         Arrays.stream(fakes).<GuardedSource<?>>map(this::guard).toList();
     return new ProductAggregationService(
-        guarded, executor, Duration.ofMillis(500), AggregationListener.NONE);
+        guarded, executor, globalDeadline, AggregationListener.NONE);
   }
 
   private <T> GuardedSource<T> guard(FakeSource<T> fake) {
@@ -73,10 +79,6 @@ class ProductAggregationServiceTest {
         breakers.computeIfAbsent(
             fake.name(), name -> CircuitBreaker.of(name, TestProperties.breakerConfig(clock)));
     return new GuardedSource<>(fake, TestProperties.policy(fake.name()), breaker, System::nanoTime);
-  }
-
-  static long elapsedMillisSince(long start) {
-    return (System.nanoTime() - start) / 1_000_000;
   }
 
   @Nested
@@ -98,7 +100,7 @@ class ProductAggregationServiceTest {
       AggregationResult result = service.aggregate(WITH_CUSTOMER);
 
       // Then
-      assertThat(elapsedMillisSince(start)).isLessThan(200);
+      assertThat(Timing.since(start)).isLessThan(ms(100).plus(SCHEDULING_TOLERANCE));
       assertThat(result.outcomes().values())
           .extracting(SourceOutcome::status)
           .containsOnly(SourceStatus.OK);
@@ -147,8 +149,8 @@ class ProductAggregationServiceTest {
       // When
       Throwable thrown = catchThrowable(() -> service.aggregate(WITH_CUSTOMER));
 
-      // Then
-      assertThat(elapsedMillisSince(start)).isLessThan(100);
+      // Then — two 10 ms catalog attempts, not pricing's 300 ms
+      assertThat(Timing.since(start)).isLessThan(ms(20).plus(SCHEDULING_TOLERANCE));
       assertThat(thrown)
           .isInstanceOfSatisfying(
               RequiredSourceFailedException.class,
@@ -161,6 +163,47 @@ class ProductAggregationServiceTest {
               });
       Awaits.until(() -> pricing.interruptions() == 1, Duration.ofSeconds(1));
     }
+
+    // proves: RC-AGG-RES-002
+    @Test
+    void shouldReportUnfinishedSourcesAsCancelledUnlessPastTheirDeadline() {
+      // Given — catalog hangs until its deadline (250 + 25 ms); by then customer (200 + 25 ms)
+      // is past its own deadline, pricing (300 + 25 ms) and availability (350 + 25 ms) are not
+      FakeSource<String> pricing = optional("pricing", Step.value("quote", Duration.ofSeconds(2)));
+      FakeSource<String> customer =
+          optional("customer", Step.value("profile", Duration.ofSeconds(2)));
+      ProductAggregationService service =
+          service(
+              catalog(Step.value("product", Duration.ofSeconds(2))),
+              pricing,
+              optional("availability", Step.value("stock", Duration.ofSeconds(2))),
+              customer);
+
+      // When
+      Throwable thrown = catchThrowable(() -> service.aggregate(WITH_CUSTOMER));
+
+      // Then
+      assertThat(thrown)
+          .isInstanceOfSatisfying(
+              RequiredSourceFailedException.class,
+              failure ->
+                  assertThat(failure.outcomes())
+                      .extractingByKeys("catalog", "pricing", "availability", "customer")
+                      .extracting(SourceOutcome::status)
+                      .containsExactly(
+                          SourceStatus.TIMEOUT,
+                          SourceStatus.CANCELLED,
+                          SourceStatus.CANCELLED,
+                          SourceStatus.TIMEOUT));
+      Awaits.until(
+          () -> pricing.interruptions() == 1 && customer.interruptions() == 1,
+          Duration.ofSeconds(1));
+      Awaits.until(
+          () -> breakers.get("customer").getMetrics().getNumberOfFailedCalls() == 1,
+          Duration.ofSeconds(1));
+      assertThat(breakers.get("pricing").getMetrics().getNumberOfBufferedCalls()).isZero();
+      assertThat(breakers.get("availability").getMetrics().getNumberOfBufferedCalls()).isZero();
+    }
   }
 
   @Nested
@@ -169,7 +212,9 @@ class ProductAggregationServiceTest {
     static Stream<Arguments> optionalFailures() {
       return Stream.of("pricing", "availability", "customer")
           .flatMap(
-              source -> Arrays.stream(FailureKind.values()).map(kind -> arguments(source, kind)));
+              source ->
+                  Stream.of(FailureKind.ERROR, FailureKind.TIMEOUT, FailureKind.CIRCUIT_OPEN)
+                      .map(kind -> arguments(source, kind)));
     }
 
     // proves: REQ-AGG-RES-008
@@ -182,6 +227,8 @@ class ProductAggregationServiceTest {
             case ERROR -> Step.unavailableNotRetryable(ms(5));
             case TIMEOUT -> Step.timeout(ms(5));
             case CIRCUIT_OPEN -> Step.value("never called", ms(5));
+            case CANCELLED ->
+                throw new IllegalArgumentException("only reported once the request has failed");
           };
       ProductAggregationService service =
           service(
@@ -246,19 +293,27 @@ class ProductAggregationServiceTest {
     FakeSource<String> customer =
         optional("customer", Step.value("profile", Duration.ofSeconds(2)));
 
+    /** Below every source's own deadline (customer 225 ms … availability 375 ms). */
+    static final Duration GLOBAL_DEADLINE = ms(100);
+
     // proves: REQ-AGG-RES-011
     @Test
     void shouldFinishWithinGlobalDeadlineWhenAllSourcesHang() {
       // Given
       ProductAggregationService service =
-          service(catalog(Step.value("product", ms(10))), pricing, availability, customer);
+          service(
+              GLOBAL_DEADLINE,
+              catalog(Step.value("product", ms(10))),
+              pricing,
+              availability,
+              customer);
       long start = System.nanoTime();
 
       // When
       AggregationResult result = service.aggregate(WITH_CUSTOMER);
 
       // Then
-      assertThat(elapsedMillisSince(start)).isLessThan(500);
+      assertThat(Timing.since(start)).isLessThan(GLOBAL_DEADLINE.plus(SCHEDULING_TOLERANCE));
       assertThat(
               List.of(
                   result.outcome("pricing").status(),
@@ -292,6 +347,7 @@ class ProductAggregationServiceTest {
       // Given
       ProductAggregationService service =
           service(
+              GLOBAL_DEADLINE,
               catalog(Step.value("product", Duration.ofSeconds(2))),
               pricing,
               availability,
@@ -302,7 +358,7 @@ class ProductAggregationServiceTest {
       Throwable thrown = catchThrowable(() -> service.aggregate(WITH_CUSTOMER));
 
       // Then
-      assertThat(elapsedMillisSince(start)).isLessThan(500);
+      assertThat(Timing.since(start)).isLessThan(GLOBAL_DEADLINE.plus(SCHEDULING_TOLERANCE));
       assertThat(thrown)
           .isInstanceOfSatisfying(
               RequiredSourceFailedException.class,

@@ -66,7 +66,9 @@ public final class AggregationTelemetry implements AggregationListener {
               .append(sourceOutcome.status())
               .append('/')
               .append(sourceOutcome.duration().toMillis());
-          if (sourceOutcome.status() != SourceStatus.SKIPPED) {
+          // Neither a skipped nor a cancelled call says anything about the upstream.
+          if (sourceOutcome.status() != SourceStatus.SKIPPED
+              && sourceOutcome.status() != SourceStatus.CANCELLED) {
             Timer.builder("upstream.call")
                 .tag("source", source)
                 .tag("outcome", sourceOutcome.status().name())
