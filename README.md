@@ -74,6 +74,24 @@ grpcurl -plaintext -d '{"product_id":"W6103","market":"pl-PL","customer_id":"C-1
 
 ## Architecture
 
+**Where to start reading.** The core is a handful of files:
+
+- [`ProductAggregationService`](aggregator/src/main/java/com/kramp/aggregator/aggregation/ProductAggregationService.java): the fan-out, one
+  virtual thread per source, per-source and global deadlines, fail-fast when Catalog fails.
+- [`GuardedSource`](aggregator/src/main/java/com/kramp/aggregator/aggregation/GuardedSource.java): one upstream call under its circuit
+  breaker and time budget, with at most one retry; decides what counts as an upstream failure.
+- [`ProductViewService`](aggregator/src/main/java/com/kramp/aggregator/presentation/ProductViewService.java) and
+  [`ProductViewAssembler`](aggregator/src/main/java/com/kramp/aggregator/presentation/ProductViewAssembler.java): input validation, the market,
+  the error a failed Catalog becomes, and the localized view built from each section's status.
+- [`UpstreamHttp`](aggregator/src/main/java/com/kramp/aggregator/source/UpstreamHttp.java): how every upstream is called over HTTP, with timeouts,
+  error translation and body checks.
+- [`ProblemDetailsAdvice`](aggregator/src/main/java/com/kramp/aggregator/api/rest/ProblemDetailsAdvice.java) and
+  [`ProductGrpcService`](aggregator/src/main/java/com/kramp/aggregator/api/grpc/ProductGrpcService.java): the two transports and their error mapping.
+- [`UpstreamBehavior`](upstream-mocks/src/main/java/com/kramp/mocks/behavior/UpstreamBehavior.java): the
+  mocks' latency and failure model behind every upstream endpoint and the Chaos API.
+- [`TraceabilityGate`](quality-gates/src/main/java/com/kramp/quality/TraceabilityGate.java): the build check
+  that ties every requirement in [`specs/`](specs/index.md) to its proof.
+
 ```
 REST :8080 ──┐                                                       ┌──► Catalog        required
              ├──► ProductViewService ──► ProductAggregationService ──┼──► Pricing        optional
@@ -299,8 +317,8 @@ one fails.
 
 ## Requirements, tests and traceability
 
-The assignment was broken down into 11 user requirements and **79 system requirements** (68 proven by
-automated tests, 11 by observed validation steps), each in a leaf under [`specs/`](specs/index.md).
+The assignment was broken down into 11 user requirements and **80 system requirements** (68 proven by
+automated tests, 12 by observed validation steps), each in a leaf under [`specs/`](specs/index.md).
 Every test case was specified with its exact expected result before the code:
 [docs/verification/test-specification.md](docs/verification/test-specification.md).
 
