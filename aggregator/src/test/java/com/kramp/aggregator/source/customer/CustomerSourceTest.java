@@ -34,7 +34,7 @@ class CustomerSourceTest {
   }
 
   CustomerSource source() {
-    return new CustomerSource(UpstreamClients.client(upstream.baseUrl(), "customer"));
+    return new CustomerSource(UpstreamClients.contentClient(upstream.baseUrl()));
   }
 
   @Nested

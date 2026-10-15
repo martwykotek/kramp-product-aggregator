@@ -45,7 +45,7 @@ class PricingSourceTest {
   }
 
   PricingSource source() {
-    return new PricingSource(UpstreamClients.client(upstream.baseUrl(), "pricing"));
+    return new PricingSource(UpstreamClients.contentClient(upstream.baseUrl()));
   }
 
   Throwable fetchFailure(MappingBuilder stub) {

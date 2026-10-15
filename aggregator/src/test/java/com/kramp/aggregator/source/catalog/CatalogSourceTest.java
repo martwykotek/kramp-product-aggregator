@@ -37,7 +37,7 @@ class CatalogSourceTest {
   }
 
   CatalogSource source() {
-    return new CatalogSource(UpstreamClients.client(upstream.baseUrl(), "catalog"));
+    return new CatalogSource(UpstreamClients.contentClient(upstream.baseUrl()));
   }
 
   @Nested

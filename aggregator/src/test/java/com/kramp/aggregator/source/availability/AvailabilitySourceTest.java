@@ -36,7 +36,7 @@ class AvailabilitySourceTest {
       new ProductRequest("W6103", TestProperties.market("pl-PL"), Optional.empty());
 
   AvailabilitySource source() {
-    return new AvailabilitySource(UpstreamClients.client(upstream.baseUrl(), "availability"));
+    return new AvailabilitySource(UpstreamClients.contentClient(upstream.baseUrl()));
   }
 
   @Nested
