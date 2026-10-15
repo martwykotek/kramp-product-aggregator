@@ -29,7 +29,7 @@ by hand on the running system.
 | TC-14 | gRPC | Pass | service listed by reflection; `GetProduct` returns the TC-01 view (final price "57.11"); `NOPE123` → `NotFound` |
 | TC-15 | Demo page | Pass | Kramp styling, text wordmark, product image, Polish name, per-source timeline, circuit states, footer stating fictitious data; Catalog down → "Produkt chwilowo niedostępny. Spróbujemy ponownie za 5 s.", the product came back by itself after the mocks were reset; "Technical details" show code, `Retry-After` and correlation ids; `10112PB` → "Ten produkt nie jest dostępny w Twoim kraju" without retry |
 | TC-16 | Operations | Pass | with Pricing down: readiness `UP`, `upstreams` shows pricing OPEN and the others CLOSED; `upstream_call_seconds{source,outcome}` and `aggregation_result_total{outcome}` exported |
-| TC-17 | Fresh clone and CI | after publication | |
+| TC-17 | Fresh clone and CI | Pass | clone from GitHub: `docker compose up --build` healthy, the TC-01 request answers 57,11 zł with four sources OK; `./mvnw verify` green with JDK 21; GitHub Actions CI green |
 | TC-18 | Repository hygiene and README | Pass | no logo, `.svg` or `.env` files; README read in full against the assignment |
 | TC-19 | Realistic noise (200 requests, mocks in their default random mode) | Pass | Catalog 200 × OK; Pricing 199 OK / 1 TIMEOUT; Availability 198 OK / 2 TIMEOUT; Customer 199 OK / 1 TIMEOUT; no request without a product |
 

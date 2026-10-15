@@ -1,6 +1,6 @@
 # CR-001 — Product Information Aggregator
 
-Status: verified · Profile: lean · Acceptance: none · Repos: kramp-product-aggregator
+Status: published · Profile: lean · Acceptance: none · Repos: kramp-product-aggregator
 Touches: REQ-AGG-VIEW-*, REQ-AGG-MARKET-*, REQ-AGG-RES-*, RC-AGG-RES-*, REQ-API-REST-*, RC-API-REST-*, REQ-API-GRPC-*, REQ-OPS-OBS-*, RC-OPS-OBS-*, REQ-MOCK-UPSTREAM-*, REQ-MOCK-CHAOS-*, REQ-DEMO-PAGE-*, RC-DEMO-PAGE-*, REQ-DLV-SUBMIT-*
 
 ## Summary
@@ -205,13 +205,13 @@ Generated from the `specs/` leaves on 2026-10-15, after the validation. Automate
 | REQ-DEMO-PAGE-006 | observed: TC-15 | CR-001 § Validation | ✅ |
 | RC-DEMO-PAGE-001 | observed: TC-15 | CR-001 § Validation | ✅ |
 | RC-DEMO-PAGE-002 | observed: TC-18 | CR-001 § Validation | ✅ |
-| REQ-DLV-SUBMIT-001 | observed: TC-17 (local part) | CR-001 § Validation | ❌ no evidence — GAP |
-| REQ-DLV-SUBMIT-002 | observed: TC-17 (local part) | CR-001 § Validation | ❌ no evidence — GAP |
+| REQ-DLV-SUBMIT-001 | observed: TC-17 (local part) | CR-001 § Validation | ✅ |
+| REQ-DLV-SUBMIT-002 | observed: TC-17 (local part) | CR-001 § Validation | ✅ |
 | REQ-DLV-SUBMIT-003 | automated: AT-DLV-01 · ReadmeContractTest#shouldContainRequiredSectionsWhenReadmeChecked | `./mvnw verify` and CI | ⚠️ checks presence and non-emptiness, not quality (quality: TC-18) |
 | REQ-DLV-SUBMIT-004 | automated: AT-DLV-01 · ReadmeContractTest#shouldContainRequiredSectionsWhenReadmeChecked | `./mvnw verify` and CI | ⚠️ checks presence and non-emptiness, not quality (quality: TC-18) |
 | REQ-DLV-SUBMIT-005 | automated: AT-DLV-01 · ReadmeContractTest#shouldContainRequiredSectionsWhenReadmeChecked | `./mvnw verify` and CI | ⚠️ checks presence and non-emptiness, not quality (quality: TC-18) |
 | REQ-DLV-SUBMIT-006 | automated: AT-DLV-01 · ReadmeContractTest#shouldContainRequiredSectionsWhenReadmeChecked | `./mvnw verify` and CI | ⚠️ checks presence and non-emptiness, not quality (quality: TC-18) |
-| REQ-DLV-SUBMIT-007 | observed: TC-17 (GitHub part) | CR-001 § Validation | ❌ no evidence — GAP |
+| REQ-DLV-SUBMIT-007 | observed: TC-17 (GitHub part) | CR-001 § Validation | ✅ |
 
 ## Validation
 Run against `docker compose up --build`; requests in `docs/verification/aggregator.http` or `scripts/demo.sh`.
@@ -253,15 +253,15 @@ Base command used below: `P='localhost:8080/api/v1/products'`.
 | TC-14: gRPC — REQ-API-GRPC-001/002/003 | `grpcurl -plaintext localhost:9090 list`; `grpcurl -plaintext -d '{"product_id":"W6103","market":"pl-PL","customer_id":"C-1002"}' localhost:9090 kramp.aggregator.v1.ProductAggregator/GetProduct`; same with `NOPE123` | `kramp.aggregator.v1.ProductAggregator` listed (reflection); response mirrors TC-01 (final price "57.11"); NOPE123 → `Code: NotFound` | Pass — reflection lists the service; final price "57.11" / "57,11 zł"; NOPE123 → NotFound |
 | TC-15: Demo page — REQ-DEMO-PAGE-001…006, RC-DEMO-PAGE-001 (006: catalog DOWN shows the customer view in the market language with a countdown and retries by itself; "Technical details" expands to code, Retry-After, correlation ids; not-found and not-in-market show their own message without retry) | open `http://localhost:8080/`; choose W6103 / pl-PL / C-1002; Pricing → TIMEOUT; "Fire 20 requests"; Reset | Kramp styling (red `#9B1915` header, Barlow fonts, text wordmark "KRAMP", tagline); card with product image, Polish name, price, stock, delivery, segment badge; source bar shows four statuses with ms; under chaos the price area shows the Polish label and the bar shows TIMEOUT then CIRCUIT_OPEN; footer states prices, stock and customers are fictitious | Pass — Kramp styling, card, source bar, circuit states, chaos panel, footer; D-19: Catalog DOWN → Polish message with countdown, product back by itself after Reset, Technical details complete; after "Fire 20 requests" no countdown (by design: a burst never retries by itself); 10112PB → "Ten produkt nie jest dostępny w Twoim kraju" without retry |
 | TC-16: Operations — REQ-OPS-OBS-004/005/006 | R; `PUT /chaos/pricing {"mode":"DOWN"}`; TC-01 × 12; `curl localhost:8080/actuator/health/readiness`; `curl localhost:8080/actuator/health \| jq .components.upstreams`; `curl -s localhost:8080/actuator/prometheus \| grep -E 'upstream_call_seconds_count\|aggregation_result_total'` | readiness `UP`; `upstreams.details.pricing` OPEN, others CLOSED; both metric families present with `source`/`outcome` tags | Pass — readiness UP with Pricing DOWN; pricing OPEN, others CLOSED; both metric families with source/outcome tags |
-| TC-17: Fresh clone — REQ-DLV-SUBMIT-001/002/007 | in an empty dir: `git clone <GitHub URL>`; `docker compose up --build`; separately (JDK 21) `./mvnw verify`; open the latest GitHub Actions run | both succeed without extra steps; CI run green; repo visible on GitHub | After the push: clone from GitHub, `docker compose up --build`, `./mvnw verify`, CI run |
+| TC-17: Fresh clone — REQ-DLV-SUBMIT-001/002/007 | in an empty dir: `git clone <GitHub URL>`; `docker compose up --build`; separately (JDK 21) `./mvnw verify`; open the latest GitHub Actions run | both succeed without extra steps; CI run green; repo visible on GitHub | Pass — fresh clone of https://github.com/martwykotek/kramp-product-aggregator: `docker compose up --build` healthy, the TC-01 request answers 57,11 zł with four sources OK; `./mvnw verify` green with JDK 21; GitHub Actions CI green; repository public |
 | TC-18: Hygiene before submission — RC-DEMO-PAGE-002, quality of README | read README end to end; run the hygiene scan kept outside the repository; `git ls-files \| grep -iE 'logo\|\.svg$\|\.env'` | README answers every Deliverables bullet and Design Question A clearly; scan finds nothing; no Kramp logo or env files tracked | Pass — `hygiene: PASS`, no logo/svg/.env tracked; README read end to end by Dawid |
 | TC-19: Realistic background noise — REQ-MOCK-UPSTREAM-001/002 at system level (supplementary) | R (HEALTHY, PDF reliability); `for i in $(seq 200); do curl -s -H 'X-Customer-Id: C-1002' "$P/W6103?market=pl-PL" \| jq -r '.meta.sources.availability.status'; done \| sort \| uniq -c` | mostly OK; a few (~1–3%) non-OK for availability; catalog 503s are rare (~0.1% of requests, i.e. usually 0 in 200) | Pass — 200 requests in normal mode: availability 198 OK / 2 TIMEOUT, pricing 199 / 1 TIMEOUT, customer 199 / 1 TIMEOUT, catalog 200 OK |
 
-Results: 19 of 20 steps Pass on 2026-10-15 against `docker compose up --build` (evidence: screenshots and terminal output kept by Dawid; summary in `docs/verification/validation-report.md`); TC-17 runs on the published repository.
+Results: 20 of 20 steps Pass on 2026-10-15 against `docker compose up --build` (evidence: screenshots and terminal output kept by Dawid; summary in `docs/verification/validation-report.md`); TC-17 on the published repository.
 Checked by: Dawid Kłos, 2026-10-15
 
 ## Approval
-Validated and approved for publication by Dawid Kłos, 2026-10-15. Publication (push, TC-17 on the published repository): pending.
+Validated and approved for publication by Dawid Kłos, 2026-10-15. Published the same day: https://github.com/martwykotek/kramp-product-aggregator; TC-17 Pass on the published repository.
 
 ## Handover
-State: verified · Artifacts: this repository · Guarding gate: `./mvnw verify -Dgate.strict=true` · Next: publish — push, TC-17 on the published repository, flip REQ-DLV-SUBMIT-001/002/007, strict gate with 0 gaps.
+State: published · Artifacts: https://github.com/martwykotek/kramp-product-aggregator · Guarding gate: `./mvnw verify -Dgate.strict=true` (0 gaps)

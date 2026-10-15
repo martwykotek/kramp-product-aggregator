@@ -21,13 +21,13 @@ None in this leaf.
 ## How it's proven
 | ID | Resolved by | Proof | Status |
 |----|-------------|-------|--------|
-| REQ-DLV-SUBMIT-001 | observed | TC-17 (local part) | ❌ no evidence — GAP |
-| REQ-DLV-SUBMIT-002 | observed | TC-17 (local part) | ❌ no evidence — GAP |
+| REQ-DLV-SUBMIT-001 | observed | TC-17 (local part) | ✅ |
+| REQ-DLV-SUBMIT-002 | observed | TC-17 (local part) | ✅ |
 | REQ-DLV-SUBMIT-003 | automated | AT-DLV-01 · ReadmeContractTest#shouldContainRequiredSectionsWhenReadmeChecked | ⚠️ checks presence and non-emptiness, not quality (quality: TC-18) |
 | REQ-DLV-SUBMIT-004 | automated | AT-DLV-01 · ReadmeContractTest#shouldContainRequiredSectionsWhenReadmeChecked | ⚠️ checks presence and non-emptiness, not quality (quality: TC-18) |
 | REQ-DLV-SUBMIT-005 | automated | AT-DLV-01 · ReadmeContractTest#shouldContainRequiredSectionsWhenReadmeChecked | ⚠️ checks presence and non-emptiness, not quality (quality: TC-18) |
 | REQ-DLV-SUBMIT-006 | automated | AT-DLV-01 · ReadmeContractTest#shouldContainRequiredSectionsWhenReadmeChecked | ⚠️ checks presence and non-emptiness, not quality (quality: TC-18) |
-| REQ-DLV-SUBMIT-007 | observed | TC-17 (GitHub part) | ❌ no evidence — GAP |
+| REQ-DLV-SUBMIT-007 | observed | TC-17 (GitHub part) | ✅ |
 
 ## Where the code lives
 `README.md`, `docker-compose.yml`, `.github/workflows/ci.yml`.
